@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="CompactColorPickerView" >
+        <attr name="enablePreview" format="boolean" />
+        <attr name="menuType" format="enum">
+            <enum name="text" value="0" />
+            <enum name="image" value="1" />
+        </attr>
+    </declare-styleable>
+</resources>

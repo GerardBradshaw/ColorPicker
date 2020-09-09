@@ -9,8 +9,10 @@
     android:gravity="center"
     tools:context=".MainActivity">
 
-    <com.gerardbradshaw.colorpicker.ColorSliderView
+    <com.gerardbradshaw.colorpicker.CompactColorPickerView
         tools:background="@color/colorPrimaryDark"
+        app:enablePreview="true"
+        app:menuType="image"
         android:layout_width="match_parent"
         android:layout_height="52dp"/>
 

@@ -14,22 +14,34 @@ import kotlin.math.floor
 import kotlin.math.max
 import kotlin.math.roundToInt
 
-class ColorSliderView : FrameLayout {
+class CompactColorPickerView : FrameLayout {
 
   // ------------------------ CONSTRUCTORS ------------------------
 
-  constructor(context: Context) : super(context)
-  constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-  constructor(context: Context, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle)
+  constructor(context: Context) : super(context) {
+    initView()
+  }
+
+  constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
+    initWithAttrs(attrs)
+  }
+
+  constructor(context: Context, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle) {
+    initWithAttrs(attrs)
+  }
+
 
 
   // ------------------------ PROPERTIES ------------------------
 
-  private lateinit var sliderMenu: LinearLayout
-  private lateinit var sliderMenuTextView: TextView
+  private lateinit var menuButton: View
+  private var menuType = 0
+
   private lateinit var seekBar: SeekBar
-  private lateinit var seekBarLine: FrameLayout
+  private lateinit var gradientBar: FrameLayout
+
   private lateinit var preview: ImageView
+  private var isPreviewEnabled = true
 
   private var currentSlider: SliderType = SliderType.COLOR
 
@@ -40,52 +52,84 @@ class ColorSliderView : FrameLayout {
   var listener: ColorChangedListener? = null
 
 
+
   // ------------------------ INITIALIZATION ------------------------
 
   init {
     View.inflate(context, R.layout.picker_compact, this)
+  }
 
-    initSliderMenu()
-    initSeekBar()
-    initBarLine()
+  private fun initView() {
+    initMenu()
+    initSlider()
     initPreview()
   }
 
-  private fun initSliderMenu() {
-    sliderMenuTextView = findViewById(R.id.text_view)
+  private fun initWithAttrs(attrs: AttributeSet?) {
+    if (attrs == null) initView()
 
-    sliderMenu = findViewById(R.id.selector_button)
-    sliderMenu.setOnClickListener {
-      val popup = PopupMenu(context, it)
+    context.theme.obtainStyledAttributes(attrs, R.styleable.CompactColorPickerView, 0, 0).apply {
+      try {
+        menuType = getInteger(R.styleable.CompactColorPickerView_menuType, 0)
+        isPreviewEnabled = getBoolean(R.styleable.CompactColorPickerView_enablePreview, true)
+        initView()
 
-      popup.menuInflater.inflate(R.menu.color_options, popup.menu)
+      } finally {
+        recycle()
+      }
+    }
+  }
 
-      popup.setOnMenuItemClickListener(object : PopupMenu.OnMenuItemClickListener {
+  private fun initMenu() {
+    menuButton = if (menuType == 0) findViewById(R.id.text_menu) else findViewById(R.id.image_menu)
+
+    menuButton.visibility = View.VISIBLE
+
+    menuButton.setOnClickListener {
+      showPopupMenu(it)
+    }
+  }
+
+  private fun initSlider() {
+    initSeekBar()
+    initGradientBar()
+  }
+
+  private fun initPreview() {
+    preview = findViewById(R.id.preview)
+    if (isPreviewEnabled) preview.setColorFilter(getCurrentColorHex())
+    else preview.visibility = View.GONE
+  }
+
+  private fun showPopupMenu(view: View) {
+    PopupMenu(context, view).also {
+      it.menuInflater.inflate(R.menu.color_options, it.menu)
+
+      it.setOnMenuItemClickListener(object : PopupMenu.OnMenuItemClickListener {
         override fun onMenuItemClick(item: MenuItem?): Boolean {
-          if (item == null) return false
-
-          when (item.itemId) {
+          val menuText = when (item?.itemId) {
             R.id.option_color -> {
               currentSlider = SliderType.COLOR
-              sliderMenuTextView.setText("Color")
+              resources.getString(R.string.color)
             }
             R.id.option_shade -> {
               currentSlider = SliderType.SHADE
-              sliderMenuTextView.setText("Shade")
+              resources.getString(R.string.shade)
             }
             R.id.option_tint -> {
               currentSlider = SliderType.TINT
-              sliderMenuTextView.setText("Tint")
+              resources.getString(R.string.tint)
             }
             else -> return false
           }
 
-          initBarLine()
+          findViewById<TextView>(R.id.menu_text).text = menuText
+          initGradientBar()
           return true
         }
       })
 
-      popup.show()
+      it.show()
     }
   }
 
@@ -109,7 +153,7 @@ class ColorSliderView : FrameLayout {
     })
   }
 
-  private fun initBarLine() {
+  private fun initGradientBar() {
     val gradientDrawable = when (currentSlider) {
       SliderType.COLOR -> {
         GradientDrawable(GradientDrawable.Orientation.LEFT_RIGHT, intArrayOf(
@@ -138,14 +182,9 @@ class ColorSliderView : FrameLayout {
       }
     }
 
-    seekBarLine = findViewById(R.id.seek_bar_line)
-    seekBarLine.background = gradientDrawable
+    gradientBar = findViewById(R.id.seek_bar_line)
+    gradientBar.background = gradientDrawable
     setSeekBarPosition()
-  }
-
-  private fun initPreview() {
-    preview = findViewById(R.id.preview)
-    preview.setColorFilter(getCurrentColorHex())
   }
 
 
@@ -153,27 +192,32 @@ class ColorSliderView : FrameLayout {
   // ------------------------ COLOR GETTERS ------------------------
 
   private fun getIthColor(i: Int): Int {
-    val numberOfColors = 16777216.0
-    val segmentWidth = numberOfColors / 6.0
-    val spanNumber = floor(i.toDouble() / segmentWidth)
-    val progressInSegment = (i.toDouble() - (spanNumber * segmentWidth)) / (segmentWidth)
+    val colorCount = 16777216.0
+    val gradientCount = 6.0
+    val colorsPerGradient = colorCount / gradientCount
+
+    val currentGradientNumber = floor(i.toDouble() / colorsPerGradient)
+    val positionInGradient = (i.toDouble() - (currentGradientNumber * colorsPerGradient)) / (colorsPerGradient)
 
     val full = 255
-    val fadeIn = (255.0 * progressInSegment).roundToInt()
-    val fadeOut = (255.0 * (1.0 - progressInSegment)).roundToInt()
+    val fadeIn = (255.0 * positionInGradient).roundToInt()
+    val fadeOut = (255.0 * (1.0 - positionInGradient)).roundToInt()
     val none = 0
 
     return when {
-      spanNumber < 1 -> Color.argb(full, full, fadeIn, none)
-      spanNumber < 2 -> Color.argb(full, fadeOut, full, none)
-      spanNumber < 3 -> Color.argb(full, none, full, fadeIn)
-      spanNumber < 4 -> Color.argb(full, none, fadeOut, full)
-      spanNumber < 5 -> Color.argb(full, fadeIn, none, full)
-      spanNumber <= 6 -> {
-        if (i != numberOfColors.toInt()) Color.argb(full, full, none, fadeOut)
+      currentGradientNumber < 1 -> Color.argb(full, full, fadeIn, none)
+      currentGradientNumber < 2 -> Color.argb(full, fadeOut, full, none)
+      currentGradientNumber < 3 -> Color.argb(full, none, full, fadeIn)
+      currentGradientNumber < 4 -> Color.argb(full, none, fadeOut, full)
+      currentGradientNumber < 5 -> Color.argb(full, fadeIn, none, full)
+      currentGradientNumber <= 6 -> {
+        if (i != colorCount.toInt()) Color.argb(full, full, none, fadeOut)
         else Color.argb(full, full, none, 1)
       }
-      else -> Color.argb(full, none, none, none)
+      else -> {
+        Log.d(TAG, "getIthColor: i too large. Returning white.")
+        Color.argb(full, none, none, none)
+      }
     }
   }
 
@@ -225,7 +269,7 @@ class ColorSliderView : FrameLayout {
 
   private fun onColorChanged() {
     val colorHex = getCurrentColorHex()
-    preview.setColorFilter(colorHex)
+    if (isPreviewEnabled) preview.setColorFilter(colorHex)
     listener?.onColorChanged(colorHex)
   }
 
@@ -233,10 +277,12 @@ class ColorSliderView : FrameLayout {
 
   // ------------------------ PUBLIC FUNCTIONS ------------------------
 
+  /** Returns the current color including shade and tint as an Int. */
   fun getCurrentColor(): Int {
     return getTintedColor(getShadedColor(getPureColor()))
   }
 
+  /** Returns the current color including shade and tint as a hexadecimal Int. */
   fun getCurrentColorHex(): Int {
     val hexColor = String.format("#%06X", 0xFFFFFF and getCurrentColor())
     return Color.parseColor(hexColor)
@@ -251,7 +297,10 @@ class ColorSliderView : FrameLayout {
   // ------------------------ HELPERS ------------------------
 
   private fun dpToPx(dp: Int): Int {
-    return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp.toFloat(), resources.displayMetrics).roundToInt()
+    return TypedValue.applyDimension(
+      TypedValue.COMPLEX_UNIT_DIP,
+      dp.toFloat(),
+      resources.displayMetrics).roundToInt()
   }
 
   private fun setSeekBarPosition() {
@@ -266,12 +315,12 @@ class ColorSliderView : FrameLayout {
 
   // ------------------------ INNER CLASSES ------------------------
 
-  interface ColorChangedListener {
-    fun onColorChanged(hexColor: Int)
+  companion object {
+    private const val TAG = "CompactColorPickerView"
   }
 
-  companion object {
-    private const val TAG = "ColorSliderView"
+  interface ColorChangedListener {
+    fun onColorChanged(hexColor: Int)
   }
 
   private enum class SliderType {

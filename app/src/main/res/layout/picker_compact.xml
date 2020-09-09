@@ -9,15 +9,17 @@
     tools:background="@android:color/holo_red_light">
 
     <LinearLayout
-        android:id="@+id/selector_button"
+        android:id="@+id/text_menu"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_marginVertical="8dp"
         android:orientation="horizontal"
-        android:paddingHorizontal="12dp" >
+        android:paddingHorizontal="12dp"
+        android:visibility="gone"
+        tools:visibility="visible" >
 
         <TextView
-            android:id="@+id/text_view"
+            android:id="@+id/menu_text"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center_vertical"
@@ -28,8 +30,16 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:src="@drawable/ic_drop_down_arrow" />
-
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/image_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:padding="12dp"
+        android:src="@drawable/ic_sliders"
+        android:visibility="gone"
+        tools:visibility="visible" />
 
 
     <FrameLayout
@@ -48,11 +58,11 @@
             tools:background="@android:color/holo_blue_bright" />
 
         <FrameLayout
-            android:background="@drawable/border_black"
             android:layout_width="match_parent"
             android:layout_height="8dp"
             android:layout_gravity="center"
-            android:layout_marginHorizontal="12dp" />
+            android:layout_marginHorizontal="12dp"
+            android:background="@drawable/border_black" />
 
         <SeekBar
             android:id="@+id/seek_bar"
@@ -67,12 +77,12 @@
     </FrameLayout>
 
     <ImageView
-        android:src="@drawable/shape_curved_rectangle"
         android:id="@+id/preview"
+        android:layout_width="40dp"
+        android:layout_height="match_parent"
         android:layout_gravity="center"
         android:layout_margin="12dp"
-        android:layout_width="40dp"
-        android:layout_height="match_parent" />
+        android:src="@drawable/shape_curved_rectangle" />
 
 
 </LinearLayout>
