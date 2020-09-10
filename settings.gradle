@@ -1,2 +1,2 @@
 include ':app'
-rootProject.name = "ColorSlider"
+rootProject.name = "ColorPicker"
