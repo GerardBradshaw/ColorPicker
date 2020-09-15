@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">ColorPicker</string>
+    <string name="listening_for_changes">I\'m listening for color changes!</string>
+    <string name="compact_color_picker">Compact Color Picker</string>
+    <string name="square_color_picker">Square Color Picker</string>
+    <string name="round_color_picker">Round Color Picker</string>
+    <string name="button_instructions">Select a view to see it in action...</string>
 </resources>

@@ -1,7 +1,9 @@
 package com.gerardbradshaw.colorpicker
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.TypedValue
+import android.view.View
+import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 
 class MainActivity : AppCompatActivity() {
@@ -10,6 +12,16 @@ class MainActivity : AppCompatActivity() {
     setContentView(R.layout.activity_main)
   }
 
+  fun buttonClicked(view: View) {
+    val activityToLaunch = when (view.id) {
+      R.id.compact_example_button -> CompactViewActivity::class.java
+      R.id.square_example_button -> SquareViewActivity::class.java
+      R.id.round_example_button -> RoundViewActivity::class.java
+      else -> return
+    }
+
+    startActivity(Intent(this, activityToLaunch))
+  }
 
   companion object {
     private const val TAG = "MainActivity"
