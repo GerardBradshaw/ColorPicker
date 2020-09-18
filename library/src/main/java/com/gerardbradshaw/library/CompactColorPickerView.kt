@@ -37,9 +37,13 @@ class CompactColorPickerView : AbstractColorPicker {
   }
 
   private fun initMenu() {
-    menuButton = findViewById(R.id.compact_menu_frame)
+    val menu: View =
+      if (menuType == 0) findViewById(R.id.compact_text_menu)
+      else findViewById(R.id.compact_image_menu)
 
-    menuButton.visibility = View.VISIBLE
+    menu.visibility = View.VISIBLE
+
+    menuButton = findViewById(R.id.compact_menu_frame)
 
     menuButton.setOnClickListener {
       showPopupMenu(it)
