@@ -38,7 +38,6 @@ abstract class AbstractColorPicker : FrameLayout {
 
   // ------------------------ PROPERTIES ------------------------
 
-  var colorCount = context.resources.getInteger(R.integer.spectrum_color_count).toFloat()
   var colorRatio = 0.0
   var shadeRatio = 0.0
   var tintRatio = 0.0
@@ -87,11 +86,6 @@ abstract class AbstractColorPicker : FrameLayout {
   /** Returns the current color including shade and tint as an Int. */
   fun getCurrentColor(): Int {
     return getTintedColor(getShadedColor(getPureColor()))
-  }
-
-  /** Returns the current color including shade and tint as a hexadecimal Int. */
-  fun getCurrentColorHex(): Int {
-    return colorToHex(getCurrentColor())
   }
 
   fun getPureColor(): Int {
@@ -146,50 +140,49 @@ abstract class AbstractColorPicker : FrameLayout {
 
   // ------------------------ HELPERS ------------------------
 
-  private fun getIthPureColor(i: Int): Int {
-    val gradientCount = 6.0
-    val colorsPerGradient = colorCount / gradientCount
 
-    val currentGradientNumber = floor(i.toDouble() / colorsPerGradient)
-    val positionInGradient = (i.toDouble() - (currentGradientNumber * colorsPerGradient)) / (colorsPerGradient)
-
-    val full = 255
-    val fadeIn = (255.0 * positionInGradient).roundToInt()
-    val fadeOut = (255.0 * (1.0 - positionInGradient)).roundToInt()
-    val none = 0
-
-    return when {
-      currentGradientNumber < 1 -> Color.argb(full, full, fadeIn, none)
-      currentGradientNumber < 2 -> Color.argb(full, fadeOut, full, none)
-      currentGradientNumber < 3 -> Color.argb(full, none, full, fadeIn)
-      currentGradientNumber < 4 -> Color.argb(full, none, fadeOut, full)
-      currentGradientNumber < 5 -> Color.argb(full, fadeIn, none, full)
-      currentGradientNumber <= 6 -> {
-        if (i != colorCount.toInt()) Color.argb(full, full, none, fadeOut)
-        else Color.argb(full, full, none, 1)
-      }
-      else -> {
-        Log.d(TAG, "getIthColor: i too large. Returning white.")
-        Color.argb(full, none, none, none)
-      }
-    }
-  }
 
   protected abstract fun onColorChanged()
-
-  protected fun colorToHex(color: Int): Int {
-    val hexColor = String.format("#%06X", 0xFFFFFF and getCurrentColor())
-    return Color.parseColor(hexColor)
-  }
 
 
   // ------------------------ INNER CLASSES ------------------------
 
   companion object {
     private const val TAG = "AbstractColorPicker"
+    private const val colorCount = 16777216
+
+    fun getIthPureColor(i: Int): Int {
+      val sectionCount = 6.0
+      val colorsPerSection = colorCount / sectionCount
+
+      val currentSectionNumber = floor(i.toDouble() / colorsPerSection)
+      val positionInSection =
+        (i.toDouble() - (currentSectionNumber * colorsPerSection)) / (colorsPerSection)
+
+      val full = 255
+      val fadeIn = (255.0 * positionInSection).roundToInt()
+      val fadeOut = (255.0 * (1.0 - positionInSection)).roundToInt()
+      val none = 0
+
+      return when {
+        currentSectionNumber < 1 -> Color.argb(full, full, fadeIn, none)
+        currentSectionNumber < 2 -> Color.argb(full, fadeOut, full, none)
+        currentSectionNumber < 3 -> Color.argb(full, none, full, fadeIn)
+        currentSectionNumber < 4 -> Color.argb(full, none, fadeOut, full)
+        currentSectionNumber < 5 -> Color.argb(full, fadeIn, none, full)
+        currentSectionNumber <= 6 -> {
+          if (i != colorCount) Color.argb(full, full, none, fadeOut)
+          else Color.argb(full, full, none, 1)
+        }
+        else -> {
+          Log.d(TAG, "getIthColor: i too large. Returning white.")
+          Color.argb(full, none, none, none)
+        }
+      }
+    }
   }
 
   interface ColorChangedListener {
-    fun onColorChanged(hexColor: Int)
+    fun onColorChanged(color: Int)
   }
 }

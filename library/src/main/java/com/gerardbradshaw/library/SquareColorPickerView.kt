@@ -14,7 +14,7 @@ import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageView
 
-class SquareColorPickerView : com.gerardbradshaw.library.AbstractColorPicker {
+class SquareColorPickerView : AbstractColorPicker {
 
   // ------------------------ CONSTRUCTORS ------------------------
 
@@ -25,7 +25,7 @@ class SquareColorPickerView : com.gerardbradshaw.library.AbstractColorPicker {
 
   // ------------------------ PROPERTIES ------------------------
 
-  private lateinit var slider: com.gerardbradshaw.library.ColorSlider
+  private lateinit var slider: ColorSlider
   private lateinit var square: FrameLayout
   private lateinit var thumb: ImageView
   private lateinit var oldColorPreview: ImageView
@@ -52,7 +52,7 @@ class SquareColorPickerView : com.gerardbradshaw.library.AbstractColorPicker {
 
     slider.setGradientBarDrawable(getSpectrumGradient())
 
-    slider.setOnProgressChangedListener(object : com.gerardbradshaw.library.ColorSlider.OnProgressChangedListener {
+    slider.setOnProgressChangedListener(object : ColorSlider.OnProgressChangedListener {
       override fun onProgressChanged(progress: Double) {
         colorRatio = progress
         onColorChanged()
@@ -61,13 +61,11 @@ class SquareColorPickerView : com.gerardbradshaw.library.AbstractColorPicker {
   }
 
   private fun initPreviews() {
-    val oldColorHex = colorToHex(oldColor)
-
     oldColorPreview = findViewById(R.id.square_preview_old)
-    oldColorPreview.setColorFilter(oldColorHex)
+    oldColorPreview.setColorFilter(oldColor)
 
     newColorPreview = findViewById(R.id.square_preview_new)
-    newColorPreview.setColorFilter(oldColorHex)
+    newColorPreview.setColorFilter(oldColor)
   }
 
   private fun initSquare(pureColor: Int = oldColor) {
@@ -94,11 +92,7 @@ class SquareColorPickerView : com.gerardbradshaw.library.AbstractColorPicker {
           onColorChanged()
           true
         }
-
-        else -> {
-          Log.d(TAG, "initThumb: event was ${event.action}")
-          super.onTouchEvent(event)
-        }
+        else -> super.onTouchEvent(event)
       }
     }
   }
@@ -123,10 +117,10 @@ class SquareColorPickerView : com.gerardbradshaw.library.AbstractColorPicker {
 
 
   override fun onColorChanged() {
-    val colorHex = getCurrentColorHex()
-    newColorPreview.setColorFilter(colorHex)
+    val color = getCurrentColor()
+    newColorPreview.setColorFilter(color)
     initSquare(getPureColor())
-    listener?.onColorChanged(colorHex)
+    listener?.onColorChanged(color)
   }
 
   // ------------------------ INITIALIZATION ------------------------

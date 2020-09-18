@@ -20,7 +20,7 @@ class ColorSlider : FrameLayout {
 
   // ------------------------ PROPERTIES ------------------------
 
-  val max = context.resources.getInteger(R.integer.spectrum_color_count).toFloat()
+  val max = context.resources.getInteger(R.integer.spectrum_color_count).toDouble()
   private lateinit var seekBar: SeekBar
   private lateinit var gradientBar: FrameLayout
   private var listener: OnProgressChangedListener? = null

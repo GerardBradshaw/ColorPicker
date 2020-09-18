@@ -34,8 +34,22 @@
         android:id="@+id/round_example_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_and_padding_default"
         android:onClick="buttonClicked"
         android:text="@string/round_color_picker" />
 
+    <Button
+        android:id="@+id/square_dialog_example_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_and_padding_default"
+        android:onClick="buttonClicked"
+        android:text="@string/square_color_picker_dialogue" />
 
+    <Button
+        android:id="@+id/round_dialog_example_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="buttonClicked"
+        android:text="@string/round_color_picker_dialogue" />
 </LinearLayout>

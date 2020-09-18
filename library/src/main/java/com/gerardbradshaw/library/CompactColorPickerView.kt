@@ -17,7 +17,7 @@ class CompactColorPickerView : AbstractColorPicker {
 
   // ------------------------ PROPERTIES ------------------------
 
-  private lateinit var menuButton: View
+  private lateinit var menuButton: FrameLayout
   private lateinit var slider: ColorSlider
   private lateinit var preview: ImageView
   private var sliderType: SliderType = SliderType.COLOR
@@ -37,9 +37,7 @@ class CompactColorPickerView : AbstractColorPicker {
   }
 
   private fun initMenu() {
-    menuButton =
-      if (menuType == 0) findViewById(R.id.compact_text_menu)
-      else findViewById(R.id.compact_image_menu)
+    menuButton = findViewById(R.id.compact_menu_frame)
 
     menuButton.visibility = View.VISIBLE
 
@@ -78,7 +76,7 @@ class CompactColorPickerView : AbstractColorPicker {
 
   private fun initPreview() {
     preview = findViewById(R.id.compact_preview)
-    if (isPreviewEnabled) preview.setColorFilter(getCurrentColorHex())
+    if (isPreviewEnabled) preview.setColor(getCurrentColor())
     else preview.visibility = View.GONE
   }
 
@@ -126,14 +124,18 @@ class CompactColorPickerView : AbstractColorPicker {
       SliderType.SHADE -> shadeRatio
       SliderType.TINT -> tintRatio
     }
-
     slider.setProgressRatio(progress)
   }
 
   override fun onColorChanged() {
-    val colorHex = getCurrentColorHex()
-    if (isPreviewEnabled) preview.setColorFilter(colorHex)
-    listener?.onColorChanged(colorHex)
+    val color = getCurrentColor()
+    if (isPreviewEnabled) preview.setColor(color)
+    listener?.onColorChanged(color)
+  }
+
+  private fun ImageView.setColor(color: Int) {
+    this.setColorFilter(color)
+    this.tag = color
   }
 
 
