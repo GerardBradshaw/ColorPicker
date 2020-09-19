@@ -11,8 +11,10 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
+import android.view.ViewTreeObserver
 import android.widget.FrameLayout
 import android.widget.ImageView
+import androidx.core.view.updateLayoutParams
 
 class SquareColorPickerView : AbstractColorPicker {
 
@@ -63,9 +65,11 @@ class SquareColorPickerView : AbstractColorPicker {
   private fun initPreviews() {
     oldColorPreview = findViewById(R.id.square_preview_old)
     oldColorPreview.setColorFilter(oldColor)
+    oldColorPreview.tag = oldColor // tagged for testing purposes
 
     newColorPreview = findViewById(R.id.square_preview_new)
     newColorPreview.setColorFilter(oldColor)
+    newColorPreview.tag = oldColor // tagged for testing purposes
   }
 
   private fun initSquare(pureColor: Int = oldColor) {
@@ -73,29 +77,38 @@ class SquareColorPickerView : AbstractColorPicker {
 
     square = findViewById(R.id.square_square)
     square.background = background
+    square.tag = pureColor // tagged for testing purposes
   }
 
   @SuppressLint("ClickableViewAccessibility")
   private fun initThumb() {
     thumb = findViewById(R.id.square_thumb)
 
-    square.setOnTouchListener { v, event ->
+    thumb.viewTreeObserver.addOnDrawListener {
+      tintRatio = 1 - ((thumb.x - square.x) / square.width.toDouble())
+      shadeRatio = -(square.y - thumb.y) / square.height.toDouble()
+      onColorChanged()
+    }
+
+    square.setOnTouchListener { _, event ->
       when (event.action) {
         MotionEvent.ACTION_DOWN -> {
           moveThumb(event.x, event.y)
-          onColorChanged()
           true
         }
 
         MotionEvent.ACTION_MOVE -> {
           moveThumb(event.x, event.y)
-          onColorChanged()
           true
         }
         else -> super.onTouchEvent(event)
       }
     }
   }
+
+
+
+  // ------------------------ INTERACTION ------------------------
 
   private fun moveThumb(x: Float, y: Float) {
     thumb.x =
@@ -104,7 +117,6 @@ class SquareColorPickerView : AbstractColorPicker {
         x > square.width.toFloat() -> square.width.toFloat()
         else -> x
       }
-    tintRatio = 1 - ((thumb.x - square.x) / square.width.toDouble())
 
     thumb.y =
       when {
@@ -112,18 +124,21 @@ class SquareColorPickerView : AbstractColorPicker {
         y > square.height.toFloat() -> square.height.toFloat()
         else -> y
       }
-    shadeRatio = -(square.y - thumb.y) / square.height.toDouble()
   }
-
 
   override fun onColorChanged() {
     val color = getCurrentColor()
+
     newColorPreview.setColorFilter(color)
+    newColorPreview.tag = color // tagged for testing purposes
+
     initSquare(getPureColor())
     listener?.onColorChanged(color)
   }
 
-  // ------------------------ INITIALIZATION ------------------------
+
+
+  // ------------------------ UTIL ------------------------
 
   private fun getSquareBackgroundDrawable(pureColor: Int): Drawable {
     val sf: ShapeDrawable.ShaderFactory = object : ShapeDrawable.ShaderFactory() {
