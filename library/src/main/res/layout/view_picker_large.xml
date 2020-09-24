@@ -5,7 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:background="@android:color/holo_orange_light">
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -19,11 +20,12 @@
 
             <ImageView
                 android:visibility="invisible"
+                tools:visibility="visible"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 app:layout_constraintDimensionRatio="1:1"
                 android:adjustViewBounds="true"
-                android:src="@drawable/border_black" />
+                android:src="@drawable/img_square_in_circle" />
 
             <FrameLayout
                 android:id="@+id/large_color_window"
@@ -31,9 +33,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:layout_constraintDimensionRatio="1:1"
-                android:adjustViewBounds="true"
-                tools:background="@android:color/holo_orange_light" />
-
+                android:adjustViewBounds="true" />
         </FrameLayout>
 
         <ImageView
@@ -42,13 +42,13 @@
             android:layout_gravity="end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
-
     </FrameLayout>
 
     <com.gerardbradshaw.library.ColorSlider
         android:id="@+id/large_color_slider"
         android:paddingStart="@dimen/margin_and_padding_default"
         android:paddingEnd="@dimen/margin_and_padding_default"
+        android:paddingBottom="@dimen/margin_and_padding_default"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
@@ -58,7 +58,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:orientation="horizontal"
-        android:padding="12dp">
+        android:paddingBottom="@dimen/margin_and_padding_default"
+        android:paddingStart="@dimen/margin_and_padding_default"
+        android:paddingEnd="@dimen/margin_and_padding_default">
 
         <ImageView
             android:id="@+id/large_preview_old"

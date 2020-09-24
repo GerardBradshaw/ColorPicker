@@ -2,7 +2,6 @@ package com.gerardbradshaw.library
 
 import android.content.Context
 import android.util.AttributeSet
-import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
@@ -12,8 +11,25 @@ class CompactColorPickerView : AbstractColorPicker {
   // ------------------------ CONSTRUCTORS ------------------------
 
   constructor(context: Context) : super(context)
-  constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-  constructor(context: Context, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle)
+
+  constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
+    if (attrs != null) saveCompactAttrs(attrs)
+  }
+
+  constructor(context: Context, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle) {
+    if (attrs != null) saveCompactAttrs(attrs)
+  }
+
+  private fun saveCompactAttrs(attrs: AttributeSet) {
+    context.theme.obtainStyledAttributes(
+      attrs, R.styleable.CompactColorPickerView, 0, 0).apply {
+      try {
+        menuType = getInteger(R.styleable.CompactColorPickerView_menuType, 0)
+
+      } finally { recycle() }
+    }
+  }
+
 
 
   // ------------------------ PROPERTIES ------------------------
@@ -21,6 +37,7 @@ class CompactColorPickerView : AbstractColorPicker {
   private lateinit var menuButton: FrameLayout
   private lateinit var slider: ColorSlider
   private lateinit var preview: ImageView
+  private var menuType = 0
   private var sliderType: SliderType = SliderType.COLOR
 
 
@@ -30,6 +47,7 @@ class CompactColorPickerView : AbstractColorPicker {
     View.inflate(context, R.layout.view_picker_compact, this)
     initView()
   }
+
 
   private fun initView() {
     initMenu()

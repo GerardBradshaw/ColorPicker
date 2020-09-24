@@ -1,16 +1,9 @@
 package com.gerardbradshaw.colorpicker
 
-import android.graphics.Color
-import android.graphics.drawable.GradientDrawable
-import android.graphics.drawable.LayerDrawable
 import android.os.Bundle
 import android.view.View
-import android.view.ViewTreeObserver
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
-import androidx.core.graphics.drawable.toBitmap
 import com.gerardbradshaw.library.AbstractColorPicker
-import kotlin.math.min
 
 class RadialViewActivity : AppCompatActivity(), AbstractColorPicker.ColorChangedListener {
 
@@ -28,7 +21,7 @@ class RadialViewActivity : AppCompatActivity(), AbstractColorPicker.ColorChanged
   }
 
 
-  override fun onColorChanged(hexColor: Int) {
-    listener.setBackgroundColor(hexColor)
+  override fun onColorChanged(color: Int) {
+    listener.setBackgroundColor(color)
   }
 }

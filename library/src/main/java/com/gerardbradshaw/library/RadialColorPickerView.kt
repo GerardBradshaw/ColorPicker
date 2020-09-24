@@ -4,7 +4,6 @@ import android.content.Context
 import android.graphics.*
 import android.graphics.drawable.*
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
 import android.view.ViewTreeObserver
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
@@ -16,14 +15,32 @@ class RadialColorPickerView : AbstractLargeColorPicker {
   // ------------------------ CONSTRUCTORS ------------------------
 
   constructor(context: Context) : super(context)
-  constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-  constructor(context: Context, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle)
+
+  constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
+    if (attrs != null) saveRadialAttrs(attrs)
+  }
+
+  constructor(context: Context, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle) {
+    if (attrs != null) saveRadialAttrs(attrs)
+  }
+
+  private fun saveRadialAttrs(attrs: AttributeSet) {
+    context.theme.obtainStyledAttributes(
+      attrs, R.styleable.RadialColorPickerView, 0, 0).apply {
+      try {
+        radialSnapToCentre = getBoolean(R.styleable.RadialColorPickerView_snapThumbToCentre, true)
+
+      } finally { recycle() }
+    }
+  }
+
 
 
   // ------------------------ PROPERTIES ------------------------
 
   private var circleDiameter = 0
-  private val snapToCentre = true
+  private var radialSnapToCentre = true
+
 
 
   // ------------------------ INITIALIZATION ------------------------
@@ -80,13 +97,15 @@ class RadialColorPickerView : AbstractLargeColorPicker {
   }
 
   private fun initThumb() {
+    thumb = findViewById(R.id.large_thumb)
+
+    thumb.y = circleDiameter / 2f
+
     val thumbOnDrawObserver = ViewTreeObserver.OnDrawListener {
       tintRatio = 1.0 - getRadialPositionRatio(thumb.x, thumb.y)
       colorRatio = 1.0 - getCircumferentialPositionRatio(thumb.x, thumb.y)
       onColorChanged()
     }
-
-    thumb = findViewById(R.id.large_thumb)
 
     super.initThumb(thumbOnDrawObserver, thumb)
   }
@@ -100,7 +119,7 @@ class RadialColorPickerView : AbstractLargeColorPicker {
     val radius = circleDiameter / 2.0
     val snapRange = (0.9 * radius)..(1.1 * radius)
 
-    if (snapToCentre && x in snapRange && y in snapRange) {
+    if (radialSnapToCentre && x in snapRange && y in snapRange) {
       thumb.x = radius.toFloat()
       thumb.y = radius.toFloat()
       return
@@ -118,11 +137,9 @@ class RadialColorPickerView : AbstractLargeColorPicker {
   override fun onColorChanged() {
     val color = getCurrentColor()
 
-    newColorPreview.setColorFilter(color)
-    newColorPreview.tag = color // tagged for testing purposes
+    super.updateNewPreviewColor(color)
 
     slider.setGradientBarDrawable(getShadeGradient())
-
     listener?.onColorChanged(color)
   }
 

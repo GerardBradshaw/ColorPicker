@@ -1,10 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <declare-styleable name="CompactColorPickerView" >
+    <declare-styleable name="AbstractColorPicker" >
         <attr name="enablePreview" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="CompactColorPickerView" >
         <attr name="menuType" format="enum">
             <enum name="text" value="0" />
             <enum name="image" value="1" />
         </attr>
+    </declare-styleable>
+
+    <declare-styleable name="RadialColorPickerView" >
+        <attr name="snapThumbToCentre" format="boolean"/>
     </declare-styleable>
 </resources>

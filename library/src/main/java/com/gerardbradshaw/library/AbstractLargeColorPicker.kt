@@ -6,9 +6,11 @@ import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.util.AttributeSet
 import android.view.MotionEvent
+import android.view.View
 import android.view.ViewTreeObserver
 import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.LinearLayout
 
 abstract class AbstractLargeColorPicker : AbstractColorPicker {
 
@@ -23,15 +25,16 @@ abstract class AbstractLargeColorPicker : AbstractColorPicker {
   // ------------------------ PROPERTIES ------------------------
 
   private lateinit var thumbOnDrawObserver: ViewTreeObserver.OnDrawListener
-  protected lateinit var slider: ColorSlider
+  private lateinit var newColorPreview: ImageView
+  private lateinit var oldColorPreview: ImageView
 
 
 
   // ------------------------ INSTANCE PROPERTIES ------------------------
 
+  protected lateinit var slider: ColorSlider
   protected lateinit var colorPicker: FrameLayout
   protected lateinit var thumb: ImageView
-  protected lateinit var newColorPreview: ImageView
   protected var oldColor: Int = Color.RED
 
 
@@ -46,13 +49,24 @@ abstract class AbstractLargeColorPicker : AbstractColorPicker {
   }
 
   protected fun initPreviews() {
-    val oldColorPreview: ImageView = findViewById(R.id.large_preview_old)
-    oldColorPreview.setColorFilter(oldColor)
-    oldColorPreview.tag = oldColor // tagged for testing purposes
+    if (isPreviewEnabled) {
+      oldColorPreview = findViewById(R.id.large_preview_old)
+      setOldPreviewColor(oldColor)
 
-    newColorPreview = findViewById(R.id.large_preview_new)
-    newColorPreview.setColorFilter(oldColor)
-    newColorPreview.tag = oldColor // tagged for testing purposes
+      newColorPreview = findViewById(R.id.large_preview_new)
+      updateNewPreviewColor(oldColor)
+    }
+    else {
+      val previewContainer: LinearLayout = findViewById(R.id.large_preview_container)
+      previewContainer.visibility = View.GONE
+    }
+  }
+
+  protected fun updateNewPreviewColor(color: Int) {
+    if (isPreviewEnabled) {
+      newColorPreview.setColorFilter(color)
+      newColorPreview.tag = color // tagged for testing purposes
+    }
   }
 
   protected fun initListener() {
@@ -85,6 +99,18 @@ abstract class AbstractLargeColorPicker : AbstractColorPicker {
         }
         else -> super.onTouchEvent(event)
       }
+    }
+  }
+
+
+
+  // ------------------------ PUBLIC METHODS ------------------------
+
+  fun setOldPreviewColor(color: Int) {
+    if (isPreviewEnabled) {
+      oldColor = color
+      oldColorPreview.setColorFilter(color)
+      oldColorPreview.tag = color // tagged for testing purposes
     }
   }
 

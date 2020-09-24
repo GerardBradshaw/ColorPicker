@@ -15,24 +15,20 @@ abstract class AbstractColorPicker : FrameLayout {
   constructor(context: Context) : super(context)
 
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
-    initWithAttrs(attrs)
+    if (attrs != null) saveAbstractPickerAttrs(attrs)
   }
 
   constructor(context: Context, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle) {
-    initWithAttrs(attrs)
+    if (attrs != null) saveAbstractPickerAttrs(attrs)
   }
 
-  protected fun initWithAttrs(attrs: AttributeSet?) {
-    if (attrs == null) return
-
-    context.theme.obtainStyledAttributes(attrs, R.styleable.CompactColorPickerView, 0, 0).apply {
+  private fun saveAbstractPickerAttrs(attrs: AttributeSet) {
+    context.theme.obtainStyledAttributes(
+      attrs, R.styleable.AbstractColorPicker, 0, 0).apply {
       try {
-        menuType = getInteger(R.styleable.CompactColorPickerView_menuType, 0)
-        isPreviewEnabled = getBoolean(R.styleable.CompactColorPickerView_enablePreview, true)
+        isPreviewEnabled = getBoolean(R.styleable.AbstractColorPicker_enablePreview, true)
 
-      } finally {
-        recycle()
-      }
+      } finally { recycle() }
     }
   }
 
@@ -42,7 +38,6 @@ abstract class AbstractColorPicker : FrameLayout {
   var shadeRatio = 0.0
   var tintRatio = 0.0
 
-  protected var menuType = 0
   protected var isPreviewEnabled = true
   var listener: ColorChangedListener? = null
 

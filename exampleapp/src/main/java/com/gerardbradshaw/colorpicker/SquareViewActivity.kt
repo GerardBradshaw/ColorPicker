@@ -20,7 +20,7 @@ class SquareViewActivity : AppCompatActivity(), AbstractColorPicker.ColorChanged
     picker.setOnColorSelectedListener(this)
   }
 
-  override fun onColorChanged(hexColor: Int) {
-    listener.setBackgroundColor(hexColor)
+  override fun onColorChanged(color: Int) {
+    listener.setBackgroundColor(color)
   }
 }

@@ -89,8 +89,7 @@ class SquareColorPickerView : AbstractLargeColorPicker {
   override fun onColorChanged() {
     val color = getCurrentColor()
 
-    newColorPreview.setColorFilter(color)
-    newColorPreview.tag = color // tagged for testing purposes
+    super.updateNewPreviewColor(color)
 
     initColorPicker(getPureColor())
     listener?.onColorChanged(color)
