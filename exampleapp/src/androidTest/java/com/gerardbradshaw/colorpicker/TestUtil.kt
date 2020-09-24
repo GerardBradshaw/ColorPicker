@@ -13,6 +13,7 @@ import androidx.test.espresso.action.*
 import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.BoundedMatcher
+import androidx.test.espresso.matcher.RootMatchers
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
@@ -21,12 +22,17 @@ import androidx.test.internal.util.Checks
 import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers.*
+import org.junit.Ignore
 import kotlin.math.max
 import kotlin.math.min
-
+import kotlin.math.roundToInt
 
 object TestUtil {
-  private const val TAG = "GGG"
+  const val sliderMax = 16777216
+  private const val TAG = "TestUtil"
+
+
+  // ---------------- PUBLIC METHODS ----------------
 
   fun moveSeekBarTo(progress: Int, seekBarResId: Int) {
     onView(allOf(withId(seekBarResId), isDisplayed()))
@@ -51,6 +57,61 @@ object TestUtil {
   fun getHexString(color: Int): String {
     return String.format("#%06X", 0xFFFFFF and color)
   }
+
+  fun getShadedColor(color: Int, shadeProgress: Int): Int {
+    val shadeFactor = 1.0 - (shadeProgress.toDouble() / sliderMax.toDouble())
+    val red = (Color.red(color) * shadeFactor).roundToInt()
+    val green = (Color.green(color) * shadeFactor).roundToInt()
+    val blue = (Color.blue(color) * shadeFactor).roundToInt()
+
+    return Color.argb(255, red, green, blue)
+  }
+
+  fun getTintedColor(color: Int, tintProgress: Int): Int {
+    val tintRatio = tintProgress.toDouble() / sliderMax.toDouble()
+    val red = Color.red(color)
+    val green = Color.green(color)
+    val blue = Color.blue(color)
+
+    return when (max(red, max(green, blue))) {
+      red -> {
+        Color.argb(
+          255,
+          red,
+          green + ((red - green).toFloat() * tintRatio).roundToInt(),
+          blue + ((red - blue).toFloat() * tintRatio).roundToInt()
+        )
+      }
+
+      green -> {
+        Color.argb(
+          255,
+          red + ((green - red).toFloat() * tintRatio).roundToInt(),
+          green,
+          blue + ((green - blue).toFloat() * tintRatio).roundToInt()
+        )
+      }
+
+      blue -> {
+        Color.argb(
+          255,
+          red + ((blue - red).toFloat() * tintRatio).roundToInt(),
+          green + ((blue - green).toFloat() * tintRatio).roundToInt(),
+          blue
+        )
+      }
+
+      else -> Color.argb(255, red, green, blue)
+    }
+  }
+
+  fun getTintedAndShadedColor(color: Int, shadeProgress: Int, tintProgress: Int): Int {
+    return getTintedColor(getShadedColor(color, shadeProgress), tintProgress)
+  }
+
+
+
+  // ---------------- HELPERS ----------------
 
   private fun hasViewTag(expectedTag: Int): Matcher<View?>? {
     Checks.checkNotNull(expectedTag)

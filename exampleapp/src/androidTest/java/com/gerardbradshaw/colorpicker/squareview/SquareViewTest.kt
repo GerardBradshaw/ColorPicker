@@ -1,10 +1,10 @@
-package com.gerardbradshaw.colorpicker
+package com.gerardbradshaw.colorpicker.squareview
 
 
 import android.graphics.Color
-import androidx.test.espresso.Espresso.onView
-import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.ext.junit.rules.ActivityScenarioRule
+import com.gerardbradshaw.colorpicker.R
+import com.gerardbradshaw.colorpicker.SquareViewActivity
 import com.gerardbradshaw.colorpicker.TestUtil.checkPreviewChangedColorTo
 import com.gerardbradshaw.colorpicker.TestUtil.moveSeekBarTo
 import org.junit.Rule
@@ -27,7 +27,7 @@ class SquareViewTest(private val inputProgress: Int, private val expectedPureCol
   @Test
   fun should_updatePreview_when_colorSliderProgressChanged() {
     moveSeekBarTo(inputProgress, R.id.slider_seek_bar)
-    checkPreviewChangedColorTo(expectedPureColor, R.id.square_preview_new)
+    checkPreviewChangedColorTo(expectedPureColor, R.id.large_preview_new)
   }
 
   //@Test
