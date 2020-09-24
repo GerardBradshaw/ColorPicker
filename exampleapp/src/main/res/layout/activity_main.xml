@@ -36,7 +36,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/margin_and_padding_default"
         android:onClick="buttonClicked"
-        android:text="@string/round_color_picker" />
+        android:text="@string/radial_color_picker" />
 
     <Button
         android:id="@+id/square_dialog_example_button"

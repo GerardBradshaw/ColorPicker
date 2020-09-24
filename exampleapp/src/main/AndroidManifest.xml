@@ -9,7 +9,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".RoundViewActivity"></activity>
+        <activity android:name=".RadialViewActivity"></activity>
         <activity android:name=".SquareViewActivity" />
         <activity android:name=".CompactViewActivity" />
         <activity android:name=".MainActivity">

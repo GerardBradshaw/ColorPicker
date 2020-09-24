@@ -6,7 +6,13 @@
     style="@style/MyExampleLayoutStyle">
 
     <TextView
-        android:id="@+id/ex_round_listener"
+        android:id="@+id/ex_radial_listener"
         style="@style/ColorChangeListenerStyle"/>
 
+    <com.gerardbradshaw.library.RadialColorPickerView
+        android:id="@+id/ex_radial_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </LinearLayout>
