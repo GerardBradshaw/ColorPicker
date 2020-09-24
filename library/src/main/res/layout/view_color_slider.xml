@@ -28,6 +28,6 @@
         android:paddingStart="@dimen/margin_and_padding_default"
         android:paddingEnd="@dimen/margin_and_padding_default"
         android:progressDrawable="@android:color/transparent"
-        android:thumb="@drawable/slider_thumb" />
+        android:thumb="@drawable/thumb_rounded_corner_rectangle" />
 
 </FrameLayout>

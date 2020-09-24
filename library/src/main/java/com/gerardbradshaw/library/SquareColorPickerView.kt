@@ -1,6 +1,5 @@
 package com.gerardbradshaw.library
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.*
 import android.graphics.drawable.Drawable
@@ -9,14 +8,10 @@ import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.RectShape
 import android.util.AttributeSet
 import android.util.Log
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewTreeObserver
-import android.widget.FrameLayout
-import android.widget.ImageView
-import androidx.core.view.updateLayoutParams
 
-class SquareColorPickerView : AbstractColorPicker {
+class SquareColorPickerView : AbstractLargeColorPicker {
 
   // ------------------------ CONSTRUCTORS ------------------------
 
@@ -25,103 +20,68 @@ class SquareColorPickerView : AbstractColorPicker {
   constructor(context: Context, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle)
 
 
-  // ------------------------ PROPERTIES ------------------------
-
-  private lateinit var slider: ColorSlider
-  private lateinit var square: FrameLayout
-  private lateinit var thumb: ImageView
-  private lateinit var oldColorPreview: ImageView
-  private lateinit var newColorPreview: ImageView
-  private var oldColor: Int = Color.RED
-
 
   // ------------------------ INITIALIZATION ------------------------
 
   init {
-    View.inflate(context, R.layout.view_picker_square, this)
+    View.inflate(context, R.layout.view_picker_large, this)
     initView()
   }
 
   private fun initView() {
     initSlider()
-    initPreviews()
-    initSquare()
+    super.initPreviews()
+    initColorPicker()
     initThumb()
+    initListener()
   }
 
   private fun initSlider() {
-    slider = findViewById(R.id.square_color_slider)
-
-    slider.setGradientBarDrawable(getSpectrumGradient())
-
-    slider.setOnProgressChangedListener(object : ColorSlider.OnProgressChangedListener {
+    val onSliderProgressChangedListener = object : ColorSlider.OnProgressChangedListener {
       override fun onProgressChanged(progress: Double) {
         colorRatio = progress
         onColorChanged()
       }
-    })
+    }
+
+    super.initSlider(getSpectrumGradient(), onSliderProgressChangedListener)
   }
 
-  private fun initPreviews() {
-    oldColorPreview = findViewById(R.id.square_preview_old)
-    oldColorPreview.setColorFilter(oldColor)
-    oldColorPreview.tag = oldColor // tagged for testing purposes
-
-    newColorPreview = findViewById(R.id.square_preview_new)
-    newColorPreview.setColorFilter(oldColor)
-    newColorPreview.tag = oldColor // tagged for testing purposes
-  }
-
-  private fun initSquare(pureColor: Int = oldColor) {
+  private fun initColorPicker(pureColor: Int = oldColor) {
     val background = getSquareBackgroundDrawable(pureColor)
 
-    square = findViewById(R.id.square_square)
-    square.background = background
-    square.tag = pureColor // tagged for testing purposes
+    colorPicker = findViewById(R.id.large_color_window)
+    colorPicker.background = background
+    colorPicker.tag = pureColor // tagged for testing purposes
   }
 
-  @SuppressLint("ClickableViewAccessibility")
   private fun initThumb() {
-    thumb = findViewById(R.id.square_thumb)
-
-    thumb.viewTreeObserver.addOnDrawListener {
-      tintRatio = 1 - ((thumb.x - square.x) / square.width.toDouble())
-      shadeRatio = -(square.y - thumb.y) / square.height.toDouble()
+    val thumbOnDrawObserver = ViewTreeObserver.OnDrawListener {
+      tintRatio = 1 - ((thumb.x - colorPicker.x) / colorPicker.width.toDouble())
+      shadeRatio = -(colorPicker.y - thumb.y) / colorPicker.height.toDouble()
       onColorChanged()
     }
 
-    square.setOnTouchListener { _, event ->
-      when (event.action) {
-        MotionEvent.ACTION_DOWN -> {
-          moveThumb(event.x, event.y)
-          true
-        }
-
-        MotionEvent.ACTION_MOVE -> {
-          moveThumb(event.x, event.y)
-          true
-        }
-        else -> super.onTouchEvent(event)
-      }
-    }
+    super.initThumb(thumbOnDrawObserver, null)
   }
 
 
 
   // ------------------------ INTERACTION ------------------------
 
-  private fun moveThumb(x: Float, y: Float) {
+  override fun moveThumb(x: Float, y: Float) {
+    Log.d(TAG, "moveThumb")
     thumb.x =
       when {
-        x < square.x -> square.x
-        x > square.width.toFloat() -> square.width.toFloat()
+        x < colorPicker.x -> colorPicker.x
+        x > colorPicker.width.toFloat() -> colorPicker.width.toFloat()
         else -> x
       }
 
     thumb.y =
       when {
-        y < square.y -> square.y
-        y > square.height.toFloat() -> square.height.toFloat()
+        y < colorPicker.y -> colorPicker.y
+        y > colorPicker.height.toFloat() -> colorPicker.height.toFloat()
         else -> y
       }
   }
@@ -132,7 +92,7 @@ class SquareColorPickerView : AbstractColorPicker {
     newColorPreview.setColorFilter(color)
     newColorPreview.tag = color // tagged for testing purposes
 
-    initSquare(getPureColor())
+    initColorPicker(getPureColor())
     listener?.onColorChanged(color)
   }
 

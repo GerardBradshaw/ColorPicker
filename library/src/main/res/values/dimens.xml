@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="margin_and_padding_default">12dp</dimen>
-    <dimen name="square_thumb_radius">12dp</dimen>
-    <dimen name="square_thumb_size">24dp</dimen>
+    <dimen name="thumb_outer_circle_size">24dp</dimen>
+    <dimen name="thumb_circle_inner_radius">4dp</dimen>
 </resources>
