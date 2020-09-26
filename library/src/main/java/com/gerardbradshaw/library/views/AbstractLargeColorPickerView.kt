@@ -1,4 +1,4 @@
-package com.gerardbradshaw.library
+package com.gerardbradshaw.library.views
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -11,8 +11,11 @@ import android.view.ViewTreeObserver
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
+import com.gerardbradshaw.library.R
+import com.gerardbradshaw.library.util.ColorSlider
 
-abstract class AbstractLargeColorPicker : AbstractColorPicker {
+abstract class AbstractLargeColorPickerView :
+  AbstractColorPickerView {
 
   // ------------------------ CONSTRUCTORS ------------------------
 

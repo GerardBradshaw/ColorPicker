@@ -1,4 +1,4 @@
-package com.gerardbradshaw.library
+package com.gerardbradshaw.library.util
 
 import android.content.Context
 import android.graphics.drawable.Drawable
@@ -7,6 +7,7 @@ import android.util.Log
 import android.view.View
 import android.widget.FrameLayout
 import android.widget.SeekBar
+import com.gerardbradshaw.library.R
 import kotlin.math.roundToInt
 
 class ColorSlider : FrameLayout {
@@ -29,7 +30,8 @@ class ColorSlider : FrameLayout {
   // ------------------------ INITIALIZATION ------------------------
 
   init {
-    View.inflate(context, R.layout.view_color_slider, this)
+    View.inflate(context,
+      R.layout.view_color_slider, this)
     initView()
   }
 

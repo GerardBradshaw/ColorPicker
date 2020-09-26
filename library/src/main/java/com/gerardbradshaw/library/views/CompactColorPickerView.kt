@@ -1,12 +1,15 @@
-package com.gerardbradshaw.library
+package com.gerardbradshaw.library.views
 
 import android.content.Context
 import android.util.AttributeSet
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
+import com.gerardbradshaw.library.R
+import com.gerardbradshaw.library.util.ColorSlider
 
-class CompactColorPickerView : AbstractColorPicker {
+class CompactColorPickerView :
+  AbstractColorPickerView {
 
   // ------------------------ CONSTRUCTORS ------------------------
 
@@ -38,16 +41,17 @@ class CompactColorPickerView : AbstractColorPicker {
   private lateinit var slider: ColorSlider
   private lateinit var preview: ImageView
   private var menuType = 0
-  private var sliderType: SliderType = SliderType.COLOR
+  private var sliderType: SliderType =
+    SliderType.COLOR
 
 
   // ------------------------ INITIALIZATION ------------------------
 
   init {
-    View.inflate(context, R.layout.view_picker_compact, this)
+    View.inflate(context,
+      R.layout.view_picker_compact, this)
     initView()
   }
-
 
   private fun initView() {
     initMenu()

@@ -9,7 +9,7 @@
         android:id="@+id/ex_square_listener"
         style="@style/ColorChangeListenerStyle"/>
 
-    <com.gerardbradshaw.library.SquareColorPickerView
+    <com.gerardbradshaw.library.views.SquareColorPickerView
         android:id="@+id/ex_square_picker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

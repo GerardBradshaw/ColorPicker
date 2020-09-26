@@ -51,7 +51,7 @@
 
 
     <!-- SLIDER -->
-    <com.gerardbradshaw.library.ColorSlider
+    <com.gerardbradshaw.library.util.ColorSlider
         android:id="@+id/compact_color_slider"
         style="@style/ColorSliderInLinearLayoutStyle" />
 

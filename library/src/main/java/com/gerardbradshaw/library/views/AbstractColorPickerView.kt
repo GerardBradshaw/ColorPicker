@@ -1,4 +1,4 @@
-package com.gerardbradshaw.library
+package com.gerardbradshaw.library.views
 
 import android.content.Context
 import android.graphics.Color
@@ -6,11 +6,12 @@ import android.graphics.drawable.GradientDrawable
 import android.util.AttributeSet
 import android.util.Log
 import android.widget.FrameLayout
+import com.gerardbradshaw.library.R
 import kotlin.math.floor
 import kotlin.math.max
 import kotlin.math.roundToInt
 
-abstract class AbstractColorPicker : FrameLayout {
+abstract class AbstractColorPickerView : FrameLayout {
 
   constructor(context: Context) : super(context)
 
@@ -24,9 +25,9 @@ abstract class AbstractColorPicker : FrameLayout {
 
   private fun saveAbstractPickerAttrs(attrs: AttributeSet) {
     context.theme.obtainStyledAttributes(
-      attrs, R.styleable.AbstractColorPicker, 0, 0).apply {
+      attrs, R.styleable.AbstractColorPickerView, 0, 0).apply {
       try {
-        isPreviewEnabled = getBoolean(R.styleable.AbstractColorPicker_enablePreview, true)
+        isPreviewEnabled = getBoolean(R.styleable.AbstractColorPickerView_enablePreview, true)
 
       } finally { recycle() }
     }
@@ -84,7 +85,9 @@ abstract class AbstractColorPicker : FrameLayout {
   }
 
   fun getPureColor(): Int {
-    return getIthPureColor((colorCount * colorRatio).roundToInt())
+    return getIthPureColor(
+      (colorCount * colorRatio).roundToInt()
+    )
   }
 
   fun getShadedColor(color: Int, shadeFactor: Double = 1.0 - shadeRatio): Int {
@@ -135,15 +138,13 @@ abstract class AbstractColorPicker : FrameLayout {
 
   // ------------------------ HELPERS ------------------------
 
-
-
   protected abstract fun onColorChanged()
 
 
   // ------------------------ INNER CLASSES ------------------------
 
   companion object {
-    private const val TAG = "AbstractColorPicker"
+    private const val TAG = "AbstractColorPickerView"
     private const val colorCount = 16777216
 
     fun getIthPureColor(i: Int): Int {

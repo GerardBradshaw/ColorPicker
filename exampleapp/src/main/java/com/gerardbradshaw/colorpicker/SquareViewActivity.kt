@@ -3,11 +3,11 @@ package com.gerardbradshaw.colorpicker
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import com.gerardbradshaw.library.AbstractColorPicker
+import com.gerardbradshaw.library.views.AbstractColorPickerView
 
-class SquareViewActivity : AppCompatActivity(), AbstractColorPicker.ColorChangedListener {
+class SquareViewActivity : AppCompatActivity(), AbstractColorPickerView.ColorChangedListener {
 
-  private lateinit var picker: AbstractColorPicker
+  private lateinit var picker: AbstractColorPickerView
   private lateinit var listener: View
 
   override fun onCreate(savedInstanceState: Bundle?) {

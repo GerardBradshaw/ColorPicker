@@ -1,4 +1,4 @@
-package com.gerardbradshaw.library
+package com.gerardbradshaw.library.views
 
 import android.content.Context
 import android.graphics.*
@@ -8,9 +8,12 @@ import android.view.View
 import android.view.ViewTreeObserver
 import androidx.core.graphics.drawable.RoundedBitmapDrawableFactory
 import androidx.core.graphics.drawable.toBitmap
+import com.gerardbradshaw.library.R
+import com.gerardbradshaw.library.util.ColorSlider
 import kotlin.math.*
 
-class RadialColorPickerView : AbstractLargeColorPicker {
+class RadialColorPickerView :
+  AbstractLargeColorPickerView {
 
   // ------------------------ CONSTRUCTORS ------------------------
 
@@ -46,7 +49,8 @@ class RadialColorPickerView : AbstractLargeColorPicker {
   // ------------------------ INITIALIZATION ------------------------
 
   init {
-    View.inflate(context, R.layout.view_picker_large, this)
+    View.inflate(context,
+      R.layout.view_picker_large, this)
     initView()
   }
 

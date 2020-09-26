@@ -1,35 +1,37 @@
-package com.gerardbradshaw.colorpicker
+package com.gerardbradshaw.colorpicker.util
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.util.Log
 import android.view.View
 import android.widget.SeekBar
+import android.widget.TextView
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.PerformException
 import androidx.test.espresso.UiController
 import androidx.test.espresso.ViewAction
 import androidx.test.espresso.action.*
-import androidx.test.espresso.assertion.ViewAssertions
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.BoundedMatcher
-import androidx.test.espresso.matcher.RootMatchers
 import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.util.HumanReadables
 import androidx.test.internal.util.Checks
+import com.gerardbradshaw.colorpicker.InputParams
+import com.gerardbradshaw.colorpicker.OutputColors
 import org.hamcrest.Description
 import org.hamcrest.Matcher
+import org.hamcrest.MatcherAssert
 import org.hamcrest.Matchers.*
-import org.junit.Ignore
+import org.junit.Assert
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.roundToInt
 
-object TestUtil {
+object AndroidTestUtil {
   const val sliderMax = 16777216
-  private const val TAG = "TestUtil"
+  private const val TAG = "AndroidTestUtil"
 
 
   // ---------------- PUBLIC METHODS ----------------
@@ -42,6 +44,15 @@ object TestUtil {
   fun checkPreviewChangedColorTo(color: Int, previewResId: Int) {
     onView(allOf(withId(previewResId), isDisplayed()))
       .check(matches(hasViewTag(color)))
+  }
+
+  // TODO keep this one for robolectric
+  fun checkListenerChangedColorTo(color: Int, listener: TextView) {
+    val background = listener.background ?: Assert.fail("Listener has no background.")
+
+    if (background !is ColorDrawable) Assert.fail("Listener background is not a color.")
+
+    MatcherAssert.assertThat((background as ColorDrawable).color, equalTo(color))
   }
 
   fun checkListenerChangedColorTo(color: Int, listenerResId: Int) {
@@ -58,56 +69,39 @@ object TestUtil {
     return String.format("#%06X", 0xFFFFFF and color)
   }
 
-  fun getShadedColor(color: Int, shadeProgress: Int): Int {
-    val shadeFactor = 1.0 - (shadeProgress.toDouble() / sliderMax.toDouble())
-    val red = (Color.red(color) * shadeFactor).roundToInt()
-    val green = (Color.green(color) * shadeFactor).roundToInt()
-    val blue = (Color.blue(color) * shadeFactor).roundToInt()
+  fun getParamaterizedTestParams(): Collection<Array<Any>> {
+    val inputParams = Array<Any>(7) {
+      val colorProgress = (it * AndroidTestUtil.sliderMax.toDouble() / 6.0).roundToInt()
 
-    return Color.argb(255, red, green, blue)
-  }
+      val shadeProgress = (AndroidTestUtil.sliderMax - colorProgress)
 
-  fun getTintedColor(color: Int, tintProgress: Int): Int {
-    val tintRatio = tintProgress.toDouble() / sliderMax.toDouble()
-    val red = Color.red(color)
-    val green = Color.green(color)
-    val blue = Color.blue(color)
+      val tintProgress =
+        when (it) {
+          0 -> 0
+          6 -> ((AndroidTestUtil.sliderMax.toDouble() / 6.0)).roundToInt()
+          else -> ((AndroidTestUtil.sliderMax.toDouble() / 6.0) + shadeProgress).roundToInt()
+        }
 
-    return when (max(red, max(green, blue))) {
-      red -> {
-        Color.argb(
-          255,
-          red,
-          green + ((red - green).toFloat() * tintRatio).roundToInt(),
-          blue + ((red - blue).toFloat() * tintRatio).roundToInt()
-        )
-      }
-
-      green -> {
-        Color.argb(
-          255,
-          red + ((green - red).toFloat() * tintRatio).roundToInt(),
-          green,
-          blue + ((green - blue).toFloat() * tintRatio).roundToInt()
-        )
-      }
-
-      blue -> {
-        Color.argb(
-          255,
-          red + ((blue - red).toFloat() * tintRatio).roundToInt(),
-          green + ((blue - green).toFloat() * tintRatio).roundToInt(),
-          blue
-        )
-      }
-
-      else -> Color.argb(255, red, green, blue)
+      InputParams(colorProgress, shadeProgress, tintProgress)
     }
+
+    val pureColors: Array<Int> = arrayOf(-65536, -256, -16711936, -16711681, -16776961, -65281, -65535)
+    val shadedColors: Array<Int> = arrayOf(-16777216, - 13948160, - 16755456, - 16744320, - 16777046, - 2883372, - 65535)
+    val tintedColors: Array<Int> = arrayOf(-65536, - 1, - 2752555, - 5570561, - 8355585, - 43521, - 54485)
+    val shadedAndTintedColors: Array<Int> = arrayOf(-16777216, - 13948117, - 12102329, - 11173760, - 11184726, - 2865196, - 54485)
+
+    val expectedOutputs = Array<Any>(7) {
+      OutputColors(pureColors[it], shadedColors[it], tintedColors[it], shadedAndTintedColors[it])
+    }
+
+    return Array(7) {
+      arrayOf(inputParams[it], expectedOutputs[it])
+    }.asList()
   }
 
-  fun getTintedAndShadedColor(color: Int, shadeProgress: Int, tintProgress: Int): Int {
-    return getTintedColor(getShadedColor(color, shadeProgress), tintProgress)
-  }
+
+
+
 
 
 
@@ -118,7 +112,10 @@ object TestUtil {
 
     return object : BoundedMatcher<View?, View>(View::class.java) {
       override fun matchesSafely(view: View): Boolean {
-        return isExactlyMatchingExpectedColor(expectedTag, view.tag as Int)
+        return isExactlyMatchingExpectedColor(
+          expectedTag,
+          view.tag as Int
+        )
       }
 
       override fun describeTo(description: Description) {
@@ -135,7 +132,10 @@ object TestUtil {
         val background = view.background
         val backgroundColor = if (background is ColorDrawable) background.color else null
         return if (backgroundColor != null) {
-          isExactlyMatchingExpectedColor(expectedColor, backgroundColor)
+          isExactlyMatchingExpectedColor(
+            expectedColor,
+            backgroundColor
+          )
         } else false
       }
 
@@ -177,8 +177,14 @@ object TestUtil {
     val isMatch = actualColor == expectedColor
 
     val matchText =
-      if (isMatch) "Exact match (both ${getHexString(actualColor)})"
-      else "Not a match. (Actual ${getHexString(actualColor)}, expected ${getHexString(expectedColor)})"
+      if (isMatch) "Exact match (both ${getHexString(
+        actualColor
+      )})"
+      else "Not a match. (Actual ${getHexString(
+        actualColor
+      )}, expected ${getHexString(
+        expectedColor
+      )})"
 
     Log.d(TAG, matchText)
 
@@ -202,7 +208,12 @@ object TestUtil {
 
     val matchText = if(isMatch) "Exact match" else "Not a match"
 
-    Log.d(TAG, "$matchText. (Actual ${getHexString(actualColor)}, expected ${getHexString(expectedColor)})")
+    Log.d(
+      TAG, "$matchText. (Actual ${getHexString(
+        actualColor
+      )}, expected ${getHexString(
+        expectedColor
+      )})")
 
     return isMatch
   }
