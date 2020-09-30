@@ -19,8 +19,7 @@
             android:layout_height="match_parent"
             android:layout_marginVertical="8dp"
             android:orientation="horizontal"
-            android:visibility="gone"
-            tools:visibility="visible" >
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/compact_text_menu_text"

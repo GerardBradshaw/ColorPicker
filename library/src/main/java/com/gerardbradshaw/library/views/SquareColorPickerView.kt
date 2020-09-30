@@ -18,21 +18,27 @@ class SquareColorPickerView :
 
   // ------------------------ CONSTRUCTORS ------------------------
 
-  constructor(context: Context) : super(context)
-  constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-  constructor(context: Context, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle)
+  constructor(context: Context) : super(context) {
+    initView()
+  }
+  
+  constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
+    initView(attrs)
+  }
+  
+  constructor(context: Context, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle) {
+    initView(attrs)
+  }
 
 
 
   // ------------------------ INITIALIZATION ------------------------
 
   init {
-    View.inflate(context,
-      R.layout.view_picker_large, this)
-    initView()
+    View.inflate(context, R.layout.view_picker_large, this)
   }
 
-  private fun initView() {
+  private fun initView(attrs: AttributeSet? = null) {
     initSlider()
     super.initPreviews()
     initColorPicker()

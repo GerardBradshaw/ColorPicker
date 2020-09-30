@@ -17,14 +17,16 @@ class RadialColorPickerView :
 
   // ------------------------ CONSTRUCTORS ------------------------
 
-  constructor(context: Context) : super(context)
+  constructor(context: Context) : super(context) {
+    initView()
+  }
 
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
-    if (attrs != null) saveRadialAttrs(attrs)
+    initView(attrs)
   }
 
   constructor(context: Context, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle) {
-    if (attrs != null) saveRadialAttrs(attrs)
+    initView(attrs)
   }
 
   private fun saveRadialAttrs(attrs: AttributeSet) {
@@ -49,12 +51,11 @@ class RadialColorPickerView :
   // ------------------------ INITIALIZATION ------------------------
 
   init {
-    View.inflate(context,
-      R.layout.view_picker_large, this)
-    initView()
+    View.inflate(context, R.layout.view_picker_large, this)
   }
 
-  private fun initView() {
+  private fun initView(attrs: AttributeSet? = null) {
+    if (attrs != null) saveRadialAttrs(attrs)
     initSlider()
     super.initPreviews()
     initColorPicker()

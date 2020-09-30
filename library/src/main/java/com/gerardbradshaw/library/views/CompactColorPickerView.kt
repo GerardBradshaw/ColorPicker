@@ -13,14 +13,16 @@ class CompactColorPickerView :
 
   // ------------------------ CONSTRUCTORS ------------------------
 
-  constructor(context: Context) : super(context)
+  constructor(context: Context) : super(context) {
+    initView()
+  }
 
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
-    if (attrs != null) saveCompactAttrs(attrs)
+    initView(attrs)
   }
 
   constructor(context: Context, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle) {
-    if (attrs != null) saveCompactAttrs(attrs)
+    initView(attrs)
   }
 
   private fun saveCompactAttrs(attrs: AttributeSet) {
@@ -48,12 +50,11 @@ class CompactColorPickerView :
   // ------------------------ INITIALIZATION ------------------------
 
   init {
-    View.inflate(context,
-      R.layout.view_picker_compact, this)
-    initView()
+    View.inflate(context, R.layout.view_picker_compact, this)
   }
 
-  private fun initView() {
+  private fun initView(attrs: AttributeSet? = null) {
+    if (attrs != null) saveCompactAttrs(attrs)
     initMenu()
     initSlider()
     initPreview()
