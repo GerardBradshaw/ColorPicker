@@ -19,31 +19,31 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion "29.0.3"
+    compileSdkVersion rootProject.ext.sdkVersionInformation.compileSdkVersion
+    buildToolsVersion rootProject.ext.miscVersionInformation.androidBuildToolsVersion
 
     defaultConfig {
-        minSdkVersion 21
-        targetSdkVersion 29
-        versionCode 1
-        versionName "1.0"
+        minSdkVersion rootProject.ext.sdkVersionInformation.minSdkVersion
+        targetSdkVersion rootProject.ext.sdkVersionInformation.targetSdkVersion
+       // versionCode 1
+       // versionName "1.0"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles "consumer-rules.pro"
+        // consumerProguardFiles "consumer-rules.pro"
     }
 
-    buildTypes {
-        release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-        }
-    }
+    // buildTypes {
+    //     release {
+    //         minifyEnabled false
+    //         proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+    //     }
+    // }
 
-    testOptions {
-        unitTests {
-            includeAndroidResources = true
-        }
-    }
+    // testOptions {
+    //     unitTests {
+    //         includeAndroidResources = true
+    //     }
+    // }
 }
 
 dependencies {
@@ -59,4 +59,26 @@ dependencies {
     testImplementation 'org.robolectric:robolectric:4.4'
     testImplementation 'androidx.test.espresso:espresso-core:3.3.0'
     testImplementation 'org.mockito:mockito-core:3.5.11'
+}
+
+ext.releaseInfo = [
+    group: rootProject.ext.mavenReleaseInformation.groupId,
+    artifactId: 'colorpicker',
+    version: '1.0.0',
+
+    name: 'Color Picker',
+    description: 'A library of Views so users can select colors in-app.',
+    url: 'https://www.github.com/GerardBradshaw/ColorPicker',
+    scmUrl: 'https://www.github.com/GerardBradshaw/ColorPicker',
+
+    license: [
+        name: 'The Apache Software License, Version 2.0',
+        url: 'https://www.apache.org/licenses/LICENSE-2.0.txt']
+]
+
+apply from: rootProject.file('release-android-library.gradle')
+
+task deleteOutputDirectories {
+  delete('build')
+  delete('out')
 }

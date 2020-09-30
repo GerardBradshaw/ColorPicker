@@ -35,6 +35,24 @@ allprojects {
     }
 }
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
-}
+ext.rootPackageName = 'com.gerardbradshaw.colorpicker'
+
+ext.sdkVersionInformation = [
+    minSdkVersion: 21,
+    targetSdkVersion: 29,
+    compileSdkVersion: 29
+]
+
+ext.miscVersionInformation = [
+    androidBuildToolsVersion: '29.0.3'
+]
+
+ext.mavenReleaseInformation = [
+    groupId: 'com.gerardbradshaw'
+]
+
+task deleteAllOutputDirectories(dependsOn: [':library:deleteOutputDirectories'])
+
+task buildAllModules(dependsOn: [':library:build'])
+
+task buildAllReleases(dependsOn: [':library:buildRelease'])

@@ -45,7 +45,7 @@ abstract class AbstractLargeColorPickerView :
   // ------------------------ INSTANCE METHODS ------------------------
 
   protected fun initSlider(gradient: GradientDrawable,
-                          onProgressChangedListener: ColorSlider.OnProgressChangedListener) {
+                           onProgressChangedListener: ColorSlider.OnProgressChangedListener) {
     slider = findViewById(R.id.large_color_slider)
     slider.setGradientBarDrawable(gradient)
     slider.setOnProgressChangedListener(onProgressChangedListener)
