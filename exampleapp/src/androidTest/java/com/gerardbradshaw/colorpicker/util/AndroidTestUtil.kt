@@ -100,11 +100,6 @@ object AndroidTestUtil {
   }
 
 
-
-
-
-
-
   // ---------------- HELPERS ----------------
 
   private fun hasViewTag(expectedTag: Int): Matcher<View?>? {

@@ -18,8 +18,6 @@ class CompactViewActivity : AppCompatActivity(), AbstractColorPickerView.ColorCh
     listener = findViewById(R.id.ex_compact_listener)
 
     picker.setOnColorSelectedListener(this)
-
-    onColorChanged(picker.getCurrentColor())
   }
 
   override fun onColorChanged(color: Int) {
