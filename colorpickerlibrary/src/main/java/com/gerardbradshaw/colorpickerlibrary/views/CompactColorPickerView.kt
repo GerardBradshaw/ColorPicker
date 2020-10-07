@@ -8,8 +8,7 @@ import android.widget.*
 import com.gerardbradshaw.colorpickerlibrary.R
 import com.gerardbradshaw.colorpickerlibrary.util.ColorSliderView
 
-class CompactColorPickerView :
-  AbstractColorPickerView {
+class CompactColorPickerView : AbstractColorPickerView {
 
   // ------------------------ CONSTRUCTORS ------------------------
 
@@ -43,8 +42,8 @@ class CompactColorPickerView :
   private lateinit var slider: ColorSliderView
   private lateinit var preview: ImageView
   private var menuType = 0
-  private var sliderType: SliderType =
-    SliderType.COLOR
+  private var sliderType: SliderType = SliderType.COLOR
+
 
 
   // ------------------------ INITIALIZATION ------------------------
@@ -147,12 +146,12 @@ class CompactColorPickerView :
   // ------------------------ HELPERS ------------------------
 
   private fun setSeekBarPosition() {
-    val ratio = when (sliderType) {
+    val expectedRatio = when (sliderType) {
       SliderType.COLOR -> colorRatio
       SliderType.SHADE -> shadeRatio
       SliderType.TINT -> tintRatio
     }
-    slider.setProgressRatio(ratio)
+    if (slider.getProgressRatio() != expectedRatio) slider.setProgressRatio(expectedRatio)
   }
 
   override fun onColorChanged() {
@@ -166,7 +165,17 @@ class CompactColorPickerView :
     this.tag = color
   }
 
+  override fun onColorRatioChanged() {
+    setSeekBarPosition()
+  }
 
+  override fun onShadeRatioChanged() {
+    setSeekBarPosition()
+  }
+
+  override fun onTintRatioChanged() {
+    setSeekBarPosition()
+  }
 
   // ------------------------ PUBLIC FUNCTIONS ------------------------
 

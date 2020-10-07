@@ -14,8 +14,7 @@ import android.widget.LinearLayout
 import com.gerardbradshaw.colorpickerlibrary.R
 import com.gerardbradshaw.colorpickerlibrary.util.ColorSliderView
 
-abstract class AbstractLargeColorPickerView :
-  AbstractColorPickerView {
+abstract class AbstractLargeColorPickerView : AbstractColorPickerView {
 
   // ------------------------ CONSTRUCTORS ------------------------
 

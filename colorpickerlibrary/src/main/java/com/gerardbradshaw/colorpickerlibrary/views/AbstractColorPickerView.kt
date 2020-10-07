@@ -36,8 +36,22 @@ abstract class AbstractColorPickerView : FrameLayout {
   // ------------------------ PROPERTIES ------------------------
 
   var colorRatio = 0.0
+    set(value) {
+      field = value
+      onColorRatioChanged()
+    }
+
   var shadeRatio = 0.0
+    set(value) {
+      field = value
+      onShadeRatioChanged()
+    }
+
   var tintRatio = 0.0
+    set(value) {
+      field = value
+      onTintRatioChanged()
+    }
 
   protected var isPreviewEnabled = true
   var listener: ColorChangedListener? = null
@@ -139,6 +153,12 @@ abstract class AbstractColorPickerView : FrameLayout {
   // ------------------------ HELPERS ------------------------
 
   protected abstract fun onColorChanged()
+
+  protected abstract fun onColorRatioChanged()
+
+  protected abstract fun onShadeRatioChanged()
+
+  protected abstract fun onTintRatioChanged()
 
 
   // ------------------------ INNER CLASSES ------------------------

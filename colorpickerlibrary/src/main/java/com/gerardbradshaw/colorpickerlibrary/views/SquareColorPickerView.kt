@@ -109,6 +109,18 @@ class SquareColorPickerView :
 
   // ------------------------ UTIL ------------------------
 
+  override fun onShadeRatioChanged() {
+    // TODO
+  }
+
+  override fun onTintRatioChanged() {
+    // TODO
+  }
+
+  override fun onColorRatioChanged() {
+    slider.setProgressRatio(colorRatio)
+  }
+
   private fun getSquareBackgroundDrawable(pureColor: Int): Drawable {
     val sf: ShapeDrawable.ShaderFactory = object : ShapeDrawable.ShaderFactory() {
       override fun resize(width: Int, height: Int): Shader {

@@ -152,6 +152,18 @@ class RadialColorPickerView :
 
   // ------------------------ UTIL ------------------------
 
+  override fun onShadeRatioChanged() {
+    slider.setProgressRatio(shadeRatio)
+  }
+
+  override fun onTintRatioChanged() {
+    // TODO
+  }
+
+  override fun onColorRatioChanged() {
+    // TODO
+  }
+
   private fun getRadialPositionRatio(x: Float, y: Float): Double {
     val xRatio = getXPositionRatio(x)
     val yRatio = getYPositionRatio(y)
