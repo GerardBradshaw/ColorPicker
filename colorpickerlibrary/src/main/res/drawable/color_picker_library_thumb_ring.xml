@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:innerRadius="@dimen/color_picker_library_thumb_circle_inner_radius"
+    android:shape="ring"
+    android:thicknessRatio="6"
+    android:useLevel="false" >
+
+    <solid android:color="@android:color/white" />
+
+    <size android:width="@dimen/color_picker_library_thumb_outer_circle_size"
+        android:height="@dimen/color_picker_library_thumb_outer_circle_size"/>
+
+    <stroke android:width="2px"
+        android:color="@android:color/black"/>
+</shape>

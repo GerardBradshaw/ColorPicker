@@ -1,4 +1,4 @@
-package com.gerardbradshaw.library.util
+package com.gerardbradshaw.colorpickerlibrary.util
 
 import android.graphics.Color
 import kotlin.math.max

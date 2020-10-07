@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <FrameLayout
+        android:id="@+id/color_picker_library_slider_gradient_bar"
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:layout_gravity="center"
+        android:layout_marginLeft="@dimen/color_picker_library_margin_and_padding_default"
+        android:layout_marginRight="@dimen/color_picker_library_margin_and_padding_default" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="8dp"
+        android:layout_gravity="center"
+        android:layout_marginLeft="@dimen/color_picker_library_margin_and_padding_default"
+        android:layout_marginRight="@dimen/color_picker_library_margin_and_padding_default"
+        android:background="@drawable/color_picker_library_default_border_black" />
+
+    <SeekBar
+        android:id="@+id/color_picker_library_slider_seek_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:max="@integer/color_picker_library_spectrum_color_count"
+        android:paddingStart="@dimen/color_picker_library_margin_and_padding_default"
+        android:paddingEnd="@dimen/color_picker_library_margin_and_padding_default"
+        android:progressDrawable="@android:color/transparent"
+        android:thumb="@drawable/color_picker_library_thumb_rounded_corner_rectangle" />
+
+</FrameLayout>

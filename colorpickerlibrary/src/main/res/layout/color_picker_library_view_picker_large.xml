@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:background="@android:color/holo_orange_light">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/color_picker_library_margin_and_padding_default">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_margin="@dimen/color_picker_library_margin_and_padding_default"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:visibility="invisible"
+                tools:visibility="visible"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintDimensionRatio="1:1"
+                android:adjustViewBounds="true"
+                android:src="@drawable/color_picker_library_img_square_in_circle" />
+
+            <FrameLayout
+                android:id="@+id/color_picker_library_large_color_window"
+                android:padding="@dimen/color_picker_library_margin_and_padding_default"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_constraintDimensionRatio="1:1"
+                android:adjustViewBounds="true" />
+        </FrameLayout>
+
+        <ImageView
+            android:id="@+id/color_picker_library_large_thumb"
+            android:src="@drawable/color_picker_library_thumb_ring"
+            android:layout_gravity="end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </FrameLayout>
+
+    <com.gerardbradshaw.colorpickerlibrary.util.ColorSliderView
+        android:id="@+id/color_picker_library_large_color_slider"
+        android:paddingStart="@dimen/color_picker_library_margin_and_padding_default"
+        android:paddingEnd="@dimen/color_picker_library_margin_and_padding_default"
+        android:paddingBottom="@dimen/color_picker_library_margin_and_padding_default"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:id="@+id/color_picker_library_large_preview_container"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/color_picker_library_margin_and_padding_default"
+        android:paddingStart="@dimen/color_picker_library_margin_and_padding_default"
+        android:paddingEnd="@dimen/color_picker_library_margin_and_padding_default">
+
+        <ImageView
+            android:id="@+id/color_picker_library_large_preview_old"
+            android:layout_width="80dp"
+            style="@style/ColorPickerLibraryPreviewStyle" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="64dp"
+            android:layout_gravity="center"
+            android:src="@drawable/color_picker_library_ic_right_arrow"/>
+
+        <ImageView
+            android:id="@+id/color_picker_library_large_preview_new"
+            android:layout_width="80dp"
+            style="@style/ColorPickerLibraryPreviewStyle" />
+    </LinearLayout>
+
+</LinearLayout>

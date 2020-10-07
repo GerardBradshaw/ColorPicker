@@ -3,7 +3,7 @@ package com.gerardbradshaw.colorpicker
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import com.gerardbradshaw.library.views.AbstractColorPickerView
+import com.gerardbradshaw.colorpickerlibrary.views.AbstractColorPickerView
 
 class RadialViewActivity : AppCompatActivity(), AbstractColorPickerView.ColorChangedListener {
 

@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="color_picker_library_margin_and_padding_default">12dp</dimen>
+    <dimen name="color_picker_library_thumb_outer_circle_size">24dp</dimen>
+    <dimen name="color_picker_library_thumb_circle_inner_radius">4dp</dimen>
+</resources>

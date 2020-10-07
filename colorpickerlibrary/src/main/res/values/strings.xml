@@ -1,0 +1,5 @@
+<resources>
+    <string name="color_picker_library_color">Color</string>
+    <string name="color_picker_library_tint">Tint</string>
+    <string name="color_picker_library_shade">Shade</string>
+</resources>

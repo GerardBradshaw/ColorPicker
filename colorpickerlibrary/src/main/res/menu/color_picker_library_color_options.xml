@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/color_picker_library_option_color"
+        android:orderInCategory="100"
+        android:title="@string/color_picker_library_color" />
+
+    <item
+        android:id="@+id/color_picker_library_option_shade"
+        android:orderInCategory="120"
+        android:title="@string/color_picker_library_shade" />
+
+    <item
+        android:id="@+id/color_picker_library_option_tint"
+        android:orderInCategory="150"
+        android:title="@string/color_picker_library_tint" />
+
+</menu>

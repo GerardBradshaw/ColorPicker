@@ -3,14 +3,22 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/MyExampleLayoutStyle">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
 
     <TextView
-        android:id="@+id/ex_compact_listener"
-        style="@style/ColorChangeListenerStyle"/>
+        android:id="@+id/color_picker_library_ex_compact_listener"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/color_picker_library_margin_and_padding_default"
+        android:gravity="center"/>
 
     <com.gerardbradshaw.colorpickerlibrary.views.CompactColorPickerView
-        android:id="@+id/ex_compact_picker"
+        android:id="@+id/color_picker_library_ex_compact_picker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:enablePreview="true"
