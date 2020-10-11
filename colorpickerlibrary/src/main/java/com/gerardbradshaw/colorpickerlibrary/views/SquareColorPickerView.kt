@@ -21,15 +21,16 @@ class SquareColorPickerView :
   constructor(context: Context) : super(context) {
     initView()
   }
-  
+
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
     initView(attrs)
   }
-  
-  constructor(context: Context, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle) {
+
+  constructor(context: Context, attrs: AttributeSet?, defStyle: Int) :
+      super(context, attrs, defStyle)
+  {
     initView(attrs)
   }
-
 
 
   // ------------------------ INITIALIZATION ------------------------
@@ -49,7 +50,7 @@ class SquareColorPickerView :
   private fun initSlider() {
     val onSliderProgressChangedListener = object : ColorSliderView.OnProgressChangedListener {
       override fun onProgressChanged(progress: Double) {
-        colorRatio = progress
+        internalColorRatio = progress
         onColorChanged()
       }
     }
@@ -66,60 +67,12 @@ class SquareColorPickerView :
   }
 
   private fun initThumb() {
-    val thumbOnDrawObserver = ViewTreeObserver.OnDrawListener {
-      tintRatio = 1 - ((thumb.x - colorPicker.x) / colorPicker.width.toDouble())
-      shadeRatio = -(colorPicker.y - thumb.y) / colorPicker.height.toDouble()
-      onColorChanged()
-    }
-
-    super.initThumb(thumbOnDrawObserver, null)
+    super.initThumb(null)
   }
 
 
 
-  // ------------------------ INTERACTION ------------------------
-
-  override fun moveThumb(x: Float, y: Float) {
-    Log.d(TAG, "moveThumb")
-    thumb.x =
-      when {
-        x < colorPicker.x -> colorPicker.x
-        x > colorPicker.width.toFloat() -> colorPicker.width.toFloat()
-        else -> x
-      }
-
-    thumb.y =
-      when {
-        y < colorPicker.y -> colorPicker.y
-        y > colorPicker.height.toFloat() -> colorPicker.height.toFloat()
-        else -> y
-      }
-  }
-
-  override fun onColorChanged() {
-    val color = getCurrentColor()
-
-    super.updateNewPreviewColor(color)
-
-    initColorPicker(getPureColor())
-    listener?.onColorChanged(color)
-  }
-
-
-
-  // ------------------------ UTIL ------------------------
-
-  override fun onShadeRatioChanged() {
-    // TODO
-  }
-
-  override fun onTintRatioChanged() {
-    // TODO
-  }
-
-  override fun onColorRatioChanged() {
-    slider.setProgressRatio(colorRatio)
-  }
+  // ------------------------ SQUARE ------------------------
 
   private fun getSquareBackgroundDrawable(pureColor: Int): Drawable {
     val sf: ShapeDrawable.ShaderFactory = object : ShapeDrawable.ShaderFactory() {
@@ -140,6 +93,75 @@ class SquareColorPickerView :
 
     return paintDrawable
   }
+
+  override fun onColorChanged() {
+    val color = getCurrentColor()
+
+    super.updateNewPreviewColor(color)
+
+    initColorPicker(getPureColor())
+    listener?.onColorChanged(color)
+  }
+
+
+
+  // ------------------------ THUMB ------------------------
+
+  override fun moveThumb(x: Float, y: Float) {
+    val thumbX = when {
+      x < colorPicker.x -> colorPicker.x
+      x > colorPicker.width.toFloat() -> colorPicker.width.toFloat()
+      else -> x
+    }
+
+    val thumbY = when {
+      y < colorPicker.y -> colorPicker.y
+      y > colorPicker.height.toFloat() -> colorPicker.height.toFloat()
+      else -> y
+    }
+
+    thumb.x = thumbX
+    thumb.y = thumbY
+
+    onThumbPositionChanged(thumbX, thumbY)
+  }
+
+  override fun onThumbPositionChanged(x: Float, y: Float) {
+    internalTintRatio = 1 - ((thumb.x - colorPicker.x) / colorPicker.width.toDouble())
+    internalShadeRatio = -(colorPicker.y - thumb.y) / colorPicker.height.toDouble()
+    onColorChanged()
+  }
+
+  override fun updateThumbOnColorRatioChange() {
+    when {
+      internalColorRatio > 1.0 -> internalColorRatio = 1.0
+      internalColorRatio < 0.0 -> internalColorRatio = 0.0
+    }
+
+    slider.setProgressRatio(internalColorRatio)
+  }
+
+  override fun updateThumbOnShadeRatioChange() {
+    when {
+      internalShadeRatio > 1.0 -> internalShadeRatio = 1.0
+      internalShadeRatio < 0.0 -> internalShadeRatio = 0.0
+    }
+
+    moveThumb(thumb.x, (internalShadeRatio * colorPicker.height).toFloat())
+  }
+
+  override fun updateThumbOnTintRatioChange() {
+    when {
+      internalTintRatio > 1.0 -> internalTintRatio = 1.0
+      internalTintRatio < 0.0 -> internalTintRatio = 0.0
+    }
+
+    moveThumb(((1.0 - internalTintRatio) * colorPicker.width).toFloat(), thumb.y)
+  }
+
+
+
+  // ------------------------ UTIL ------------------------
 
   companion object {
     private const val TAG = "SquareColorPickerView"

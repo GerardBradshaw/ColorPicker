@@ -5,6 +5,7 @@ import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.util.AttributeSet
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewTreeObserver
@@ -26,13 +27,8 @@ abstract class AbstractLargeColorPickerView : AbstractColorPickerView {
 
   // ------------------------ PROPERTIES ------------------------
 
-  private lateinit var thumbOnDrawObserver: ViewTreeObserver.OnDrawListener
   private lateinit var newColorPreview: ImageView
   private lateinit var oldColorPreview: ImageView
-
-
-
-  // ------------------------ INSTANCE PROPERTIES ------------------------
 
   protected lateinit var slider: ColorSliderView
   protected lateinit var colorPicker: FrameLayout
@@ -41,7 +37,7 @@ abstract class AbstractLargeColorPickerView : AbstractColorPickerView {
 
 
 
-  // ------------------------ INSTANCE METHODS ------------------------
+  // ------------------------ INITIALIZATION ------------------------
 
   protected fun initSlider(
     gradient: GradientDrawable,
@@ -68,44 +64,21 @@ abstract class AbstractLargeColorPickerView : AbstractColorPickerView {
     }
   }
 
-  protected fun updateNewPreviewColor(color: Int) {
-    if (isPreviewEnabled) {
-      newColorPreview.setColorFilter(color)
-      newColorPreview.tag = color // tagged for testing purposes
-    }
-  }
-
   protected fun initListener() {
     listener?.onColorChanged(getCurrentColor())
   }
 
-  protected abstract fun moveThumb(x: Float, y: Float)
-
   @SuppressLint("ClickableViewAccessibility")
-  protected fun initThumb(
-    thumbOnDrawObserver: ViewTreeObserver.OnDrawListener,
-    thumb: ImageView? = null
-  ) {
-    this.thumbOnDrawObserver = thumbOnDrawObserver
+  protected fun initThumb(thumb: ImageView? = null) {
     this.thumb = thumb ?: findViewById(R.id.color_picker_library_large_thumb)
 
     colorPicker.setOnTouchListener { _, event ->
       when (event.action) {
-        MotionEvent.ACTION_DOWN -> {
-          startThumbOnDrawListener()
+        MotionEvent.ACTION_DOWN, MotionEvent.ACTION_MOVE -> {
           moveThumb(event.x, event.y)
           true
         }
 
-        MotionEvent.ACTION_MOVE -> {
-          moveThumb(event.x, event.y)
-          true
-        }
-
-        MotionEvent.ACTION_UP -> {
-          removeThumbOnDrawListener()
-          true
-        }
         else -> super.onTouchEvent(event)
       }
     }
@@ -113,25 +86,38 @@ abstract class AbstractLargeColorPickerView : AbstractColorPickerView {
 
 
 
-  // ------------------------ PUBLIC METHODS ------------------------
+  // ------------------------ PREVIEWS ------------------------
+
+  protected fun updateNewPreviewColor(color: Int) {
+    if (isPreviewEnabled) {
+      newColorPreview.setColorFilter(color)
+      newColorPreview.setTag(R.id.color_picker_library_preview_color_tag, color) // tagged for testing purposes
+    }
+  }
 
   fun setOldPreviewColor(color: Int) {
     if (isPreviewEnabled) {
       oldColor = color
       oldColorPreview.setColorFilter(color)
-      oldColorPreview.tag = color // tagged for testing purposes
+      oldColorPreview.setTag(R.id.color_picker_library_preview_color_tag, color) // tagged for testing purposes
+    } else {
+      Log.d(TAG, "setOldPreviewColor: preview not enabled")
     }
   }
 
 
 
-  // ------------------------ HELPER METHODS ------------------------
+  // ------------------------ THUMB ------------------------
 
-  private fun startThumbOnDrawListener() {
-    thumb.viewTreeObserver.addOnDrawListener(thumbOnDrawObserver)
-  }
+  protected abstract fun moveThumb(x: Float, y: Float)
 
-  private fun removeThumbOnDrawListener() {
-    thumb.viewTreeObserver.removeOnDrawListener(thumbOnDrawObserver)
+  protected abstract fun onThumbPositionChanged(x: Float, y: Float)
+
+
+
+  // ------------------------ UTIL ------------------------
+
+  companion object {
+    private const val TAG = "AbstractLargeColorPicke"
   }
 }

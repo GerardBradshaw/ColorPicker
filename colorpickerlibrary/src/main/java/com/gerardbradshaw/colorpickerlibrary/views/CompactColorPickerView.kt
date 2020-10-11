@@ -79,9 +79,9 @@ class CompactColorPickerView : AbstractColorPickerView {
     slider.setOnProgressChangedListener(object : ColorSliderView.OnProgressChangedListener {
       override fun onProgressChanged(progress: Double) {
         when (sliderType) {
-          SliderType.COLOR -> colorRatio = progress
-          SliderType.SHADE -> shadeRatio = progress
-          SliderType.TINT -> tintRatio = progress
+          SliderType.COLOR -> internalColorRatio = progress
+          SliderType.SHADE -> internalShadeRatio = progress
+          SliderType.TINT -> internalTintRatio = progress
         }
         onColorChanged()
       }
@@ -147,9 +147,9 @@ class CompactColorPickerView : AbstractColorPickerView {
 
   private fun setSeekBarPosition() {
     val expectedRatio = when (sliderType) {
-      SliderType.COLOR -> colorRatio
-      SliderType.SHADE -> shadeRatio
-      SliderType.TINT -> tintRatio
+      SliderType.COLOR -> internalColorRatio
+      SliderType.SHADE -> internalShadeRatio
+      SliderType.TINT -> internalTintRatio
     }
     if (slider.getProgressRatio() != expectedRatio) slider.setProgressRatio(expectedRatio)
   }
@@ -165,15 +165,15 @@ class CompactColorPickerView : AbstractColorPickerView {
     this.tag = color
   }
 
-  override fun onColorRatioChanged() {
+  override fun updateThumbOnColorRatioChange() {
     setSeekBarPosition()
   }
 
-  override fun onShadeRatioChanged() {
+  override fun updateThumbOnShadeRatioChange() {
     setSeekBarPosition()
   }
 
-  override fun onTintRatioChanged() {
+  override fun updateThumbOnTintRatioChange() {
     setSeekBarPosition()
   }
 

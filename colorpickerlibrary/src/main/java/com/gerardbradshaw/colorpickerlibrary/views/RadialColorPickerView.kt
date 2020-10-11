@@ -25,7 +25,9 @@ class RadialColorPickerView :
     initView(attrs)
   }
 
-  constructor(context: Context, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle) {
+  constructor(context: Context, attrs: AttributeSet?, defStyle: Int) :
+      super(context, attrs, defStyle)
+  {
     initView(attrs)
   }
 
@@ -66,7 +68,7 @@ class RadialColorPickerView :
   private fun initSlider() {
     val onSliderProgressChangedListener = object : ColorSliderView.OnProgressChangedListener {
       override fun onProgressChanged(progress: Double) {
-        shadeRatio = progress
+        internalShadeRatio = progress
         onColorChanged()
       }
     }
@@ -103,65 +105,42 @@ class RadialColorPickerView :
 
   private fun initThumb() {
     thumb = findViewById(R.id.color_picker_library_large_thumb)
-
     thumb.y = circleDiameter / 2f
-
-    val thumbOnDrawObserver = ViewTreeObserver.OnDrawListener {
-      tintRatio = 1.0 - getRadialPositionRatio(thumb.x, thumb.y)
-      colorRatio = 1.0 - getCircumferentialPositionRatio(thumb.x, thumb.y)
-      onColorChanged()
-    }
-
-    super.initThumb(thumbOnDrawObserver, thumb)
+    super.initThumb(thumb)
   }
 
 
 
-  // ------------------------ INTERACTION ------------------------
+  // ------------------------ CIRCLE ------------------------
 
-  override fun moveThumb(x: Float, y: Float) {
-    val radialPositionRatio = getRadialPositionRatio(x, y)
-    val radius = circleDiameter / 2.0
-    val snapRange = (0.9 * radius)..(1.1 * radius)
+  private fun getGradientCircle(diameter: Int): Drawable {
+    val spectrumDrawable = GradientDrawable(
+      GradientDrawable.Orientation.BL_TR, intArrayOf(
+        Color.parseColor("#FF0000"),
+        Color.parseColor("#FFFF00"),
+        Color.parseColor("#00FF00"),
+        Color.parseColor("#00FFFF"),
+        Color.parseColor("#0000FF"),
+        Color.parseColor("#FF00FF"),
+        Color.parseColor("#FF0000")))
 
-    if (radialSnapToCentre && x in snapRange && y in snapRange) {
-      thumb.x = radius.toFloat()
-      thumb.y = radius.toFloat()
-      return
-    }
+    spectrumDrawable.gradientType = GradientDrawable.SWEEP_GRADIENT
 
-    thumb.x =
-      if (radialPositionRatio in 0.0..1.0) x
-      else (radius + (x - radius) / radialPositionRatio).toFloat()
+    val roundGradientDrawable =
+      RoundedBitmapDrawableFactory
+        .create(resources, spectrumDrawable.toBitmap(diameter, diameter, null))
 
-    thumb.y =
-      if (radialPositionRatio in 0.0..1.0) y
-      else (radius + (y - radius) / radialPositionRatio).toFloat()
-  }
+    roundGradientDrawable.cornerRadius = diameter / 2f
 
-  override fun onColorChanged() {
-    val color = getCurrentColor()
+    val tintDrawable = GradientDrawable(
+      GradientDrawable.Orientation.LEFT_RIGHT, intArrayOf(
+        Color.WHITE,
+        Color.TRANSPARENT))
 
-    super.updateNewPreviewColor(color)
+    tintDrawable.gradientType = GradientDrawable.RADIAL_GRADIENT
+    tintDrawable.gradientRadius = diameter / 2f
 
-    slider.setGradientBarDrawable(getShadeGradient())
-    listener?.onColorChanged(color)
-  }
-
-
-
-  // ------------------------ UTIL ------------------------
-
-  override fun onShadeRatioChanged() {
-    slider.setProgressRatio(shadeRatio)
-  }
-
-  override fun onTintRatioChanged() {
-    // TODO
-  }
-
-  override fun onColorRatioChanged() {
-    // TODO
+    return LayerDrawable(arrayOf(roundGradientDrawable, tintDrawable))
   }
 
   private fun getRadialPositionRatio(x: Float, y: Float): Double {
@@ -200,41 +179,137 @@ class RadialColorPickerView :
     return (angle) / (2.0 * Math.PI)
   }
 
+  override fun onColorChanged() {
+    val color = getCurrentColor()
+
+    super.updateNewPreviewColor(color)
+
+    slider.setGradientBarDrawable(getShadeGradient())
+    listener?.onColorChanged(color)
+  }
+
+
+
+  // ------------------------ THUMB ------------------------
+
+  override fun moveThumb(x: Float, y: Float) {
+    val radialPositionRatio = getRadialPositionRatio(x, y)
+    val radius = circleDiameter / 2.0
+    val snapRange = (0.9 * radius)..(1.1 * radius)
+    val snapToCenter = radialSnapToCentre && x in snapRange && y in snapRange
+
+    val thumbX = when {
+      snapToCenter -> radius.toFloat()
+      radialPositionRatio in 0.0..1.0 -> x
+      else -> (radius + (x - radius) / radialPositionRatio).toFloat()
+    }
+
+    val thumbY = when {
+      snapToCenter -> radius.toFloat()
+      radialPositionRatio in 0.0..1.0 -> y
+      else -> (radius + (y - radius) / radialPositionRatio).toFloat()
+    }
+
+    thumb.x = thumbX
+    thumb.y = thumbY
+
+    onThumbPositionChanged(thumbX, thumbY)
+  }
+
+  override fun onThumbPositionChanged(x: Float, y: Float) {
+    internalTintRatio = 1.0 - getRadialPositionRatio(x, y)
+    internalColorRatio = 1.0 - getCircumferentialPositionRatio(x, y)
+    onColorChanged()
+  }
+
+  override fun updateThumbOnColorRatioChange() {
+    val acuteAngle = getAcuteAngleUsingColorRatio()
+
+    val thumbX = getXPositionUsingRatios(acuteAngle)
+    val thumbY = getYPositionUsingRatios(acuteAngle)
+
+    if (thumb.x != thumbX) thumb.x = thumbX
+    if (thumb.y != thumbY) thumb.y = thumbY
+  }
+
+  override fun updateThumbOnShadeRatioChange() {
+    if (slider.getProgressRatio() != internalShadeRatio) {
+      slider.setProgressRatio(internalShadeRatio)
+    }
+  }
+
+  override fun updateThumbOnTintRatioChange() {
+    val acuteAngle = getAcuteAngleUsingColorRatio()
+
+    val thumbX = getXPositionUsingRatios(acuteAngle)
+    val thumbY = getYPositionUsingRatios(acuteAngle)
+
+    if (thumb.x != thumbX) thumb.x = thumbX
+    if (thumb.y != thumbY) thumb.y = thumbY
+  }
+
+  private fun getAcuteAngleUsingColorRatio(): Double {
+    val acuteRatio = when {
+      internalColorRatio < 0.25 -> internalColorRatio
+      internalColorRatio < 0.5 -> 0.5 - internalColorRatio
+      internalColorRatio < 0.75 -> internalColorRatio - 0.5
+      else -> 1.0 - internalColorRatio
+    }
+
+    return acuteRatio * (2.0 * Math.PI)
+  }
+
+  private fun getCenterOffsetUsingTintRatio(): Double {
+    return (circleDiameter / 2.0) * (1.0 - internalTintRatio)
+  }
+
+  private fun getXPositionUsingRatios(acuteAngle: Double): Float {
+    val radius = circleDiameter / 2.0
+
+    val horizontalOffset = getCenterOffsetUsingTintRatio() * cos(acuteAngle)
+
+    return when {
+      internalColorRatio < 0.25 || internalColorRatio > 0.75 -> (radius + horizontalOffset).toFloat()
+      else -> (radius - horizontalOffset).toFloat()
+    }
+  }
+
+  private fun getYPositionUsingRatios(acuteAngle: Double): Float {
+    val radius = circleDiameter / 2.0
+
+    val verticalOffset = getCenterOffsetUsingTintRatio() * sin(acuteAngle)
+
+    return when {
+      internalColorRatio > 0.5 -> (radius - verticalOffset).toFloat()
+      else -> (radius + verticalOffset).toFloat()
+    }
+  }
+
+  private fun getTintRatioFromThumbPosition(): Double {
+    val radius = circleDiameter / 2.0
+
+    val adjustedThumbX = when {
+      thumb.x < radius -> radius - thumb.x
+      else -> thumb.x - radius
+    }
+
+    val adjustedThumbY = when {
+      thumb.y < radius -> radius - thumb.y
+      else -> thumb.y - radius
+    }
+
+    return 1f - (sqrt(adjustedThumbX.pow(2) + adjustedThumbY.pow(2))) / radius
+  }
+
+
+
+  // ------------------------ UTIL ------------------------
+
   private fun radToDeg(rads: Double): Int {
     return (rads * 360.0 / (2.0 * Math.PI)).toInt()
   }
 
-  private fun getGradientCircle(diameter: Int): Drawable {
-    val spectrumDrawable = GradientDrawable(
-      GradientDrawable.Orientation.BL_TR, intArrayOf(
-        Color.parseColor("#FF0000"),
-        Color.parseColor("#FFFF00"),
-        Color.parseColor("#00FF00"),
-        Color.parseColor("#00FFFF"),
-        Color.parseColor("#0000FF"),
-        Color.parseColor("#FF00FF"),
-        Color.parseColor("#FF0000")))
-
-    spectrumDrawable.gradientType = GradientDrawable.SWEEP_GRADIENT
-
-    val roundGradientDrawable =
-      RoundedBitmapDrawableFactory
-        .create(resources, spectrumDrawable.toBitmap(diameter, diameter, null))
-
-    roundGradientDrawable.cornerRadius = diameter / 2f
-
-    val tintDrawable = GradientDrawable(
-      GradientDrawable.Orientation.LEFT_RIGHT, intArrayOf(
-        Color.WHITE,
-        Color.TRANSPARENT))
-
-    tintDrawable.gradientType = GradientDrawable.RADIAL_GRADIENT
-    tintDrawable.gradientRadius = diameter / 2f
-
-    return LayerDrawable(arrayOf(roundGradientDrawable, tintDrawable))
-  }
-
   companion object {
-    private const val TAG = "SquareColorPickerView"
+    private const val TAG = "RadialColorPickerView"
   }
 }

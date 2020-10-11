@@ -2,4 +2,6 @@
     <string name="color_picker_library_color">Color</string>
     <string name="color_picker_library_tint">Tint</string>
     <string name="color_picker_library_shade">Shade</string>
+
+    <item type="id" name="color_picker_library_preview_color_tag" />
 </resources>

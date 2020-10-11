@@ -23,6 +23,45 @@ abstract class AbstractColorPickerView : FrameLayout {
     if (attrs != null) saveAbstractPickerAttrs(attrs)
   }
 
+
+
+  // ------------------------ PROPERTIES ------------------------
+
+  protected var internalColorRatio = 0.0
+  protected var internalShadeRatio = 0.0
+  protected var internalTintRatio = 0.0
+
+  var colorRatio = 0.0
+    get() = internalColorRatio
+    set(value) {
+      internalColorRatio = getSafeRatio(value)
+      field = internalColorRatio
+      updateThumbOnColorRatioChange()
+    }
+
+  var shadeRatio = 0.0
+    get() = internalShadeRatio
+    set(value) {
+      internalShadeRatio = getSafeRatio(value)
+      field = internalShadeRatio
+      updateThumbOnShadeRatioChange()
+    }
+
+  var tintRatio = 0.0
+    get() = internalTintRatio
+    set(value) {
+      internalTintRatio = getSafeRatio(value)
+      field = internalTintRatio
+      updateThumbOnTintRatioChange()
+    }
+
+  protected var isPreviewEnabled = true
+  var listener: ColorChangedListener? = null
+
+
+
+  // ------------------------ INITIALIZATION ------------------------
+
   private fun saveAbstractPickerAttrs(attrs: AttributeSet) {
     context.theme.obtainStyledAttributes(
       attrs, R.styleable.AbstractColorPickerView, 0, 0).apply {
@@ -32,33 +71,6 @@ abstract class AbstractColorPickerView : FrameLayout {
       } finally { recycle() }
     }
   }
-
-  // ------------------------ PROPERTIES ------------------------
-
-  var colorRatio = 0.0
-    set(value) {
-      field = value
-      onColorRatioChanged()
-    }
-
-  var shadeRatio = 0.0
-    set(value) {
-      field = value
-      onShadeRatioChanged()
-    }
-
-  var tintRatio = 0.0
-    set(value) {
-      field = value
-      onTintRatioChanged()
-    }
-
-  protected var isPreviewEnabled = true
-  var listener: ColorChangedListener? = null
-
-
-
-  // ------------------------ INITIALIZATION ------------------------
 
   fun getSpectrumGradient(): GradientDrawable {
     return GradientDrawable(
@@ -100,11 +112,11 @@ abstract class AbstractColorPickerView : FrameLayout {
 
   fun getPureColor(): Int {
     return getIthPureColor(
-      (colorCount * colorRatio).roundToInt()
+      (colorCount * internalColorRatio).roundToInt()
     )
   }
 
-  fun getShadedColor(color: Int, shadeFactor: Double = 1.0 - shadeRatio): Int {
+  fun getShadedColor(color: Int, shadeFactor: Double = 1.0 - internalShadeRatio): Int {
     val red = (Color.red(color) * shadeFactor).roundToInt()
     val green = (Color.green(color) * shadeFactor).roundToInt()
     val blue = (Color.blue(color) * shadeFactor).roundToInt()
@@ -112,7 +124,7 @@ abstract class AbstractColorPickerView : FrameLayout {
     return Color.argb(255, red, green, blue)
   }
 
-  fun getTintedColor(color: Int, tintRatio: Double = this.tintRatio): Int {
+  fun getTintedColor(color: Int, tintRatio: Double = this.internalTintRatio): Int {
     val red = Color.red(color)
     val green = Color.green(color)
     val blue = Color.blue(color)
@@ -154,11 +166,19 @@ abstract class AbstractColorPickerView : FrameLayout {
 
   protected abstract fun onColorChanged()
 
-  protected abstract fun onColorRatioChanged()
+  protected abstract fun updateThumbOnColorRatioChange()
 
-  protected abstract fun onShadeRatioChanged()
+  protected abstract fun updateThumbOnShadeRatioChange()
 
-  protected abstract fun onTintRatioChanged()
+  protected abstract fun updateThumbOnTintRatioChange()
+
+  private fun getSafeRatio(ratio: Double): Double {
+    return when {
+      ratio < 0.0 -> 0.0
+      ratio > 1.0 -> 1.0
+      else -> ratio
+    }
+  }
 
 
   // ------------------------ INNER CLASSES ------------------------
