@@ -7,9 +7,7 @@ import android.graphics.drawable.PaintDrawable
 import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.RectShape
 import android.util.AttributeSet
-import android.util.Log
 import android.view.View
-import android.view.ViewTreeObserver
 import com.gerardbradshaw.colorpickerlibrary.R
 import com.gerardbradshaw.colorpickerlibrary.util.ColorSliderView
 
@@ -63,7 +61,7 @@ class SquareColorPickerView :
 
     colorPicker = findViewById(R.id.color_picker_library_large_color_window)
     colorPicker.background = background
-    colorPicker.tag = pureColor // tagged for testing purposes
+    colorPicker.setTag(R.id.color_picker_library_color_tag, pureColor)
   }
 
   private fun initThumb() {

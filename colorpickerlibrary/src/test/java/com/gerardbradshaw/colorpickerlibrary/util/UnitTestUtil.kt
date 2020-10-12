@@ -2,6 +2,7 @@ package com.gerardbradshaw.colorpickerlibrary.util
 
 import android.widget.ImageView
 import android.widget.SeekBar
+import com.gerardbradshaw.colorpickerlibrary.R
 import org.hamcrest.MatcherAssert.assertThat
 import org.hamcrest.Matchers.*
 import org.junit.Assert.fail
@@ -18,7 +19,7 @@ object UnitTestUtil {
   }
 
   fun checkPreviewColorIs(color: Int, preview: ImageView) {
-    val tag = preview.tag ?: fail("null tag")
+    val tag = preview.getTag(R.id.color_picker_library_color_tag) ?: fail("null tag")
     assertThat(tag as Int, equalTo(color))
   }
 

@@ -2,14 +2,14 @@ package com.gerardbradshaw.colorpicker.squareview
 
 
 import androidx.test.ext.junit.rules.ActivityScenarioRule
-import com.gerardbradshaw.colorpicker.InputParams
-import com.gerardbradshaw.colorpicker.OutputColors
 import com.gerardbradshaw.colorpicker.R
 import com.gerardbradshaw.colorpicker.SquareViewActivity
 import com.gerardbradshaw.colorpicker.util.AndroidTestUtil.checkPreviewChangedColorTo
 import com.gerardbradshaw.colorpicker.util.AndroidTestUtil.moveSeekBarTo
 import com.gerardbradshaw.colorpicker.squareview.SquareViewAndroidTestUtil.moveThumbTo
 import com.gerardbradshaw.colorpicker.util.AndroidTestUtil.getParamaterizedTestParams
+import com.gerardbradshaw.colorpickerlibrary.util.InputParams
+import com.gerardbradshaw.colorpickerlibrary.util.OutputColors
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith

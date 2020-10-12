@@ -18,9 +18,9 @@ import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.util.HumanReadables
 import androidx.test.internal.util.Checks
-import com.gerardbradshaw.colorpicker.InputParams
-import com.gerardbradshaw.colorpicker.OutputColors
 import com.gerardbradshaw.colorpicker.R
+import com.gerardbradshaw.colorpickerlibrary.util.InputParams
+import com.gerardbradshaw.colorpickerlibrary.util.OutputColors
 import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.hamcrest.MatcherAssert
@@ -134,17 +134,17 @@ object AndroidTestUtil {
 
   fun checkPreviewChangedColorTo(color: Int, previewResId: Int) {
     onView(allOf(withId(previewResId), isDisplayed()))
-      .check(matches(hasViewTag(color)))
+      .check(matches(hasColorTag(color)))
   }
 
-  private fun hasViewTag(expectedTag: Int): Matcher<View?>? {
+  private fun hasColorTag(expectedTag: Int): Matcher<View?>? {
     Checks.checkNotNull(expectedTag)
 
     return object : BoundedMatcher<View?, View>(View::class.java) {
       override fun matchesSafely(view: View): Boolean {
         return isExactlyMatchingExpectedColor(
           expectedTag,
-          view.tag as Int
+          view.getTag(com.gerardbradshaw.colorpickerlibrary.R.id.color_picker_library_color_tag) as Int
         )
       }
 
@@ -167,13 +167,8 @@ object AndroidTestUtil {
 
     return object : BoundedMatcher<View?, View>(View::class.java) {
       override fun matchesSafely(view: View): Boolean {
-        return isExactlyMatchingExpectedColor(expectedColor, view.tag as Int)
-//        val background = view.background
-//        val backgroundColor = if (background is ColorDrawable) background.color else null
-//        return if (backgroundColor != null) {
-//          Log.d(TAG, "expected color = $expectedColor, actual color = $backgroundColor")
-//          isExactlyMatchingExpectedColor(expectedColor, backgroundColor)
-//        } else false
+        return isExactlyMatchingExpectedColor(
+          expectedColor, view.getTag(R.id.color_picker_library_color_tag) as Int)
       }
 
       override fun describeTo(description: Description) {

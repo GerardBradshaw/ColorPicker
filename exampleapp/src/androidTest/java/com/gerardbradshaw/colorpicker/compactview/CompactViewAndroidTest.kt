@@ -2,14 +2,13 @@ package com.gerardbradshaw.colorpicker.compactview
 
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.gerardbradshaw.colorpicker.CompactViewActivity
-import com.gerardbradshaw.colorpicker.InputParams
-import com.gerardbradshaw.colorpicker.OutputColors
-import com.gerardbradshaw.colorpicker.R
 import com.gerardbradshaw.colorpicker.util.AndroidTestUtil.checkListenerChangedColorTo
 import com.gerardbradshaw.colorpicker.util.AndroidTestUtil.moveSeekBarTo
 import com.gerardbradshaw.colorpicker.compactview.CompactViewAndroidTestUtil.SliderType
 import com.gerardbradshaw.colorpicker.compactview.CompactViewAndroidTestUtil.changeSliderTypeTo
 import com.gerardbradshaw.colorpicker.util.AndroidTestUtil.getParamaterizedTestParams
+import com.gerardbradshaw.colorpickerlibrary.util.InputParams
+import com.gerardbradshaw.colorpickerlibrary.util.OutputColors
 import org.junit.Rule
 import org.junit.Test
 import org.junit.experimental.runners.Enclosed

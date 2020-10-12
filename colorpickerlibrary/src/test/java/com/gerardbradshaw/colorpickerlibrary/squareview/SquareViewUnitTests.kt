@@ -7,8 +7,7 @@ import com.gerardbradshaw.colorpickerlibrary.R
 import com.gerardbradshaw.colorpickerlibrary.squareview.SquareViewUnitTestUtil.checkSquareGradientColorIs
 import com.gerardbradshaw.colorpickerlibrary.squareview.SquareViewUnitTestUtil.checkThumbPositionIs
 import com.gerardbradshaw.colorpickerlibrary.squareview.SquareViewUnitTestUtil.getLayout
-import com.gerardbradshaw.colorpickerlibrary.squareview.SquareViewUnitTestUtil.moveThumbToMatchShadeRatio
-import com.gerardbradshaw.colorpickerlibrary.squareview.SquareViewUnitTestUtil.moveThumbToMatchTintRatio
+import com.gerardbradshaw.colorpickerlibrary.squareview.SquareViewUnitTestUtil.moveThumbToPosition
 import com.gerardbradshaw.colorpickerlibrary.squareview.SquareViewUnitTestUtil.setOldPreviewColorTo
 import com.gerardbradshaw.colorpickerlibrary.util.InputParams
 import com.gerardbradshaw.colorpickerlibrary.util.OutputColors
@@ -115,30 +114,28 @@ class SquareViewUnitTests {
     @Test
     fun should_updatePreview_when_colorAndShadeChanged() {
       moveSeekBarTo(inputParams.colorProgress, colorSliderSeekBar)
-      moveThumbToMatchShadeRatio(inputParams.shadeRatio, picker)
+      moveThumbToPosition(0.0, inputParams.shadeRatio, square)
       checkPreviewColorIs(expected.shadedColor, preview)
     }
 
     @Test
     fun should_updatePreview_when_colorAndTintChanged() {
       moveSeekBarTo(inputParams.colorProgress, colorSliderSeekBar)
-      moveThumbToMatchTintRatio(inputParams.tintRatio, picker)
+      moveThumbToPosition(inputParams.tintRatio, 0.0, square)
       checkPreviewColorIs(expected.tintedColor, preview)
     }
 
     @Test
     fun should_updatePreview_when_colorAndShadeAndTintChanged() {
       moveSeekBarTo(inputParams.colorProgress, colorSliderSeekBar)
-      moveThumbToMatchShadeRatio(inputParams.shadeRatio, picker)
-      moveThumbToMatchTintRatio(inputParams.tintRatio, picker)
+      moveThumbToPosition(inputParams.tintRatio, inputParams.shadeRatio, square)
       checkPreviewColorIs(expected.shadedAndTintedColor, preview)
     }
 
     @Test
     fun should_moveThumbToTappedPosition_when_squareTapped() {
-      moveThumbToMatchShadeRatio(inputParams.shadeRatio, picker)
-      moveThumbToMatchTintRatio(inputParams.tintRatio, picker)
-      checkThumbPositionIs(inputParams.shadeRatio, inputParams.tintRatio, picker)
+      moveThumbToPosition(inputParams.tintRatio, inputParams.shadeRatio, square)
+      checkThumbPositionIs(inputParams.tintRatio, inputParams.shadeRatio, picker)
     }
 
     companion object {

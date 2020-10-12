@@ -8,7 +8,6 @@ import android.util.AttributeSet
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
-import android.view.ViewTreeObserver
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -91,7 +90,7 @@ abstract class AbstractLargeColorPickerView : AbstractColorPickerView {
   protected fun updateNewPreviewColor(color: Int) {
     if (isPreviewEnabled) {
       newColorPreview.setColorFilter(color)
-      newColorPreview.setTag(R.id.color_picker_library_preview_color_tag, color) // tagged for testing purposes
+      newColorPreview.setTag(R.id.color_picker_library_color_tag, color) // tagged for testing purposes
     }
   }
 
@@ -99,7 +98,7 @@ abstract class AbstractLargeColorPickerView : AbstractColorPickerView {
     if (isPreviewEnabled) {
       oldColor = color
       oldColorPreview.setColorFilter(color)
-      oldColorPreview.setTag(R.id.color_picker_library_preview_color_tag, color) // tagged for testing purposes
+      oldColorPreview.setTag(R.id.color_picker_library_color_tag, color) // tagged for testing purposes
     } else {
       Log.d(TAG, "setOldPreviewColor: preview not enabled")
     }

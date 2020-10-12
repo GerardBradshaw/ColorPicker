@@ -162,7 +162,7 @@ class CompactColorPickerView : AbstractColorPickerView {
 
   private fun ImageView.setColor(color: Int) {
     this.setColorFilter(color)
-    this.tag = color
+    this.setTag(R.id.color_picker_library_color_tag, color)
   }
 
   override fun updateThumbOnColorRatioChange() {
