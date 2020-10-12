@@ -48,14 +48,13 @@
     </FrameLayout>
 
 
-
     <!-- SLIDER -->
     <com.gerardbradshaw.colorpickerlibrary.util.ColorSliderView
-        android:id="@+id/compact_color_slider"
+        android:id="@+id/color_picker_library_compact_color_slider"
         style="@style/ColorPickerLibraryColorSliderInLinearLayoutStyle" />
 
     <!-- PREVIEW -->
     <ImageView
-        android:id="@+id/compact_preview"
+        android:id="@+id/color_picker_library_compact_preview"
         style="@style/ColorPickerLibraryPreviewStyle" />
 </LinearLayout>

@@ -17,7 +17,7 @@ object UnitTestUtil {
     seekBar.progress = progress
   }
 
-  fun checkPreviewChangedColorTo(color: Int, preview: ImageView) {
+  fun checkPreviewColorIs(color: Int, preview: ImageView) {
     val tag = preview.tag ?: fail("null tag")
     assertThat(tag as Int, equalTo(color))
   }

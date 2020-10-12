@@ -1,15 +1,13 @@
 package com.gerardbradshaw.colorpickerlibrary.compactview
 
-import android.app.Activity
-import android.view.LayoutInflater
-import android.view.View
 import android.widget.*
 import com.gerardbradshaw.colorpickerlibrary.R
 import com.gerardbradshaw.colorpickerlibrary.compactview.CompactViewUnitTestUtil.SliderType
 import com.gerardbradshaw.colorpickerlibrary.compactview.CompactViewUnitTestUtil.changeSliderTypeTo
+import com.gerardbradshaw.colorpickerlibrary.compactview.CompactViewUnitTestUtil.getLayout
 import com.gerardbradshaw.colorpickerlibrary.util.InputParams
 import com.gerardbradshaw.colorpickerlibrary.util.OutputColors
-import com.gerardbradshaw.colorpickerlibrary.util.UnitTestUtil.checkPreviewChangedColorTo
+import com.gerardbradshaw.colorpickerlibrary.util.UnitTestUtil.checkPreviewColorIs
 import com.gerardbradshaw.colorpickerlibrary.util.UnitTestUtil.checkSeekBarIsAtProgress
 import com.gerardbradshaw.colorpickerlibrary.util.UnitTestUtil.moveSeekBarTo
 import com.gerardbradshaw.colorpickerlibrary.util.UnitTestUtil.sliderMax
@@ -18,11 +16,9 @@ import org.junit.Test
 import org.junit.experimental.runners.Enclosed
 import org.junit.runner.RunWith
 import org.robolectric.ParameterizedRobolectricTestRunner
-import org.robolectric.Robolectric
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
 import kotlin.math.roundToInt
-
 
 @RunWith(Enclosed::class)
 class CompactViewUnitTests {
@@ -34,19 +30,13 @@ class CompactViewUnitTests {
   class SingleTests {
 
     private lateinit var seekBar: SeekBar
-    private lateinit var listener: View
     private lateinit var menu: FrameLayout
 
     @Before
     fun setUp() {
-      val activityController = Robolectric.buildActivity(Activity::class.java)
-
-      val layout = LayoutInflater
-        .from(activityController.get())
-        .inflate(R.layout.color_picker_library_activity_layout_with_compact_view, null) as LinearLayout
+      val layout = getLayout()
 
       seekBar = layout.findViewById(R.id.color_picker_library_slider_seek_bar)
-      listener = layout.findViewById(R.id.color_picker_library_example_listener)
       menu = layout.findViewById(R.id.color_picker_library_compact_menu_frame)
     }
 
@@ -93,15 +83,11 @@ class CompactViewUnitTests {
 
     @Before
     fun setUp() {
-      val activityController = Robolectric.buildActivity(Activity::class.java)
-
-      val layout = LayoutInflater
-        .from(activityController.get())
-        .inflate(R.layout.color_picker_library_activity_layout_with_compact_view, null) as LinearLayout
+      val layout = getLayout()
 
       seekBar = layout.findViewById(R.id.color_picker_library_slider_seek_bar)
       menu = layout.findViewById(R.id.color_picker_library_compact_menu_frame)
-      preview = layout.findViewById(R.id.compact_preview)
+      preview = layout.findViewById(R.id.color_picker_library_compact_preview)
     }
 
 
@@ -110,7 +96,7 @@ class CompactViewUnitTests {
     @Test
     fun should_updatePreview_when_onlyColorSliderProgressChanged() {
       moveSeekBarTo(inputParams.colorProgress, seekBar)
-      checkPreviewChangedColorTo(expected.pureColor, preview)
+      checkPreviewColorIs(expected.pureColor, preview)
     }
 
     @Test
@@ -120,7 +106,7 @@ class CompactViewUnitTests {
       changeSliderTypeTo(SliderType.SHADE, menu)
       moveSeekBarTo(inputParams.shadeProgress, seekBar)
 
-      checkPreviewChangedColorTo(expected.shadedColor, preview)
+      checkPreviewColorIs(expected.shadedColor, preview)
     }
 
     @Test
@@ -130,7 +116,7 @@ class CompactViewUnitTests {
       changeSliderTypeTo(SliderType.TINT, menu)
       moveSeekBarTo(inputParams.tintProgress, seekBar)
 
-      checkPreviewChangedColorTo(expected.tintedColor, preview)
+      checkPreviewColorIs(expected.tintedColor, preview)
     }
 
     @Test
@@ -143,7 +129,7 @@ class CompactViewUnitTests {
       changeSliderTypeTo(SliderType.TINT, menu)
       moveSeekBarTo(inputParams.tintProgress, seekBar)
 
-      checkPreviewChangedColorTo(expected.shadedAndTintedColor, preview)
+      checkPreviewColorIs(expected.shadedAndTintedColor, preview)
     }
 
 
@@ -192,13 +178,21 @@ class CompactViewUnitTests {
           InputParams(colorProgress, shadeProgress, tintProgress)
         }
 
-        val pureColors: Array<Int> = arrayOf(-65536, -256, -16711936, -16711681, -16776961, -65281, -65535)
-        val shadedColors: Array<Int> = arrayOf(-16777216, - 13948160, - 16755456, - 16744320, - 16777046, - 2883372, - 65535)
-        val tintedColors: Array<Int> = arrayOf(-65536, - 1, - 2752555, - 5570561, - 8355585, - 43521, - 54485)
-        val shadedAndTintedColors: Array<Int> = arrayOf(-16777216, - 13948117, - 12102329, - 11173760, - 11184726, - 2865196, - 54485)
+        val pureColors: Array<Int> = arrayOf(
+          -65536, -256, -16711936, -16711681, -16776961, -65281, -65535)
+
+        val shadedColors: Array<Int> = arrayOf(
+          -16777216, - 13948160, - 16755456, - 16744320, - 16777046, - 2883372, - 65535)
+
+        val tintedColors: Array<Int> = arrayOf(
+          -65536, - 1, - 2752555, - 5570561, - 8355585, - 43521, - 54485)
+
+        val shadedAndTintedColors: Array<Int> = arrayOf(
+          -16777216, - 13948117, - 12102329, - 11173760, - 11184726, - 2865196, - 54485)
 
         val expectedOutputs = Array<Any>(7) {
-          OutputColors(pureColors[it], shadedColors[it], tintedColors[it], shadedAndTintedColors[it])
+          OutputColors(
+            pureColors[it], shadedColors[it], tintedColors[it], shadedAndTintedColors[it])
         }
 
         return Array(7) {

@@ -74,7 +74,7 @@ class CompactColorPickerView : AbstractColorPickerView {
   }
 
   private fun initSlider() {
-    slider = findViewById(R.id.compact_color_slider)
+    slider = findViewById(R.id.color_picker_library_compact_color_slider)
 
     slider.setOnProgressChangedListener(object : ColorSliderView.OnProgressChangedListener {
       override fun onProgressChanged(progress: Double) {
@@ -102,7 +102,7 @@ class CompactColorPickerView : AbstractColorPickerView {
   }
 
   private fun initPreview() {
-    preview = findViewById(R.id.compact_preview)
+    preview = findViewById(R.id.color_picker_library_compact_preview)
     if (isPreviewEnabled) preview.setColor(getCurrentColor())
     else preview.visibility = View.GONE
   }
