@@ -4,7 +4,7 @@ import android.graphics.Color
 import kotlin.math.max
 import kotlin.math.roundToInt
 
-class OutputColors {
+internal class ParamTestOutput {
 
   // -------------------- PROPERTIES --------------------
   val pureColor: Int
@@ -23,7 +23,7 @@ class OutputColors {
     this.shadedAndTintedColor = shadedAndTintedColor
   }
 
-  constructor(pureColor: Int, inputParams: InputParams) {
+  constructor(pureColor: Int, inputParams: ParamTestInput) {
     this.pureColor = pureColor
     shadedColor = getShadedColor(pureColor, inputParams.shadeRatio)
     tintedColor = getTintedColor(pureColor, inputParams.tintRatio)

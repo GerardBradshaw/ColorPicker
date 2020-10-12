@@ -13,7 +13,7 @@ internal class SquareActivity : AppCompatActivity(), AbstractColorPickerView.Col
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    setContentView(R.layout.color_picker_library_activity_square)
+    setContentView(R.layout.color_picker_library_activity_square_example)
 
     picker = findViewById(R.id.color_picker_library_example_square_picker)
     listener = findViewById(R.id.color_picker_library_example_listener)

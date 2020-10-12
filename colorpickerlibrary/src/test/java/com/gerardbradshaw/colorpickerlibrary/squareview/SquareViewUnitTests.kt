@@ -9,8 +9,8 @@ import com.gerardbradshaw.colorpickerlibrary.squareview.SquareViewUnitTestUtil.c
 import com.gerardbradshaw.colorpickerlibrary.squareview.SquareViewUnitTestUtil.getLayout
 import com.gerardbradshaw.colorpickerlibrary.squareview.SquareViewUnitTestUtil.moveThumbToPosition
 import com.gerardbradshaw.colorpickerlibrary.squareview.SquareViewUnitTestUtil.setOldPreviewColorTo
-import com.gerardbradshaw.colorpickerlibrary.util.InputParams
-import com.gerardbradshaw.colorpickerlibrary.util.OutputColors
+import com.gerardbradshaw.colorpickerlibrary.util.ParamTestInput
+import com.gerardbradshaw.colorpickerlibrary.util.ParamTestOutput
 import com.gerardbradshaw.colorpickerlibrary.util.UnitTestUtil
 import com.gerardbradshaw.colorpickerlibrary.util.UnitTestUtil.checkPreviewColorIs
 import com.gerardbradshaw.colorpickerlibrary.util.UnitTestUtil.checkSeekBarIsAtProgress
@@ -26,7 +26,7 @@ import org.robolectric.annotation.Config
 import kotlin.math.roundToInt
 
 @RunWith(Enclosed::class)
-class SquareViewUnitTests {
+internal class SquareViewUnitTests {
 
   // ---------------- SINGLE RUN TESTS ----------------
 
@@ -81,8 +81,8 @@ class SquareViewUnitTests {
   @RunWith(ParameterizedRobolectricTestRunner::class)
   @Config(sdk = [28])
   class ParameterizedTests(
-    private val inputParams: InputParams,
-    private val expected: OutputColors
+    private val inputParams: ParamTestInput,
+    private val expected: ParamTestOutput
   ) {
     private lateinit var picker: SquareColorPickerView
     private lateinit var square: FrameLayout
@@ -154,7 +154,7 @@ class SquareViewUnitTests {
               else -> ((UnitTestUtil.sliderMax.toDouble() / 6.0) + shadeProgress).roundToInt()
             }
 
-          InputParams(colorProgress, shadeProgress, tintProgress)
+          ParamTestInput(colorProgress, shadeProgress, tintProgress)
         }
 
         val pureColors: Array<Int> = arrayOf(
@@ -170,7 +170,7 @@ class SquareViewUnitTests {
           -16777216, -13948117, -12102329, -11173760, -11184726, -2865196, -54485)
 
         val expectedOutputs = Array<Any>(7) {
-          OutputColors(
+          ParamTestOutput(
             pureColors[it], shadedColors[it], tintedColors[it], shadedAndTintedColors[it])
         }
 

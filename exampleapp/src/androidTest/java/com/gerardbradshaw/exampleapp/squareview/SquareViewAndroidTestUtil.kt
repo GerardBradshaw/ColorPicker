@@ -9,7 +9,6 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers.allOf
 
-
 object SquareViewAndroidTestUtil {
   fun moveThumbTo(xRatio: Double, yRatio: Double, squareResId: Int) {
     onView(allOf(withId(squareResId), isDisplayed()))

@@ -7,8 +7,8 @@ import com.gerardbradshaw.exampleapp.util.AndroidTestUtil.moveSeekBarTo
 import com.gerardbradshaw.exampleapp.compactview.CompactViewAndroidTestUtil.SliderType
 import com.gerardbradshaw.exampleapp.compactview.CompactViewAndroidTestUtil.changeSliderTypeTo
 import com.gerardbradshaw.exampleapp.util.AndroidTestUtil.getParamaterizedTestParams
-import com.gerardbradshaw.exampleapp.util.InputParams
-import com.gerardbradshaw.exampleapp.util.OutputColors
+import com.gerardbradshaw.exampleapp.util.ParamTestInput
+import com.gerardbradshaw.exampleapp.util.ParamTestOutput
 import org.junit.Rule
 import org.junit.Test
 import org.junit.experimental.runners.Enclosed
@@ -17,17 +17,19 @@ import org.junit.runners.Parameterized
 
 
 @RunWith(Enclosed::class)
-class CompactViewAndroidTest {
+internal class CompactViewAndroidTest {
 
   // ---------------- PARAMETERIZED TESTS ----------------
 
   @RunWith(Parameterized::class)
-  class ParameterizedTests(private val inputs: InputParams, private val expected: OutputColors) {
+  class ParameterizedTests(
+    private val inputs: ParamTestInput,
+    private val expected: ParamTestOutput
+  ) {
 
     @Rule
     @JvmField
-    val asr = ActivityScenarioRule<CompactViewActivity>(
-      CompactViewActivity::class.java)
+    val asr = ActivityScenarioRule<CompactViewActivity>(CompactViewActivity::class.java)
 
 
     // ---------------- LISTENER ----------------

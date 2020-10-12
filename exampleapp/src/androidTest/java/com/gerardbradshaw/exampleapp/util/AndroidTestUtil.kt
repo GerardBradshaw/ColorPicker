@@ -205,7 +205,7 @@ object AndroidTestUtil {
           else -> ((sliderMax.toDouble() / 6.0) + shadeProgress).roundToInt()
         }
 
-      InputParams(colorProgress, shadeProgress, tintProgress)
+      ParamTestInput(colorProgress, shadeProgress, tintProgress)
     }
 
     val pureColors: Array<Int> = arrayOf(
@@ -221,7 +221,7 @@ object AndroidTestUtil {
       -16777216, - 13948117, - 12102329, - 11173760, - 11184726, - 2865196, - 54485)
 
     val expectedOutputs = Array<Any>(7) {
-      OutputColors(pureColors[it], shadedColors[it], tintedColors[it], shadedAndTintedColors[it])
+      ParamTestOutput(pureColors[it], shadedColors[it], tintedColors[it], shadedAndTintedColors[it])
     }
 
     return Array(7) {
