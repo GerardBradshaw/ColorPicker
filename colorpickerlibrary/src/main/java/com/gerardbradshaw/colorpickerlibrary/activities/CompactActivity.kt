@@ -1,20 +1,21 @@
-package com.gerardbradshaw.colorpicker
+package com.gerardbradshaw.colorpickerlibrary.activities
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import com.gerardbradshaw.colorpickerlibrary.R
 import com.gerardbradshaw.colorpickerlibrary.views.AbstractColorPickerView
 
-class CompactViewActivity : AppCompatActivity(), AbstractColorPickerView.ColorChangedListener {
+internal class CompactActivity : AppCompatActivity(), AbstractColorPickerView.ColorChangedListener {
 
   private lateinit var picker: AbstractColorPickerView
   private lateinit var listener: View
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    setContentView(R.layout.activity_compact_view)
+    setContentView(R.layout.color_picker_library_activity_compact)
 
-    picker = findViewById(R.id.example_compact_picker)
+    picker = findViewById(R.id.color_picker_library_example_compact_picker)
     listener = findViewById(R.id.color_picker_library_example_listener)
 
     picker.setOnColorSelectedListener(this)

@@ -1,6 +1,7 @@
-package com.gerardbradshaw.colorpickerlibrary.util
+package com.gerardbradshaw.colorpicker.util
 
 import android.graphics.Color
+import com.gerardbradshaw.colorpicker.util.InputParams
 import kotlin.math.max
 import kotlin.math.roundToInt
 

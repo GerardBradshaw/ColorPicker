@@ -19,8 +19,6 @@ import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.util.HumanReadables
 import androidx.test.internal.util.Checks
 import com.gerardbradshaw.colorpicker.R
-import com.gerardbradshaw.colorpickerlibrary.util.InputParams
-import com.gerardbradshaw.colorpickerlibrary.util.OutputColors
 import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.hamcrest.MatcherAssert
@@ -158,7 +156,7 @@ object AndroidTestUtil {
   // ---------------- LISTENER ----------------
 
   fun checkListenerChangedColorTo(color: Int) {
-    onView(allOf(withId(R.id.example_listener), isDisplayed()))
+    onView(allOf(withId(R.id.color_picker_library_example_listener), isDisplayed()))
       .check(matches(hasDrawableBackgroundColor(color)))
   }
 

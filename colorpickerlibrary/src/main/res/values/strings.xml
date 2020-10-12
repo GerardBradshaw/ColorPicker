@@ -3,5 +3,6 @@
     <string name="color_picker_library_tint">Tint</string>
     <string name="color_picker_library_shade">Shade</string>
 
+    <string name="listening_for_changes">I\'m listening for color changes!</string>
     <item type="id" name="color_picker_library_color_tag" />
 </resources>

@@ -1,6 +1,6 @@
 package com.gerardbradshaw.colorpickerlibrary.util
 
-data class InputParams(
+internal data class InputParams(
   val colorProgress: Int,
   val shadeProgress: Int,
   val tintProgress: Int,

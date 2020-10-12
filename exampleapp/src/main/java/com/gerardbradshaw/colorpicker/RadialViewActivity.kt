@@ -17,7 +17,7 @@ class RadialViewActivity : AppCompatActivity(), AbstractColorPickerView.ColorCha
     picker = findViewById(R.id.example_radial_picker)
     picker.setOnColorSelectedListener(this)
 
-    listener = findViewById(R.id.example_listener)
+    listener = findViewById(R.id.color_picker_library_example_listener)
   }
 
 

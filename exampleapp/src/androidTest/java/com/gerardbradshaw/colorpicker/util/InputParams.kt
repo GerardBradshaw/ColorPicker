@@ -1,4 +1,4 @@
-package com.gerardbradshaw.colorpickerlibrary.util
+package com.gerardbradshaw.colorpicker.util
 
 data class InputParams(
   val colorProgress: Int,
