@@ -1,13 +1,13 @@
-package com.gerardbradshaw.colorpicker.squareview
+package com.gerardbradshaw.exampleapp.squareview
 
 
 import androidx.test.ext.junit.rules.ActivityScenarioRule
-import com.gerardbradshaw.colorpicker.R
-import com.gerardbradshaw.colorpicker.SquareViewActivity
-import com.gerardbradshaw.colorpicker.util.AndroidTestUtil.checkPreviewChangedColorTo
-import com.gerardbradshaw.colorpicker.util.AndroidTestUtil.moveSeekBarTo
-import com.gerardbradshaw.colorpicker.squareview.SquareViewAndroidTestUtil.moveThumbTo
-import com.gerardbradshaw.colorpicker.util.AndroidTestUtil.getParamaterizedTestParams
+import com.gerardbradshaw.exampleapp.R
+import com.gerardbradshaw.exampleapp.SquareViewActivity
+import com.gerardbradshaw.exampleapp.util.AndroidTestUtil.checkPreviewChangedColorTo
+import com.gerardbradshaw.exampleapp.util.AndroidTestUtil.moveSeekBarTo
+import com.gerardbradshaw.exampleapp.squareview.SquareViewAndroidTestUtil.moveThumbTo
+import com.gerardbradshaw.exampleapp.util.AndroidTestUtil.getParamaterizedTestParams
 import com.gerardbradshaw.colorpickerlibrary.util.InputParams
 import com.gerardbradshaw.colorpickerlibrary.util.OutputColors
 import org.junit.Rule
@@ -20,7 +20,8 @@ class SquareViewAndroidTest(private val input: InputParams, private val expected
 
   @Rule
   @JvmField
-  val asr = ActivityScenarioRule<SquareViewActivity>(SquareViewActivity::class.java)
+  val asr = ActivityScenarioRule<SquareViewActivity>(
+    SquareViewActivity::class.java)
 
 
 

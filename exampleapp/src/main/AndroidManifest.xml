@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.gerardbradshaw.colorpicker">
+    package="com.gerardbradshaw.exampleapp">
 
     <application
         android:allowBackup="true"
@@ -9,10 +9,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".RadialViewActivity"></activity>
-        <activity android:name=".SquareViewActivity" />
-        <activity android:name=".CompactViewActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name="com.gerardbradshaw.exampleapp.RadialViewActivity"></activity>
+        <activity android:name="com.gerardbradshaw.exampleapp.SquareViewActivity" />
+        <activity android:name="com.gerardbradshaw.exampleapp.CompactViewActivity" />
+        <activity android:name="com.gerardbradshaw.exampleapp.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

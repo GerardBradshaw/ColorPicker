@@ -1,4 +1,4 @@
-package com.gerardbradshaw.colorpicker
+package com.gerardbradshaw.exampleapp
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

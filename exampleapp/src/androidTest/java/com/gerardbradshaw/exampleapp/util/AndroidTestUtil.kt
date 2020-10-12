@@ -1,4 +1,4 @@
-package com.gerardbradshaw.colorpicker.util
+package com.gerardbradshaw.exampleapp.util
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -18,7 +18,7 @@ import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.espresso.util.HumanReadables
 import androidx.test.internal.util.Checks
-import com.gerardbradshaw.colorpicker.R
+import com.gerardbradshaw.exampleapp.R
 import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.hamcrest.MatcherAssert

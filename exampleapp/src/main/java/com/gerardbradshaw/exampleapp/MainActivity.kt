@@ -1,4 +1,4 @@
-package com.gerardbradshaw.colorpicker
+package com.gerardbradshaw.exampleapp
 
 import android.content.Intent
 import android.os.Bundle

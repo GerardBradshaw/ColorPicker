@@ -1,14 +1,14 @@
-package com.gerardbradshaw.colorpicker.compactview
+package com.gerardbradshaw.exampleapp.compactview
 
 import androidx.test.ext.junit.rules.ActivityScenarioRule
-import com.gerardbradshaw.colorpicker.CompactViewActivity
-import com.gerardbradshaw.colorpicker.util.AndroidTestUtil.checkListenerChangedColorTo
-import com.gerardbradshaw.colorpicker.util.AndroidTestUtil.moveSeekBarTo
-import com.gerardbradshaw.colorpicker.compactview.CompactViewAndroidTestUtil.SliderType
-import com.gerardbradshaw.colorpicker.compactview.CompactViewAndroidTestUtil.changeSliderTypeTo
-import com.gerardbradshaw.colorpicker.util.AndroidTestUtil.getParamaterizedTestParams
-import com.gerardbradshaw.colorpickerlibrary.util.InputParams
-import com.gerardbradshaw.colorpickerlibrary.util.OutputColors
+import com.gerardbradshaw.exampleapp.CompactViewActivity
+import com.gerardbradshaw.exampleapp.util.AndroidTestUtil.checkListenerChangedColorTo
+import com.gerardbradshaw.exampleapp.util.AndroidTestUtil.moveSeekBarTo
+import com.gerardbradshaw.exampleapp.compactview.CompactViewAndroidTestUtil.SliderType
+import com.gerardbradshaw.exampleapp.compactview.CompactViewAndroidTestUtil.changeSliderTypeTo
+import com.gerardbradshaw.exampleapp.util.AndroidTestUtil.getParamaterizedTestParams
+import com.gerardbradshaw.exampleapp.util.InputParams
+import com.gerardbradshaw.exampleapp.util.OutputColors
 import org.junit.Rule
 import org.junit.Test
 import org.junit.experimental.runners.Enclosed
@@ -26,7 +26,8 @@ class CompactViewAndroidTest {
 
     @Rule
     @JvmField
-    val asr = ActivityScenarioRule<CompactViewActivity>(CompactViewActivity::class.java)
+    val asr = ActivityScenarioRule<CompactViewActivity>(
+      CompactViewActivity::class.java)
 
 
     // ---------------- LISTENER ----------------

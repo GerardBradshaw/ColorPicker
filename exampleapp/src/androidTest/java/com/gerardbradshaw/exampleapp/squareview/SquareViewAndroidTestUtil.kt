@@ -1,4 +1,4 @@
-package com.gerardbradshaw.colorpicker.squareview
+package com.gerardbradshaw.exampleapp.squareview
 
 import android.view.View
 import androidx.test.espresso.Espresso.onView
