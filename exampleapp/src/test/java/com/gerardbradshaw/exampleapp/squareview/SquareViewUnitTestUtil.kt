@@ -1,18 +1,16 @@
-package com.gerardbradshaw.colorpickerlibrary.squareview
+package com.gerardbradshaw.exampleapp.squareview
 
 import android.app.Activity
 import android.os.SystemClock
 import android.view.LayoutInflater
 import android.view.MotionEvent
-import android.view.View
-import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
 import com.gerardbradshaw.colorpickerlibrary.R
 import com.gerardbradshaw.colorpickerlibrary.views.SquareColorPickerView
-import org.hamcrest.MatcherAssert.assertThat
-import org.hamcrest.Matchers.*
+import org.hamcrest.MatcherAssert
+import org.hamcrest.Matchers
 import org.robolectric.Robolectric
 
 internal object SquareViewUnitTestUtil {
@@ -20,11 +18,9 @@ internal object SquareViewUnitTestUtil {
   fun getLayout(): LinearLayout {
     val activityController = Robolectric.buildActivity(Activity::class.java)
 
-    val layout = LayoutInflater
+    return LayoutInflater
       .from(activityController.get())
       .inflate(R.layout.color_picker_library_activity_square_example, null) as LinearLayout
-
-    return layout
   }
 
   fun moveThumbToPosition(xRatio: Double, yRatio: Double, square: FrameLayout) {
@@ -50,12 +46,15 @@ internal object SquareViewUnitTestUtil {
 
     val thumb: ImageView = picker.findViewById(R.id.color_picker_library_large_thumb)
 
-    assertThat(thumb.x, equalTo(x))
-    assertThat(thumb.y, equalTo(y))
+    MatcherAssert.assertThat(thumb.x, Matchers.equalTo(x))
+    MatcherAssert.assertThat(thumb.y, Matchers.equalTo(y))
   }
 
   fun checkSquareGradientColorIs(color: Int, square: FrameLayout) {
-    assertThat(square.getTag(R.id.color_picker_library_color_tag) as Int, equalTo(color))
+    MatcherAssert.assertThat(
+      square.getTag(R.id.color_picker_library_color_tag) as Int,
+      Matchers.equalTo(color)
+    )
   }
 
   fun setOldPreviewColorTo(color: Int, picker: SquareColorPickerView) {

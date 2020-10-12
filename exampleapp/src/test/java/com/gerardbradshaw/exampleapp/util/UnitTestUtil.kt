@@ -1,11 +1,11 @@
-package com.gerardbradshaw.colorpickerlibrary.util
+package com.gerardbradshaw.exampleapp.util
 
 import android.widget.ImageView
 import android.widget.SeekBar
 import com.gerardbradshaw.colorpickerlibrary.R
-import org.hamcrest.MatcherAssert.assertThat
-import org.hamcrest.Matchers.*
-import org.junit.Assert.fail
+import org.hamcrest.MatcherAssert
+import org.hamcrest.Matchers
+import org.junit.Assert
 
 internal object UnitTestUtil {
 
@@ -19,12 +19,12 @@ internal object UnitTestUtil {
   }
 
   fun checkPreviewColorIs(color: Int, preview: ImageView) {
-    val tag = preview.getTag(R.id.color_picker_library_color_tag) ?: fail("null tag")
-    assertThat(tag as Int, equalTo(color))
+    val tag = preview.getTag(R.id.color_picker_library_color_tag) ?: Assert.fail("null tag")
+    MatcherAssert.assertThat(tag as Int, Matchers.equalTo(color))
   }
 
   fun checkSeekBarIsAtProgress(progress: Int, seekBar: SeekBar) {
-    assertThat(seekBar.progress, equalTo(progress))
+    MatcherAssert.assertThat(seekBar.progress, Matchers.equalTo(progress))
   }
 
   fun getHexString(color: Int): String {

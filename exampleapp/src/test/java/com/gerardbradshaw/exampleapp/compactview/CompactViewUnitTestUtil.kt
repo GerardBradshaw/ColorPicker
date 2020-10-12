@@ -1,13 +1,11 @@
-package com.gerardbradshaw.colorpickerlibrary.compactview
+package com.gerardbradshaw.exampleapp.compactview
 
 import android.app.Activity
 import android.view.LayoutInflater
 import android.view.Menu
-import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import com.gerardbradshaw.colorpickerlibrary.R
-import com.gerardbradshaw.colorpickerlibrary.views.CompactColorPickerView
 import org.robolectric.Robolectric
 import org.robolectric.shadows.ShadowPopupMenu
 
@@ -15,21 +13,12 @@ internal object CompactViewUnitTestUtil {
 
   // -------------------- PUBLIC METHODS --------------------
 
-  fun getLayout(): LinearLayout  {
+  fun getLayout(): LinearLayout {
     val activityController = Robolectric.buildActivity(Activity::class.java)
 
-    val layout = LayoutInflater
+    return LayoutInflater
       .from(activityController.get())
       .inflate(R.layout.color_picker_library_activity_compact_example, null) as LinearLayout
-
-    val picker = CompactColorPickerView(layout.context)
-    picker.layoutParams = ViewGroup.LayoutParams(
-      ViewGroup.LayoutParams.MATCH_PARENT,
-      ViewGroup.LayoutParams.WRAP_CONTENT)
-
-    layout.addView(picker)
-
-    return layout
   }
 
   fun changeSliderTypeTo(slider: SliderType, menuFrame: FrameLayout) {
