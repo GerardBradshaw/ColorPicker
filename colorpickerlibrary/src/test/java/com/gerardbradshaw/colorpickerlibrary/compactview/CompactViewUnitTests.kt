@@ -46,7 +46,7 @@ class CompactViewUnitTests {
         .inflate(R.layout.color_picker_library_activity_layout_with_compact_view, null) as LinearLayout
 
       seekBar = layout.findViewById(R.id.color_picker_library_slider_seek_bar)
-      listener = layout.findViewById(R.id.color_picker_library_ex_compact_listener)
+      listener = layout.findViewById(R.id.color_picker_library_example_listener)
       menu = layout.findViewById(R.id.color_picker_library_compact_menu_frame)
     }
 

@@ -28,13 +28,13 @@ class SquareViewAndroidTest(private val input: InputParams, private val expected
 
   @Test
   fun should_updatePreview_when_colorSliderProgressChanged() {
-    moveSeekBarTo(input.colorProgress, R.id.color_picker_library_slider_seek_bar)
+    moveSeekBarTo(input.colorProgress)
     checkPreviewChangedColorTo(expected.pureColor, R.id.color_picker_library_large_preview_new)
   }
 
   @Test
   fun should_updatePreview_when_colorAndShadeProgressChanged() {
-    moveSeekBarTo(input.colorProgress, R.id.color_picker_library_slider_seek_bar)
+    moveSeekBarTo(input.colorProgress)
     moveThumbTo(input.tintRatio, input.shadeRatio, R.id.color_picker_library_large_color_window)
     checkPreviewChangedColorTo(expected.shadedColor, R.id.color_picker_library_large_preview_new)
   }

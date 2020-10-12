@@ -6,11 +6,11 @@
     style="@style/MyExampleLayoutStyle">
 
     <TextView
-        android:id="@+id/ex_compact_listener"
+        android:id="@+id/example_listener"
         style="@style/ColorChangeListenerStyle"/>
 
     <com.gerardbradshaw.colorpickerlibrary.views.CompactColorPickerView
-        android:id="@+id/ex_compact_picker"
+        android:id="@+id/example_compact_picker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:enablePreview="true"

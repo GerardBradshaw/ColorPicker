@@ -14,8 +14,8 @@ class SquareViewActivity : AppCompatActivity(), AbstractColorPickerView.ColorCha
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_square_view)
 
-    picker = findViewById(R.id.ex_square_picker)
-    listener = findViewById(R.id.ex_square_listener)
+    picker = findViewById(R.id.example_square_picker)
+    listener = findViewById(R.id.example_listener)
 
     picker.setOnColorSelectedListener(this)
   }

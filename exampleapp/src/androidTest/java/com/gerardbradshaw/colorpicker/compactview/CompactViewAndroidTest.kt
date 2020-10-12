@@ -34,41 +34,41 @@ class CompactViewAndroidTest {
 
     @Test
     fun should_notifyListener_when_allSliderProgressChanged() {
-      moveSeekBarTo(inputs.colorProgress, R.id.color_picker_library_slider_seek_bar)
+      moveSeekBarTo(inputs.colorProgress)
 
-      changeSliderTypeTo(SliderType.SHADE, R.id.color_picker_library_compact_menu_frame)
-      moveSeekBarTo(inputs.shadeProgress, R.id.color_picker_library_slider_seek_bar)
+      changeSliderTypeTo(SliderType.SHADE)
+      moveSeekBarTo(inputs.shadeProgress)
 
-      changeSliderTypeTo(SliderType.TINT, R.id.color_picker_library_compact_menu_frame)
-      moveSeekBarTo(inputs.tintProgress, R.id.color_picker_library_slider_seek_bar)
+      changeSliderTypeTo(SliderType.TINT)
+      moveSeekBarTo(inputs.tintProgress)
 
-      checkListenerChangedColorTo(expected.shadedAndTintedColor, R.id.color_picker_library_ex_compact_listener)
+      checkListenerChangedColorTo(expected.shadedAndTintedColor)
     }
 
     @Test
     fun should_notifyListener_when_onlyColorSliderPositionChanged() {
-      moveSeekBarTo(inputs.colorProgress, R.id.color_picker_library_slider_seek_bar)
-      checkListenerChangedColorTo(expected.pureColor, R.id.color_picker_library_ex_compact_listener)
+      moveSeekBarTo(inputs.colorProgress)
+      checkListenerChangedColorTo(expected.pureColor)
     }
 
     @Test
     fun should_notifyListener_when_colorAndShadeSliderProgressChanged() {
-      moveSeekBarTo(inputs.colorProgress, R.id.color_picker_library_slider_seek_bar)
+      moveSeekBarTo(inputs.colorProgress)
 
-      changeSliderTypeTo(SliderType.SHADE, R.id.color_picker_library_compact_menu_frame)
-      moveSeekBarTo(inputs.shadeProgress, R.id.color_picker_library_slider_seek_bar)
+      changeSliderTypeTo(SliderType.SHADE)
+      moveSeekBarTo(inputs.shadeProgress)
 
-      checkListenerChangedColorTo(expected.shadedColor, R.id.color_picker_library_ex_compact_listener)
+      checkListenerChangedColorTo(expected.shadedColor)
     }
 
     @Test
     fun should_notifyListener_when_colorAndTintSliderProgressChanged() {
-      moveSeekBarTo(inputs.colorProgress, R.id.color_picker_library_slider_seek_bar)
+      moveSeekBarTo(inputs.colorProgress)
 
-      changeSliderTypeTo(SliderType.TINT, R.id.color_picker_library_compact_menu_frame)
-      moveSeekBarTo(inputs.tintProgress, R.id.color_picker_library_slider_seek_bar)
+      changeSliderTypeTo(SliderType.TINT)
+      moveSeekBarTo(inputs.tintProgress)
 
-      checkListenerChangedColorTo(expected.tintedColor, R.id.color_picker_library_ex_compact_listener)
+      checkListenerChangedColorTo(expected.tintedColor)
     }
 
 

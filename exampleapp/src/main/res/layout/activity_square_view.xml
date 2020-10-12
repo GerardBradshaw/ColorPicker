@@ -6,11 +6,11 @@
     style="@style/MyExampleLayoutStyle">
 
     <TextView
-        android:id="@+id/ex_square_listener"
+        android:id="@+id/example_listener"
         style="@style/ColorChangeListenerStyle"/>
 
     <com.gerardbradshaw.colorpickerlibrary.views.SquareColorPickerView
-        android:id="@+id/ex_square_picker"
+        android:id="@+id/example_square_picker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:enablePreview="true"

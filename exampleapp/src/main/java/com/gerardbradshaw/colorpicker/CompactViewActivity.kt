@@ -14,13 +14,20 @@ class CompactViewActivity : AppCompatActivity(), AbstractColorPickerView.ColorCh
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_compact_view)
 
-    picker = findViewById(R.id.ex_compact_picker)
-    listener = findViewById(R.id.ex_compact_listener)
+    picker = findViewById(R.id.example_compact_picker)
+    listener = findViewById(R.id.example_listener)
 
     picker.setOnColorSelectedListener(this)
+
+    updateListenerColor(picker.getCurrentColor())
   }
 
   override fun onColorChanged(color: Int) {
+    updateListenerColor(color)
+  }
+
+  private fun updateListenerColor(color: Int) {
+    listener.tag = color
     listener.setBackgroundColor(color)
   }
 }

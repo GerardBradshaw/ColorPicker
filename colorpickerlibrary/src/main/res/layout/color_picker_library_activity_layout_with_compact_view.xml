@@ -9,7 +9,7 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/color_picker_library_ex_compact_listener"
+        android:id="@+id/color_picker_library_example_listener"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
@@ -18,7 +18,7 @@
         android:gravity="center"/>
 
     <com.gerardbradshaw.colorpickerlibrary.views.CompactColorPickerView
-        android:id="@+id/color_picker_library_ex_compact_picker"
+        android:id="@+id/color_picker_library_example_compact_picker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:enablePreview="true"
