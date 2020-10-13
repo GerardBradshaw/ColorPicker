@@ -16,7 +16,8 @@ class ColorSliderView : FrameLayout {
 
   constructor(context: Context) : super(context)
   constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
-  constructor(context: Context, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle)
+  constructor(context: Context, attrs: AttributeSet?, defStyle: Int) :
+      super(context, attrs, defStyle)
 
 
   // ------------------------ PROPERTIES ------------------------
@@ -25,13 +26,13 @@ class ColorSliderView : FrameLayout {
   private lateinit var seekBar: SeekBar
   private lateinit var gradientBar: FrameLayout
   private var listener: OnProgressChangedListener? = null
+  var sliderType: SliderType = SliderType.NOT_SET
 
 
   // ------------------------ INITIALIZATION ------------------------
 
   init {
-    View.inflate(context,
-      R.layout.color_picker_library_view_color_slider, this)
+    View.inflate(context, R.layout.color_picker_library_view_color_slider, this)
     initView()
   }
 
@@ -57,12 +58,25 @@ class ColorSliderView : FrameLayout {
   }
 
   fun setProgressRatio(progressRatio: Double) {
-    if (progressRatio > 1 || progressRatio < 0) Log.d(TAG, "setProgressRatio: invalid progress ratio ($progressRatio)")
+    if (progressRatio > 1 || progressRatio < 0) {
+      Log.d(TAG, "setProgressRatio: invalid progress ratio ($progressRatio)")
+    }
     seekBar.progress = (progressRatio * max).roundToInt()
   }
 
-  fun setGradientBarDrawable(drawable: Drawable) {
+  fun setUpGradientBar(
+    drawable: Drawable,
+    colorTag: Int,
+    sliderType: SliderType
+  ) {
     gradientBar.background = drawable
+    setTag(R.id.color_picker_library_color_tag, colorTag)
+    this.sliderType = sliderType
+  }
+
+  fun updateGradientDrawable(drawable: Drawable, colorTag: Int) {
+    gradientBar.background = drawable
+    setTag(R.id.color_picker_library_color_tag, colorTag)
   }
 
   fun setOnProgressChangedListener(listener: OnProgressChangedListener) {
@@ -80,4 +94,10 @@ class ColorSliderView : FrameLayout {
     private const val TAG = "ColorSliderView"
   }
 
+  enum class SliderType(val value: String) {
+    COLOR("Color"),
+    SHADE("Shade"),
+    TINT("Tint"),
+    NOT_SET("NotSet")
+  }
 }

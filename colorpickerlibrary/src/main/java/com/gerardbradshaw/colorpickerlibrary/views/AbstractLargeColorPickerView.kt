@@ -40,10 +40,12 @@ abstract class AbstractLargeColorPickerView : AbstractColorPickerView {
 
   protected fun initSlider(
     gradient: GradientDrawable,
+    colorTag: Int,
+    sliderTypeTag: ColorSliderView.SliderType,
     onProgressChangedListener: ColorSliderView.OnProgressChangedListener
   ) {
     slider = findViewById(R.id.color_picker_library_large_color_slider)
-    slider.setGradientBarDrawable(gradient)
+    slider.setUpGradientBar(gradient, colorTag, sliderTypeTag)
     slider.setOnProgressChangedListener(onProgressChangedListener)
   }
 
@@ -54,8 +56,7 @@ abstract class AbstractLargeColorPickerView : AbstractColorPickerView {
 
       newColorPreview = findViewById(R.id.color_picker_library_large_preview_new)
       updateNewPreviewColor(oldColor)
-    }
-    else {
+    } else {
       val previewContainer: LinearLayout =
         findViewById(R.id.color_picker_library_large_preview_container)
 

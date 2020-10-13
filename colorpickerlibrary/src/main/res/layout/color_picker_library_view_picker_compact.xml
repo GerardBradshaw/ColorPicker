@@ -51,7 +51,11 @@
     <!-- SLIDER -->
     <com.gerardbradshaw.colorpickerlibrary.util.ColorSliderView
         android:id="@+id/color_picker_library_compact_color_slider"
-        style="@style/ColorPickerLibraryColorSliderInLinearLayoutStyle" />
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginTop="12dp"
+        android:layout_marginBottom="12dp"
+        android:layout_weight="1" />
 
     <!-- PREVIEW -->
     <ImageView

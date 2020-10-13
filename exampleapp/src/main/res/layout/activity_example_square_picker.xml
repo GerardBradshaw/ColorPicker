@@ -3,17 +3,15 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    style="@style/MyExampleLayoutStyle">
+    style="@style/ExampleLayoutStyle">
 
     <TextView
         android:id="@+id/example_listener"
         style="@style/ColorChangeListenerStyle"/>
 
-    <com.gerardbradshaw.colorpickerlibrary.views.RadialColorPickerView
-        android:id="@+id/example_radial_picker"
+    <com.gerardbradshaw.colorpickerlibrary.views.SquareColorPickerView
+        android:id="@+id/example_square_picker"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:enablePreview="true"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:enablePreview="true" />
 </LinearLayout>

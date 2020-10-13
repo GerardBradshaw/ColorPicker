@@ -54,7 +54,11 @@ class SquareColorPickerView :
       }
     }
 
-    super.initSlider(getSpectrumGradient(), onSliderProgressChangedListener)
+    super.initSlider(
+      gradient = getSpectrumGradient(),
+      colorTag = 0,
+      sliderTypeTag = ColorSliderView.SliderType.COLOR,
+      onProgressChangedListener = onSliderProgressChangedListener)
   }
 
   private fun initColorPicker(pureColor: Int = oldColor) {

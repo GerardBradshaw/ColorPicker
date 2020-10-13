@@ -1,15 +1,18 @@
 package com.gerardbradshaw.exampleapp.compactview
 
 import android.app.Activity
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.widget.FrameLayout
 import android.widget.LinearLayout
-import com.gerardbradshaw.colorpickerlibrary.R
+import com.gerardbradshaw.colorpickerlibrary.util.ColorSliderView.SliderType
+import com.gerardbradshaw.exampleapp.R
 import org.robolectric.Robolectric
 import org.robolectric.shadows.ShadowPopupMenu
 
 internal object CompactViewUnitTestUtil {
+  private const val TAG = "CompactViewUnitTestUtil"
 
   // -------------------- PUBLIC METHODS --------------------
 
@@ -18,7 +21,7 @@ internal object CompactViewUnitTestUtil {
 
     return LayoutInflater
       .from(activityController.get())
-      .inflate(R.layout.color_picker_library_activity_compact_example, null) as LinearLayout
+      .inflate(R.layout.activity_example_compact_picker, null) as LinearLayout
   }
 
   fun changeSliderTypeTo(slider: SliderType, menuFrame: FrameLayout) {
@@ -28,19 +31,10 @@ internal object CompactViewUnitTestUtil {
       SliderType.COLOR -> R.id.color_picker_library_option_color
       SliderType.SHADE -> R.id.color_picker_library_option_shade
       SliderType.TINT -> R.id.color_picker_library_option_tint
+      else -> return
     }
 
     ShadowPopupMenu.getLatestPopupMenu().menu
       .performIdentifierAction(menuItem, Menu.FLAG_ALWAYS_PERFORM_CLOSE)
-  }
-
-
-
-  // -------------------- HELPERS --------------------
-
-  enum class SliderType(val value: String) {
-    COLOR("Color"),
-    SHADE("Shade"),
-    TINT("Tint")
   }
 }

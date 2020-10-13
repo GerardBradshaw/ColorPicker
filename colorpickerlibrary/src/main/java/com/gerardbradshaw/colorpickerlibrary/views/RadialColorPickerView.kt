@@ -73,7 +73,11 @@ class RadialColorPickerView :
       }
     }
 
-    super.initSlider(getShadeGradient(), onSliderProgressChangedListener)
+    super.initSlider(
+      gradient = getShadeGradient(),
+      colorTag = getTintedColor(getPureColor()),
+      sliderTypeTag = ColorSliderView.SliderType.SHADE,
+      onProgressChangedListener = onSliderProgressChangedListener)
   }
 
   private fun initColorPicker() {
@@ -184,7 +188,7 @@ class RadialColorPickerView :
 
     super.updateNewPreviewColor(color)
 
-    slider.setGradientBarDrawable(getShadeGradient())
+    slider.updateGradientDrawable(getShadeGradient(), getTintedColor(getPureColor()))
     listener?.onColorChanged(color)
   }
 

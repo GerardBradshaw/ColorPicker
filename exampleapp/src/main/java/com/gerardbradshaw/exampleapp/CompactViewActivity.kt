@@ -12,10 +12,10 @@ class CompactViewActivity : AppCompatActivity(), AbstractColorPickerView.ColorCh
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    setContentView(R.layout.color_picker_library_activity_compact_example)
+    setContentView(R.layout.activity_example_compact_picker)
 
-    picker = findViewById(R.id.color_picker_library_example_compact_picker)
-    listener = findViewById(R.id.color_picker_library_example_listener)
+    picker = findViewById(R.id.example_compact_picker)
+    listener = findViewById(R.id.example_listener)
 
     picker.setOnColorSelectedListener(this)
 

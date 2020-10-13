@@ -12,10 +12,10 @@ class SquareViewActivity : AppCompatActivity(), AbstractColorPickerView.ColorCha
 
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
-    setContentView(R.layout.color_picker_library_activity_square_example)
+    setContentView(R.layout.activity_example_square_picker)
 
-    picker = findViewById(R.id.color_picker_library_example_square_picker)
-    listener = findViewById(R.id.color_picker_library_example_listener)
+    picker = findViewById(R.id.example_square_picker)
+    listener = findViewById(R.id.example_listener)
 
     picker.setOnColorSelectedListener(this)
 

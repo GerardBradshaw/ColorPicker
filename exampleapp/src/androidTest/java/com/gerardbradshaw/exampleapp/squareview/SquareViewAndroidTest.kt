@@ -46,6 +46,9 @@ internal class SquareViewAndroidTest {
     @JvmField
     val asr = ActivityScenarioRule<SquareViewActivity>(SquareViewActivity::class.java)
 
+
+    // ---------------- PREVIEWS ----------------
+
     @Test
     fun should_updatePreview_when_colorChanged() {
       moveSeekBarTo(input.colorProgress)
@@ -85,6 +88,11 @@ internal class SquareViewAndroidTest {
       checkThumbIsAtRatioPosition(input.tintRatio, input.shadeRatio)
     }
 
+
+
+    // ---------------- PREVIEWS ----------------
+
+    // TODO listener
 
     companion object {
       private const val TAG = "SquareViewAndroidTest"

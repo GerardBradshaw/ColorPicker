@@ -1,9 +1,9 @@
 package com.gerardbradshaw.exampleapp.compactview
 
 import androidx.test.ext.junit.rules.ActivityScenarioRule
+import com.gerardbradshaw.colorpickerlibrary.util.ColorSliderView.SliderType
 import com.gerardbradshaw.exampleapp.CompactViewActivity
-import com.gerardbradshaw.colorpickerlibrary.R
-import com.gerardbradshaw.exampleapp.compactview.CompactViewAndroidTestUtil.SliderType
+import com.gerardbradshaw.exampleapp.R
 import com.gerardbradshaw.exampleapp.compactview.CompactViewAndroidTestUtil.changeSliderTypeTo
 import com.gerardbradshaw.exampleapp.testutil.GlobalTestUtil.getParameterizedTestIO
 import com.gerardbradshaw.exampleapp.testutil.ParamTestInput
@@ -45,17 +45,13 @@ internal class CompactViewAndroidTest {
       changeSliderTypeTo(SliderType.TINT)
       moveSeekBarTo(inputs.tintProgress)
 
-      checkViewColorTagIsApprox(
-        expected.shadedAndTintedColor,
-        R.id.color_picker_library_example_listener)
+      checkViewColorTagIsApprox(expected.shadedAndTintedColor, R.id.example_listener)
     }
 
     @Test
     fun should_notifyListener_when_onlyColorSliderPositionChanged() {
       moveSeekBarTo(inputs.colorProgress)
-      checkViewColorTagIsApprox(
-        expected.pureColor,
-        R.id.color_picker_library_example_listener)
+      checkViewColorTagIsApprox(expected.pureColor, R.id.example_listener)
     }
 
     @Test
@@ -65,9 +61,7 @@ internal class CompactViewAndroidTest {
       changeSliderTypeTo(SliderType.SHADE)
       moveSeekBarTo(inputs.shadeProgress)
 
-      checkViewColorTagIsApprox(
-        expected.shadedColor,
-        R.id.color_picker_library_example_listener)
+      checkViewColorTagIsApprox(expected.shadedColor, R.id.example_listener)
     }
 
     @Test
@@ -77,9 +71,7 @@ internal class CompactViewAndroidTest {
       changeSliderTypeTo(SliderType.TINT)
       moveSeekBarTo(inputs.tintProgress)
 
-      checkViewColorTagIsApprox(
-        expected.tintedColor,
-        R.id.color_picker_library_example_listener)
+      checkViewColorTagIsApprox(expected.tintedColor, R.id.example_listener)
     }
 
 

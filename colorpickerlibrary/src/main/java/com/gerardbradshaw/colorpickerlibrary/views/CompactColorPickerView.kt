@@ -1,12 +1,15 @@
 package com.gerardbradshaw.colorpickerlibrary.views
 
 import android.content.Context
+import android.graphics.drawable.GradientDrawable
 import android.util.AttributeSet
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import com.gerardbradshaw.colorpickerlibrary.R
 import com.gerardbradshaw.colorpickerlibrary.util.ColorSliderView
+import com.gerardbradshaw.colorpickerlibrary.util.ColorSliderView.SliderType
 
 class CompactColorPickerView : AbstractColorPickerView {
 
@@ -82,6 +85,7 @@ class CompactColorPickerView : AbstractColorPickerView {
           SliderType.COLOR -> internalColorRatio = progress
           SliderType.SHADE -> internalShadeRatio = progress
           SliderType.TINT -> internalTintRatio = progress
+          else -> Log.d(TAG, "onProgressChanged: slider type not set!")
         }
         onColorChanged()
       }
@@ -91,13 +95,29 @@ class CompactColorPickerView : AbstractColorPickerView {
   }
 
   private fun syncGradientBarWithSliderType() {
-    val gradientDrawable = when (sliderType) {
-      SliderType.COLOR -> getSpectrumGradient()
-      SliderType.SHADE -> getShadeGradient()
-      SliderType.TINT -> getTintGradient()
+    val gradientDrawable: GradientDrawable
+    var colorTag = 0
+
+    when (sliderType) {
+      SliderType.COLOR -> gradientDrawable = getSpectrumGradient()
+
+      SliderType.SHADE -> {
+        gradientDrawable = getShadeGradient()
+        colorTag = getTintedColor(getPureColor())
+      }
+
+      SliderType.TINT -> {
+        gradientDrawable = getTintGradient()
+        colorTag = getShadedColor(getPureColor())
+      }
+
+      else -> {
+        Log.d(TAG, "syncGradientBarWithSliderType: slider type not set!")
+        return
+      }
     }
 
-    slider.setGradientBarDrawable(gradientDrawable)
+    slider.setUpGradientBar(gradientDrawable, colorTag, sliderType)
     setSeekBarPosition()
   }
 
@@ -115,18 +135,15 @@ class CompactColorPickerView : AbstractColorPickerView {
         override fun onMenuItemClick(item: MenuItem?): Boolean {
           val menuText = when (item?.itemId) {
             R.id.color_picker_library_option_color -> {
-              sliderType =
-                SliderType.COLOR
+              sliderType = SliderType.COLOR
               resources.getString(R.string.color_picker_library_color)
             }
             R.id.color_picker_library_option_shade -> {
-              sliderType =
-                SliderType.SHADE
+              sliderType = SliderType.SHADE
               resources.getString(R.string.color_picker_library_shade)
             }
             R.id.color_picker_library_option_tint -> {
-              sliderType =
-                SliderType.TINT
+              sliderType = SliderType.TINT
               resources.getString(R.string.color_picker_library_tint)
             }
             else -> return false
@@ -150,6 +167,10 @@ class CompactColorPickerView : AbstractColorPickerView {
       SliderType.COLOR -> internalColorRatio
       SliderType.SHADE -> internalShadeRatio
       SliderType.TINT -> internalTintRatio
+      else -> {
+        Log.d(TAG, "setSeekBarPosition: slider type not set")
+        0.0
+      }
     }
     if (slider.getProgressRatio() != expectedRatio) slider.setProgressRatio(expectedRatio)
   }
@@ -193,9 +214,5 @@ class CompactColorPickerView : AbstractColorPickerView {
 
   companion object {
     private const val TAG = "CompactColorPickerView"
-  }
-
-  private enum class SliderType {
-    COLOR, SHADE, TINT
   }
 }
