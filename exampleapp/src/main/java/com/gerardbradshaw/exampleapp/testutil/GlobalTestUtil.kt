@@ -50,4 +50,9 @@ internal object GlobalTestUtil {
       arrayOf(inputParams[it], expectedOutputs[it])
     }.asList()
   }
+
+  fun Double.isWithinAPercentOf(double: Double): Boolean {
+    val bound = 0.99 * this .. 1.01 * this
+    return double in bound
+  }
 }

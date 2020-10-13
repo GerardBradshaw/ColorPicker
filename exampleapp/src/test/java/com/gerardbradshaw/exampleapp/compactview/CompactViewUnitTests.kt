@@ -32,7 +32,7 @@ internal class CompactViewUnitTests {
 
   @RunWith(RobolectricTestRunner::class)
   @Config(sdk = [28])
-  class InitializationTests {
+  class LaunchTests {
     private lateinit var layout: LinearLayout
     private lateinit var seekBar: SeekBar
     private lateinit var menu: FrameLayout
@@ -46,7 +46,7 @@ internal class CompactViewUnitTests {
     }
 
     @Test
-    fun should_openColorSlider_when_initialized() {
+    fun should_openColorSlider_when_launched() {
       val slider:ColorSliderView =
         layout.findViewById(R.id.color_picker_library_compact_color_slider)
 
@@ -54,12 +54,12 @@ internal class CompactViewUnitTests {
     }
 
     @Test
-    fun should_startSliderAtZero_when_initialized() {
+    fun should_startSliderAtZero_when_launched() {
       checkSeekBarIsAtProgress(0, seekBar)
     }
 
     @Test
-    fun should_startShadeSliderAtZero_when_initialized() {
+    fun should_startShadeSliderAtZero_when_launched() {
       moveSeekBarTo(seekBar.max / 2, seekBar)
 
       changeSliderTypeTo(SliderType.TINT, menu)
@@ -70,7 +70,7 @@ internal class CompactViewUnitTests {
     }
 
     @Test
-    fun should_startTintSliderAtZero_when_initialized() {
+    fun should_startTintSliderAtZero_when_launched() {
       moveSeekBarTo(seekBar.max / 2, seekBar)
 
       changeSliderTypeTo(SliderType.SHADE, menu)
@@ -81,7 +81,7 @@ internal class CompactViewUnitTests {
     }
 
     @Test
-    fun should_haveRedPreviewColor_when_initialized() {
+    fun should_haveRedPreviewColor_when_launched() {
       val preview: ImageView = layout.findViewById(R.id.color_picker_library_compact_preview)
 
       checkViewColorTagIsExactly(-65536, preview) // -65536 is RED
@@ -253,13 +253,13 @@ internal class CompactViewUnitTests {
     }
 
     @Test
-    fun should_updatePreview_when_colorSliderProgressChanged() {
+    fun should_updatePreview_when_colorChangedInUI() {
       moveSeekBarTo(input.colorProgress, seekBar)
       checkViewColorTagIsExactly(expected.pureColor, preview)
     }
 
     @Test
-    fun should_updatePreview_when_colorAndShadeSliderProgressChanged() {
+    fun should_updatePreview_when_colorAndShadeChangedInUI() {
       moveSeekBarTo(input.colorProgress, seekBar)
 
       changeSliderTypeTo(SliderType.SHADE, menu)
@@ -269,7 +269,7 @@ internal class CompactViewUnitTests {
     }
 
     @Test
-    fun should_updatePreview_when_colorAndTintSliderProgressChanged() {
+    fun should_updatePreview_when_colorAndTintChangedInUI() {
       moveSeekBarTo(input.colorProgress, seekBar)
 
       changeSliderTypeTo(SliderType.TINT, menu)
@@ -279,7 +279,7 @@ internal class CompactViewUnitTests {
     }
 
     @Test
-    fun should_updatePreview_when_colorAndShadeAndTintSliderProgressChanged() {
+    fun should_updatePreview_when_colorAndShadeAndTintChangedInUI() {
       moveSeekBarTo(input.colorProgress, seekBar)
 
       changeSliderTypeTo(SliderType.SHADE, menu)
@@ -332,7 +332,7 @@ internal class CompactViewUnitTests {
     }
 
     @Test
-    fun should_updateColorTagOnShadeSlider_when_colorSliderProgress() {
+    fun should_updateColorTagOnShadeSlider_when_colorChangedInUI() {
       moveSeekBarTo(input.colorProgress, seekBar)
 
       changeSliderTypeTo(SliderType.SHADE, menu)
@@ -340,7 +340,7 @@ internal class CompactViewUnitTests {
     }
 
     @Test
-    fun should_updateColorTagOnShadeSlider_when_colorAndTintSliderProgressChanged() {
+    fun should_updateColorTagOnShadeSlider_when_colorAndTintChangedInUI() {
       moveSeekBarTo(input.colorProgress, seekBar)
 
       changeSliderTypeTo(SliderType.TINT, menu)
@@ -351,7 +351,7 @@ internal class CompactViewUnitTests {
     }
 
     @Test
-    fun should_updateColorTagOnTintSlider_when_colorSliderProgressChanged() {
+    fun should_updateColorTagOnTintSlider_when_colorChangedInUI() {
       moveSeekBarTo(input.colorProgress, seekBar)
 
       changeSliderTypeTo(SliderType.TINT, menu)
@@ -359,7 +359,7 @@ internal class CompactViewUnitTests {
     }
 
     @Test
-    fun should_updateColorTagOnTintSlider_when_colorAndShadeSliderProgressChanged() {
+    fun should_updateColorTagOnTintSlider_when_colorAndShadeChangedInUI() {
       moveSeekBarTo(input.colorProgress, seekBar)
 
       changeSliderTypeTo(SliderType.SHADE, menu)
@@ -377,7 +377,4 @@ internal class CompactViewUnitTests {
       }
     }
   }
-
-
-
 }

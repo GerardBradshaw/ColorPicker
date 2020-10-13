@@ -13,7 +13,9 @@ import androidx.test.espresso.matcher.ViewMatchers
 import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
 import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.internal.util.Checks
+import com.gerardbradshaw.colorpickerlibrary.views.AbstractColorPickerView
 import com.gerardbradshaw.exampleapp.R
+import com.gerardbradshaw.exampleapp.testutil.GlobalTestUtil.isWithinAPercentOf
 import org.hamcrest.Description
 import org.hamcrest.Matcher
 import org.hamcrest.Matchers.*
@@ -156,5 +158,50 @@ object EspressoTestUtil {
 
   fun getHexString(color: Int): String {
     return String.format("#%06X", 0xFFFFFF and color)
+  }
+
+  fun setPickerRatios(colorRatio: Double, shadeRatio: Double, tintRatio: Double, pickerResId: Int) {
+    onView(withId(pickerResId))
+      .perform(updateRatios(colorRatio, shadeRatio, tintRatio))
+  }
+
+  private fun updateRatios(colorRatio: Double, shadeRatio: Double, tintRatio: Double): ViewAction? {
+    return object : ViewAction {
+      override fun getConstraints(): Matcher<View> {
+        return isDisplayed()
+      }
+
+      override fun getDescription(): String {
+        return "update ratios"
+      }
+
+      override fun perform(uiController: UiController, view: View) {
+        val picker = view as AbstractColorPickerView
+
+        picker.colorRatio = colorRatio
+        picker.shadeRatio = shadeRatio
+        picker.tintRatio = tintRatio
+      }
+    }
+  }
+
+  fun checkPickerRatiosAre(colorRatio: Double, shadeRatio: Double, tintRatio: Double, pickerResId: Int) {
+    onView(withId(pickerResId))
+      .check(matches(pickerRatiosAre(colorRatio, shadeRatio, tintRatio)))
+  }
+
+  private fun pickerRatiosAre(colorRatio: Double, shadeRatio: Double, tintRatio: Double): Matcher<View?>? {
+    return object : BoundedMatcher<View?, AbstractColorPickerView>(AbstractColorPickerView::class.java) {
+      override fun matchesSafely(view: AbstractColorPickerView): Boolean {
+        return (
+            view.colorRatio.isWithinAPercentOf(colorRatio) &&
+            view.shadeRatio.isWithinAPercentOf(shadeRatio) &&
+            view.tintRatio.isWithinAPercentOf(tintRatio))
+      }
+
+      override fun describeTo(description: Description) {
+        description.appendText("picker ratios are")
+      }
+    }
   }
 }

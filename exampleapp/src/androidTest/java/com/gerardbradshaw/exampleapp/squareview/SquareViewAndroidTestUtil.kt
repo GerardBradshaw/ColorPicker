@@ -12,13 +12,11 @@ import androidx.test.espresso.ViewInteraction
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.BoundedMatcher
 import androidx.test.espresso.matcher.ViewMatchers.*
-import com.gerardbradshaw.colorpickerlibrary.R
+import com.gerardbradshaw.exampleapp.R
+import com.gerardbradshaw.exampleapp.testutil.GlobalTestUtil.isWithinAPercentOf
 import org.hamcrest.Description
 import org.hamcrest.Matcher
-import org.hamcrest.MatcherAssert
-import org.hamcrest.Matchers
 import org.hamcrest.Matchers.allOf
-import org.hamcrest.Matchers.equalTo
 
 object SquareViewAndroidTestUtil {
   private const val TAG = "SquareViewAndroidTestUt"
@@ -82,14 +80,12 @@ object SquareViewAndroidTestUtil {
         val actualTintRatio = 1.0 - (thumb.x / window.width.toDouble())
         val actualShadeRatio = thumb.y / window.height.toDouble()
 
-        val tintRatioRange = 0.99 * tintRatio .. 1.01 * tintRatio
-        val shadeRatioRange = 0.99 * shadeRatio .. 1.01 * shadeRatio
-
-        return actualTintRatio in tintRatioRange && actualShadeRatio in shadeRatioRange
+        return tintRatio.isWithinAPercentOf(actualTintRatio) && shadeRatio.isWithinAPercentOf(actualShadeRatio)
       }
 
       override fun describeTo(description: Description) {
         description.appendText("thumb is at ratio position")
       }
     }
-  }}
+  }
+}

@@ -5,12 +5,12 @@ import com.gerardbradshaw.colorpickerlibrary.util.ColorSliderView.SliderType
 import com.gerardbradshaw.exampleapp.CompactViewActivity
 import com.gerardbradshaw.exampleapp.R
 import com.gerardbradshaw.exampleapp.compactview.CompactViewAndroidTestUtil.changeSliderTypeTo
-import com.gerardbradshaw.exampleapp.compactview.CompactViewAndroidTestUtil.setPickerRatios
 import com.gerardbradshaw.exampleapp.testutil.GlobalTestUtil.getParameterizedTestIO
 import com.gerardbradshaw.exampleapp.testutil.ParamTestInput
 import com.gerardbradshaw.exampleapp.testutil.ParamTestOutput
 import com.gerardbradshaw.exampleapp.util.EspressoTestUtil.checkViewColorTagIsApprox
 import com.gerardbradshaw.exampleapp.util.EspressoTestUtil.moveSeekBarTo
+import com.gerardbradshaw.exampleapp.util.EspressoTestUtil.setPickerRatios
 import org.junit.Rule
 import org.junit.Test
 import org.junit.experimental.runners.Enclosed
@@ -29,13 +29,13 @@ internal class CompactViewAndroidTest {
     val asr = ActivityScenarioRule<CompactViewActivity>(CompactViewActivity::class.java)
 
     @Test
-    fun should_notifyListener_when_colorSliderProgressChanged() {
+    fun should_notifyListener_when_colorChangedInUI() {
       moveSeekBarTo(input.colorProgress)
       checkViewColorTagIsApprox(expected.pureColor, R.id.example_listener)
     }
 
     @Test
-    fun should_notifyListener_when_colorAndShadeSliderProgressChanged() {
+    fun should_notifyListener_when_colorAndShadeChangedInUI() {
       moveSeekBarTo(input.colorProgress)
 
       changeSliderTypeTo(SliderType.SHADE)
@@ -45,7 +45,7 @@ internal class CompactViewAndroidTest {
     }
 
     @Test
-    fun should_notifyListener_when_colorAndTintSliderProgressChanged() {
+    fun should_notifyListener_when_colorAndTintChangedInUI() {
       moveSeekBarTo(input.colorProgress)
 
       changeSliderTypeTo(SliderType.TINT)
@@ -55,7 +55,7 @@ internal class CompactViewAndroidTest {
     }
 
     @Test
-    fun should_notifyListener_when_colorAndShadeAndTintSliderProgressChanged() {
+    fun should_notifyListener_when_colorAndShadeAndTintChangedInUI() {
       moveSeekBarTo(input.colorProgress)
 
       changeSliderTypeTo(SliderType.SHADE)
@@ -68,9 +68,16 @@ internal class CompactViewAndroidTest {
     }
 
     @Test
-    fun should_notifyListener_when_colorRatioChangedProgrammatically() {
-      setPickerRatios(input.colorRatio, input.shadeRatio, input.tintRatio)
-      checkViewColorTagIsApprox(expected.shadedAndTintedColor, R.id.example_listener)
+    fun should_notifyListener_when_ratiosChangedProgrammatically() {
+      setPickerRatios(
+        input.colorRatio,
+        input.shadeRatio,
+        input.tintRatio,
+        R.id.example_compact_picker)
+
+      checkViewColorTagIsApprox(
+        expected.shadedAndTintedColor,
+        R.id.example_listener)
     }
 
 
