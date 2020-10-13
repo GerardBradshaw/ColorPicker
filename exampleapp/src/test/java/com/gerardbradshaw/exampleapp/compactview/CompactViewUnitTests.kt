@@ -7,13 +7,13 @@ import com.gerardbradshaw.colorpickerlibrary.R
 import com.gerardbradshaw.exampleapp.compactview.CompactViewUnitTestUtil.changeSliderTypeTo
 import com.gerardbradshaw.exampleapp.compactview.CompactViewUnitTestUtil.getLayout
 import com.gerardbradshaw.exampleapp.compactview.CompactViewUnitTestUtil.SliderType
-import com.gerardbradshaw.exampleapp.util.ParamTestInput
-import com.gerardbradshaw.exampleapp.util.ParamTestOutput
-import com.gerardbradshaw.exampleapp.util.UnitTestUtil.checkViewColorTagIsExactly
-import com.gerardbradshaw.exampleapp.util.UnitTestUtil.checkSeekBarIsAtProgress
-import com.gerardbradshaw.exampleapp.util.UnitTestUtil.getParameterizedTestParams
-import com.gerardbradshaw.exampleapp.util.UnitTestUtil.moveSeekBarTo
-import com.gerardbradshaw.exampleapp.util.UnitTestUtil.sliderMax
+import com.gerardbradshaw.exampleapp.testutil.GlobalTestUtil.getParameterizedTestIO
+import com.gerardbradshaw.exampleapp.testutil.ParamTestInput
+import com.gerardbradshaw.exampleapp.testutil.ParamTestOutput
+import com.gerardbradshaw.exampleapp.util.RobolectricTestUtil.checkViewColorTagIsExactly
+import com.gerardbradshaw.exampleapp.util.RobolectricTestUtil.checkSeekBarIsAtProgress
+import com.gerardbradshaw.exampleapp.util.RobolectricTestUtil.moveSeekBarTo
+import com.gerardbradshaw.exampleapp.util.RobolectricTestUtil.sliderMax
 import org.junit.Before
 import org.junit.Test
 import org.junit.experimental.runners.Enclosed
@@ -21,7 +21,6 @@ import org.junit.runner.RunWith
 import org.robolectric.ParameterizedRobolectricTestRunner
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
-import kotlin.math.roundToInt
 
 @RunWith(Enclosed::class)
 internal class CompactViewUnitTests {
@@ -211,7 +210,7 @@ internal class CompactViewUnitTests {
       @JvmStatic
       @ParameterizedRobolectricTestRunner.Parameters(name = "progress: {0}")
       fun params(): Collection<Array<Any>> {
-        return getParameterizedTestParams()
+        return getParameterizedTestIO()
       }
     }
   }

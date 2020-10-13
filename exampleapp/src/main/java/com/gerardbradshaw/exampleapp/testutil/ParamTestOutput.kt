@@ -1,4 +1,4 @@
-package com.gerardbradshaw.exampleapp.util
+package com.gerardbradshaw.exampleapp.testutil
 
 import android.graphics.Color
 import kotlin.math.max

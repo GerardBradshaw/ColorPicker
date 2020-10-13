@@ -8,8 +8,8 @@ import android.widget.LinearLayout
 import android.widget.SeekBar
 import com.gerardbradshaw.colorpickerlibrary.views.SquareColorPickerView
 import com.gerardbradshaw.colorpickerlibrary.R
-import com.gerardbradshaw.exampleapp.util.UnitTestUtil.checkViewColorTagIsExactly
-import com.gerardbradshaw.exampleapp.util.UnitTestUtil.checkSeekBarIsAtProgress
+import com.gerardbradshaw.exampleapp.util.RobolectricTestUtil.checkViewColorTagIsExactly
+import com.gerardbradshaw.exampleapp.util.RobolectricTestUtil.checkSeekBarIsAtProgress
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith

@@ -3,13 +3,13 @@ package com.gerardbradshaw.exampleapp.compactview
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.gerardbradshaw.exampleapp.CompactViewActivity
 import com.gerardbradshaw.colorpickerlibrary.R
-import com.gerardbradshaw.exampleapp.util.AndroidTestUtil.checkViewColorTagIsApprox
-import com.gerardbradshaw.exampleapp.util.AndroidTestUtil.moveSeekBarTo
 import com.gerardbradshaw.exampleapp.compactview.CompactViewAndroidTestUtil.SliderType
 import com.gerardbradshaw.exampleapp.compactview.CompactViewAndroidTestUtil.changeSliderTypeTo
-import com.gerardbradshaw.exampleapp.util.AndroidTestUtil.getParameterizedTestParams
-import com.gerardbradshaw.exampleapp.util.ParamTestInput
-import com.gerardbradshaw.exampleapp.util.ParamTestOutput
+import com.gerardbradshaw.exampleapp.testutil.GlobalTestUtil.getParameterizedTestIO
+import com.gerardbradshaw.exampleapp.testutil.ParamTestInput
+import com.gerardbradshaw.exampleapp.testutil.ParamTestOutput
+import com.gerardbradshaw.exampleapp.util.EspressoTestUtil.checkViewColorTagIsApprox
+import com.gerardbradshaw.exampleapp.util.EspressoTestUtil.moveSeekBarTo
 import org.junit.Rule
 import org.junit.Test
 import org.junit.experimental.runners.Enclosed
@@ -87,7 +87,7 @@ internal class CompactViewAndroidTest {
       @Parameterized.Parameters(name = "progress = {0}")
       @JvmStatic
       fun params(): Collection<Array<Any>> {
-        return getParameterizedTestParams()
+        return getParameterizedTestIO()
       }
     }
   }

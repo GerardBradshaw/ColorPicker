@@ -1,35 +1,11 @@
-package com.gerardbradshaw.exampleapp.util
+package com.gerardbradshaw.exampleapp.testutil
 
-import android.view.View
-import android.widget.SeekBar
-import com.gerardbradshaw.colorpickerlibrary.R
-import org.hamcrest.Matchers.equalTo
-import org.junit.Assert.assertThat
-import org.junit.Assert.fail
 import kotlin.math.roundToInt
 
-internal object UnitTestUtil {
-  private const val TAG = "UnitTestUtil"
+internal object GlobalTestUtil {
   const val sliderMax = 16777216
 
-  fun moveSeekBarTo(progress: Int, seekBar: SeekBar) {
-    seekBar.progress = progress
-  }
-
-  fun checkViewColorTagIsExactly(color: Int, view: View) {
-    val tag = view.getTag(R.id.color_picker_library_color_tag) ?: fail("null tag")
-    assertThat(tag as Int, equalTo(color))
-  }
-
-  fun checkSeekBarIsAtProgress(progress: Int, seekBar: SeekBar) {
-    assertThat(seekBar.progress, equalTo(progress))
-  }
-
-  fun getHexString(color: Int): String {
-    return String.format("#%06X", 0xFFFFFF and color)
-  }
-
-  fun getParameterizedTestParams(): Collection<Array<Any>> {
+  fun getParameterizedTestIO(): Collection<Array<Any>> {
     val inputParams = Array<Any>(7) {
       val colorProgress = (it * sliderMax.toDouble() / 6.0).roundToInt()
 
@@ -42,7 +18,11 @@ internal object UnitTestUtil {
           else -> ((sliderMax.toDouble() / 6.0) + shadeProgress).roundToInt()
         }
 
-      ParamTestInput(colorProgress, shadeProgress, tintProgress)
+      ParamTestInput(
+        colorProgress,
+        shadeProgress,
+        tintProgress
+      )
     }
 
     val pureColors: Array<Int> = arrayOf(
@@ -58,7 +38,12 @@ internal object UnitTestUtil {
       -16777216, -13948117, -12102329, -11173760, -11184726, -2865196, -54485)
 
     val expectedOutputs = Array<Any>(7) {
-      ParamTestOutput(pureColors[it], shadedColors[it], tintedColors[it], shadedAndTintedColors[it])
+      ParamTestOutput(
+        pureColors[it],
+        shadedColors[it],
+        tintedColors[it],
+        shadedAndTintedColors[it]
+      )
     }
 
     return Array(7) {

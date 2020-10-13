@@ -5,12 +5,12 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.gerardbradshaw.exampleapp.R
 import com.gerardbradshaw.exampleapp.SquareViewActivity
 import com.gerardbradshaw.exampleapp.squareview.SquareViewAndroidTestUtil.checkThumbIsAtRatioPosition
-import com.gerardbradshaw.exampleapp.util.AndroidTestUtil.checkViewColorTagIsExactly
-import com.gerardbradshaw.exampleapp.util.AndroidTestUtil.moveSeekBarTo
+import com.gerardbradshaw.exampleapp.util.EspressoTestUtil.checkViewColorTagIsExactly
+import com.gerardbradshaw.exampleapp.util.EspressoTestUtil.moveSeekBarTo
 import com.gerardbradshaw.exampleapp.squareview.SquareViewAndroidTestUtil.moveThumbTo
-import com.gerardbradshaw.exampleapp.util.AndroidTestUtil.getParameterizedTestParams
-import com.gerardbradshaw.exampleapp.util.ParamTestInput
-import com.gerardbradshaw.exampleapp.util.ParamTestOutput
+import com.gerardbradshaw.exampleapp.testutil.GlobalTestUtil.getParameterizedTestIO
+import com.gerardbradshaw.exampleapp.testutil.ParamTestInput
+import com.gerardbradshaw.exampleapp.testutil.ParamTestOutput
 import org.junit.Rule
 import org.junit.Test
 import org.junit.experimental.runners.Enclosed
@@ -92,7 +92,7 @@ internal class SquareViewAndroidTest {
       @Parameterized.Parameters(name = "{0}")
       @JvmStatic
       fun data(): Collection<Array<Any>> {
-        return getParameterizedTestParams()
+        return getParameterizedTestIO()
       }
     }
   }
