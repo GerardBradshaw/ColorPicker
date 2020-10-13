@@ -29,7 +29,6 @@ import kotlin.math.min
 import kotlin.math.roundToInt
 
 object AndroidTestUtil {
-  const val sliderMax = 16777216
   private const val TAG = "AndroidTestUtil"
 
 
@@ -80,7 +79,7 @@ object AndroidTestUtil {
       if (isMatch) "Exact match (both ${getHexString(actualColor)})"
       else "Not a match. (Actual ${getHexString(actualColor)}, expected ${getHexString(expectedColor)})"
 
-    Log.d(TAG, matchText)
+    Log.d(TAG, "isExactMatch: $matchText")
 
     return isMatch
   }
@@ -100,14 +99,11 @@ object AndroidTestUtil {
 
     val isMatch = isRedMatch && isGreenMatch && isBlueMatch
 
-    val matchText = if(isMatch) "Exact match" else "Not a match"
+    val matchText =
+      if (isMatch) "Exact match (both ${getHexString(actualColor)})"
+      else "Not a match. (Actual ${getHexString(actualColor)}, expected ${getHexString(expectedColor)})"
 
-    Log.d(
-      TAG, "$matchText. (Actual ${getHexString(
-        actualColor
-      )}, expected ${getHexString(
-        expectedColor
-      )})")
+    Log.d(TAG, "isApproxMatch: $matchText")
 
     return isMatch
   }
@@ -130,24 +126,23 @@ object AndroidTestUtil {
 
   // ---------------- PREVIEW ----------------
 
-  fun checkPreviewChangedColorTo(color: Int, previewResId: Int) {
+  fun checkPreviewColorIs(color: Int, previewResId: Int) {
     onView(allOf(withId(previewResId), isDisplayed()))
-      .check(matches(hasColorTag(color)))
+      .check(matches(hasApproximateColorTag(color)))
   }
 
-  private fun hasColorTag(expectedTag: Int): Matcher<View?>? {
+  private fun hasApproximateColorTag(expectedTag: Int): Matcher<View?>? {
     Checks.checkNotNull(expectedTag)
 
     return object : BoundedMatcher<View?, View>(View::class.java) {
       override fun matchesSafely(view: View): Boolean {
-        return isExactlyMatchingExpectedColor(
+        return isApproximatelyMatchingExpectedColor(
           expectedTag,
-          view.getTag(com.gerardbradshaw.colorpickerlibrary.R.id.color_picker_library_color_tag) as Int
-        )
+          view.getTag(R.id.color_picker_library_color_tag) as Int)
       }
 
       override fun describeTo(description: Description) {
-        description.appendText("with view tag")
+        description.appendText("has approximate color tag")
       }
     }
   }
@@ -155,28 +150,29 @@ object AndroidTestUtil {
 
   // ---------------- LISTENER ----------------
 
-  fun checkListenerChangedColorTo(color: Int) {
+  fun checkListenerColorIs(color: Int) {
     onView(allOf(withId(R.id.color_picker_library_example_listener), isDisplayed()))
-      .check(matches(hasDrawableBackgroundColor(color)))
+      .check(matches(hasExactColorTag(color)))
   }
 
-  private fun hasDrawableBackgroundColor(expectedColor: Int): Matcher<View?>? {
+  private fun hasExactColorTag(expectedColor: Int): Matcher<View?>? {
     Checks.checkNotNull(expectedColor)
 
     return object : BoundedMatcher<View?, View>(View::class.java) {
       override fun matchesSafely(view: View): Boolean {
         return isExactlyMatchingExpectedColor(
-          expectedColor, view.getTag(R.id.color_picker_library_color_tag) as Int)
+          expectedColor,
+          view.getTag(R.id.color_picker_library_color_tag) as Int)
       }
 
       override fun describeTo(description: Description) {
-        description.appendText("with background color")
+        description.appendText("has exact color tag")
       }
     }
   }
 
   // TODO keep this one for robolectric
-  fun checkListenerChangedColorTo(color: Int, listener: TextView) {
+  fun checkListenerColorIs(color: Int, listener: TextView) {
     val background = listener.background ?: Assert.fail("Listener has no background.")
 
     if (background !is ColorDrawable) Assert.fail("Listener background is not a color.")
@@ -192,7 +188,11 @@ object AndroidTestUtil {
     return String.format("#%06X", 0xFFFFFF and color)
   }
 
-  fun getParamaterizedTestParams(): Collection<Array<Any>> {
+  private fun Double.format(digits: Int) = "%.${digits}f".format(this)
+
+  fun getParameterizedTestParams(): Collection<Array<Any>> {
+    val sliderMax = 16777216
+
     val inputParams = Array<Any>(7) {
       val colorProgress = (it * sliderMax.toDouble() / 6.0).roundToInt()
 
@@ -212,13 +212,13 @@ object AndroidTestUtil {
       -65536, -256, -16711936, -16711681, -16776961, -65281, -65535)
 
     val shadedColors: Array<Int> = arrayOf(
-      -16777216, - 13948160, - 16755456, - 16744320, - 16777046, - 2883372, - 65535)
+      -16777216, -13948160, -16755456, -16744320, -16777046, -2883372, -65535)
 
     val tintedColors: Array<Int> = arrayOf(
-      -65536, - 1, - 2752555, - 5570561, - 8355585, - 43521, - 54485)
+      -65536, -1, -2752555, -5570561, -8355585, -43521, -54485)
 
     val shadedAndTintedColors: Array<Int> = arrayOf(
-      -16777216, - 13948117, - 12102329, - 11173760, - 11184726, - 2865196, - 54485)
+      -16777216, -13948117, -12102329, -11173760, -11184726, -2865196, -54485)
 
     val expectedOutputs = Array<Any>(7) {
       ParamTestOutput(pureColors[it], shadedColors[it], tintedColors[it], shadedAndTintedColors[it])
@@ -228,7 +228,6 @@ object AndroidTestUtil {
       arrayOf(inputParams[it], expectedOutputs[it])
     }.asList()
   }
-
 
   class SeekBarThumbCoordinatesProvider(var progress: Int) : CoordinatesProvider {
     override fun calculateCoordinates(view: View): FloatArray {
@@ -258,4 +257,5 @@ object AndroidTestUtil {
       }
     }
   }
+
 }

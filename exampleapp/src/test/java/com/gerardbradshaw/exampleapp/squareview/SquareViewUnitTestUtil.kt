@@ -39,7 +39,7 @@ internal object SquareViewUnitTestUtil {
   }
 
   fun checkThumbPositionIs(xRatio: Double, yRatio: Double, picker: SquareColorPickerView) {
-    val square: FrameLayout = picker.findViewById(R.id.color_picker_library_large_color_window)
+    val square: FrameLayout = picker.findViewById(R.id.color_picker_library_large_window)
 
     val x = ((square.width * xRatio) + square.x).toFloat()
     val y = ((square.height * yRatio) + square.y).toFloat()

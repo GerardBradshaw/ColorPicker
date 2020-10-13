@@ -4,8 +4,6 @@ import android.app.Activity
 import android.os.SystemClock
 import android.view.LayoutInflater
 import android.view.MotionEvent
-import android.view.View
-import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -43,7 +41,7 @@ internal object SquareViewUnitTestUtil {
   }
 
   fun checkThumbPositionIs(xRatio: Double, yRatio: Double, picker: SquareColorPickerView) {
-    val square: FrameLayout = picker.findViewById(R.id.color_picker_library_large_color_window)
+    val square: FrameLayout = picker.findViewById(R.id.color_picker_library_large_window)
 
     val x = ((square.width * xRatio) + square.x).toFloat()
     val y = ((square.height * yRatio) + square.y).toFloat()

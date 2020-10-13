@@ -2,11 +2,11 @@ package com.gerardbradshaw.exampleapp.compactview
 
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.gerardbradshaw.exampleapp.CompactViewActivity
-import com.gerardbradshaw.exampleapp.util.AndroidTestUtil.checkListenerChangedColorTo
+import com.gerardbradshaw.exampleapp.util.AndroidTestUtil.checkListenerColorIs
 import com.gerardbradshaw.exampleapp.util.AndroidTestUtil.moveSeekBarTo
 import com.gerardbradshaw.exampleapp.compactview.CompactViewAndroidTestUtil.SliderType
 import com.gerardbradshaw.exampleapp.compactview.CompactViewAndroidTestUtil.changeSliderTypeTo
-import com.gerardbradshaw.exampleapp.util.AndroidTestUtil.getParamaterizedTestParams
+import com.gerardbradshaw.exampleapp.util.AndroidTestUtil.getParameterizedTestParams
 import com.gerardbradshaw.exampleapp.util.ParamTestInput
 import com.gerardbradshaw.exampleapp.util.ParamTestOutput
 import org.junit.Rule
@@ -44,13 +44,13 @@ internal class CompactViewAndroidTest {
       changeSliderTypeTo(SliderType.TINT)
       moveSeekBarTo(inputs.tintProgress)
 
-      checkListenerChangedColorTo(expected.shadedAndTintedColor)
+      checkListenerColorIs(expected.shadedAndTintedColor)
     }
 
     @Test
     fun should_notifyListener_when_onlyColorSliderPositionChanged() {
       moveSeekBarTo(inputs.colorProgress)
-      checkListenerChangedColorTo(expected.pureColor)
+      checkListenerColorIs(expected.pureColor)
     }
 
     @Test
@@ -60,7 +60,7 @@ internal class CompactViewAndroidTest {
       changeSliderTypeTo(SliderType.SHADE)
       moveSeekBarTo(inputs.shadeProgress)
 
-      checkListenerChangedColorTo(expected.shadedColor)
+      checkListenerColorIs(expected.shadedColor)
     }
 
     @Test
@@ -70,7 +70,7 @@ internal class CompactViewAndroidTest {
       changeSliderTypeTo(SliderType.TINT)
       moveSeekBarTo(inputs.tintProgress)
 
-      checkListenerChangedColorTo(expected.tintedColor)
+      checkListenerColorIs(expected.tintedColor)
     }
 
 
@@ -78,7 +78,7 @@ internal class CompactViewAndroidTest {
       @Parameterized.Parameters(name = "progress = {0}")
       @JvmStatic
       fun params(): Collection<Array<Any>> {
-        return getParamaterizedTestParams()
+        return getParameterizedTestParams()
       }
     }
   }

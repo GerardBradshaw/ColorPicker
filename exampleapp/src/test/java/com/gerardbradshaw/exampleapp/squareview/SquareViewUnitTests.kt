@@ -14,8 +14,8 @@ import com.gerardbradshaw.exampleapp.util.ParamTestInput
 import com.gerardbradshaw.exampleapp.util.ParamTestOutput
 import com.gerardbradshaw.exampleapp.util.UnitTestUtil.checkPreviewColorIs
 import com.gerardbradshaw.exampleapp.util.UnitTestUtil.checkSeekBarIsAtProgress
+import com.gerardbradshaw.exampleapp.util.UnitTestUtil.getParamaterizedTestParams
 import com.gerardbradshaw.exampleapp.util.UnitTestUtil.moveSeekBarTo
-import com.gerardbradshaw.exampleapp.util.UnitTestUtil.sliderMax
 import org.junit.Before
 import org.junit.Test
 import org.junit.experimental.runners.Enclosed
@@ -23,7 +23,6 @@ import org.junit.runner.RunWith
 import org.robolectric.ParameterizedRobolectricTestRunner
 import org.robolectric.RobolectricTestRunner
 import org.robolectric.annotation.Config
-import kotlin.math.roundToInt
 
 @RunWith(Enclosed::class)
 internal class SquareViewUnitTests {
@@ -52,13 +51,8 @@ internal class SquareViewUnitTests {
 
     @Test
     fun should_haveRedGradientSquare_when_firstEntering() {
-      val square: FrameLayout = picker.findViewById(R.id.color_picker_library_large_color_window)
+      val square: FrameLayout = picker.findViewById(R.id.color_picker_library_large_window)
       checkSquareGradientColorIs(-65536, square) // -65536 is pure red (Color.RED)
-    }
-
-    @Test
-    fun should_startThumbInTopRightCornerOfSquare_when_firstEntering() {
-      checkThumbPositionIs(0.0, 0.0, picker)
     }
 
     @Test
@@ -99,7 +93,7 @@ internal class SquareViewUnitTests {
         .findViewById(R.id.color_picker_library_example_square_picker) as SquareColorPickerView
 
       colorSliderSeekBar = layout.findViewById(R.id.color_picker_library_slider_seek_bar)
-      square = layout.findViewById(R.id.color_picker_library_large_color_window)
+      square = layout.findViewById(R.id.color_picker_library_large_window)
       preview = layout.findViewById(R.id.color_picker_library_large_preview_new)
     }
 
@@ -146,41 +140,7 @@ internal class SquareViewUnitTests {
       @JvmStatic
       @ParameterizedRobolectricTestRunner.Parameters(name = "progress: {0}")
       fun params(): Collection<Array<Any>> {
-        val inputParams = Array<Any>(7) {
-          val colorProgress = (it * sliderMax.toDouble() / 6.0).roundToInt()
-
-          val shadeProgress = (sliderMax - colorProgress)
-
-          val tintProgress =
-            when (it) {
-              0 -> 0
-              6 -> ((sliderMax.toDouble() / 6.0)).roundToInt()
-              else -> ((sliderMax.toDouble() / 6.0) + shadeProgress).roundToInt()
-            }
-
-          ParamTestInput(colorProgress, shadeProgress, tintProgress)
-        }
-
-        val pureColors: Array<Int> = arrayOf(
-          -65536, -256, -16711936, -16711681, -16776961, -65281, -65535)
-
-        val shadedColors: Array<Int> = arrayOf(
-          -16777216, -13948160, -16755456, -16744320, -16777046, -2883372, -65535)
-
-        val tintedColors: Array<Int> = arrayOf(
-          -65536, -1, -2752555, -5570561, -8355585, -43521, -54485)
-
-        val shadedAndTintedColors: Array<Int> = arrayOf(
-          -16777216, -13948117, -12102329, -11173760, -11184726, -2865196, -54485)
-
-        val expectedOutputs = Array<Any>(7) {
-          ParamTestOutput(
-            pureColors[it], shadedColors[it], tintedColors[it], shadedAndTintedColors[it])
-        }
-
-        return Array(7) {
-          arrayOf(inputParams[it], expectedOutputs[it])
-        }.asList()
+        return getParamaterizedTestParams()
       }
     }
   }

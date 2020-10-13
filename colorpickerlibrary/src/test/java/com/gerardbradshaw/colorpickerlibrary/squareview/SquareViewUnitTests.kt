@@ -50,7 +50,7 @@ internal class SquareViewUnitTests {
 
     @Test
     fun should_haveRedGradientSquare_when_firstEntering() {
-      val square: FrameLayout = picker.findViewById(R.id.color_picker_library_large_color_window)
+      val square: FrameLayout = picker.findViewById(R.id.color_picker_library_large_window)
       checkSquareGradientColorIs(-65536, square) // -65536 is pure red (Color.RED)
     }
 
@@ -95,7 +95,7 @@ internal class SquareViewUnitTests {
 
       picker = layout.getChildAt(0) as SquareColorPickerView
       colorSliderSeekBar = layout.findViewById(R.id.color_picker_library_slider_seek_bar)
-      square = layout.findViewById(R.id.color_picker_library_large_color_window)
+      square = layout.findViewById(R.id.color_picker_library_large_window)
       preview = layout.findViewById(R.id.color_picker_library_large_preview_new)
     }
 

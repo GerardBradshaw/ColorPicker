@@ -77,26 +77,26 @@ class RadialColorPickerView :
   }
 
   private fun initColorPicker() {
-    colorPicker = findViewById(R.id.color_picker_library_large_color_window)
+    window = findViewById(R.id.color_picker_library_large_window)
 
-    colorPicker.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
+    window.viewTreeObserver.addOnGlobalLayoutListener(object : ViewTreeObserver.OnGlobalLayoutListener {
       override fun onGlobalLayout() {
-        if (colorPicker.height > 0) {
-          circleDiameter = min(colorPicker.width, colorPicker.height)
+        if (window.height > 0) {
+          circleDiameter = min(window.width, window.height)
 
-          if (colorPicker.width != colorPicker.height) {
-            val params = colorPicker.layoutParams
+          if (window.width != window.height) {
+            val params = window.layoutParams
             params.height = circleDiameter
             params.width = circleDiameter
-            colorPicker.layoutParams = params
+            window.layoutParams = params
           }
 
-          colorPicker.viewTreeObserver.removeOnGlobalLayoutListener(this)
+          window.viewTreeObserver.removeOnGlobalLayoutListener(this)
           val background = getGradientCircle(circleDiameter)
 
-          colorPicker = findViewById(R.id.color_picker_library_large_color_window)
+          window = findViewById(R.id.color_picker_library_large_window)
 
-          colorPicker.background = background
+          window.background = background
           initThumb()
         }
       }

@@ -9,6 +9,7 @@
     tools:background="@android:color/holo_orange_light">
 
     <FrameLayout
+        android:id="@+id/color_picker_library_large_window_and_thumb_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/color_picker_library_margin_and_padding_default">
@@ -28,7 +29,7 @@
                 android:src="@drawable/color_picker_library_img_square_in_circle" />
 
             <FrameLayout
-                android:id="@+id/color_picker_library_large_color_window"
+                android:id="@+id/color_picker_library_large_window"
                 android:padding="@dimen/color_picker_library_margin_and_padding_default"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

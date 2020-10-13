@@ -7,6 +7,7 @@ import android.graphics.drawable.PaintDrawable
 import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.RectShape
 import android.util.AttributeSet
+import android.util.Log
 import android.view.View
 import com.gerardbradshaw.colorpickerlibrary.R
 import com.gerardbradshaw.colorpickerlibrary.util.ColorSliderView
@@ -59,9 +60,9 @@ class SquareColorPickerView :
   private fun initColorPicker(pureColor: Int = oldColor) {
     val background = getSquareBackgroundDrawable(pureColor)
 
-    colorPicker = findViewById(R.id.color_picker_library_large_color_window)
-    colorPicker.background = background
-    colorPicker.setTag(R.id.color_picker_library_color_tag, pureColor)
+    window = findViewById(R.id.color_picker_library_large_window)
+    window.background = background
+    window.setTag(R.id.color_picker_library_color_tag, pureColor)
   }
 
   private fun initThumb() {
@@ -107,14 +108,14 @@ class SquareColorPickerView :
 
   override fun moveThumb(x: Float, y: Float) {
     val thumbX = when {
-      x < colorPicker.x -> colorPicker.x
-      x > colorPicker.width.toFloat() -> colorPicker.width.toFloat()
+      x < window.x -> window.x
+      x > window.width.toFloat() -> window.width.toFloat()
       else -> x
     }
 
     val thumbY = when {
-      y < colorPicker.y -> colorPicker.y
-      y > colorPicker.height.toFloat() -> colorPicker.height.toFloat()
+      y < window.y -> window.y
+      y > window.height.toFloat() -> window.height.toFloat()
       else -> y
     }
 
@@ -125,8 +126,8 @@ class SquareColorPickerView :
   }
 
   override fun onThumbPositionChanged(x: Float, y: Float) {
-    internalTintRatio = 1 - ((thumb.x - colorPicker.x) / colorPicker.width.toDouble())
-    internalShadeRatio = -(colorPicker.y - thumb.y) / colorPicker.height.toDouble()
+    internalTintRatio = 1 - ((thumb.x - window.x) / window.width.toDouble())
+    internalShadeRatio = -(window.y - thumb.y) / window.height.toDouble()
     onColorChanged()
   }
 
@@ -145,7 +146,7 @@ class SquareColorPickerView :
       internalShadeRatio < 0.0 -> internalShadeRatio = 0.0
     }
 
-    moveThumb(thumb.x, (internalShadeRatio * colorPicker.height).toFloat())
+    moveThumb(thumb.x, (internalShadeRatio * window.height).toFloat())
   }
 
   override fun updateThumbOnTintRatioChange() {
@@ -154,7 +155,7 @@ class SquareColorPickerView :
       internalTintRatio < 0.0 -> internalTintRatio = 0.0
     }
 
-    moveThumb(((1.0 - internalTintRatio) * colorPicker.width).toFloat(), thumb.y)
+    moveThumb(((1.0 - internalTintRatio) * window.width).toFloat(), thumb.y)
   }
 
 

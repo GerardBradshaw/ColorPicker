@@ -30,7 +30,7 @@ abstract class AbstractLargeColorPickerView : AbstractColorPickerView {
   private lateinit var oldColorPreview: ImageView
 
   protected lateinit var slider: ColorSliderView
-  protected lateinit var colorPicker: FrameLayout
+  protected lateinit var window: FrameLayout
   protected lateinit var thumb: ImageView
   protected var oldColor: Int = Color.RED
 
@@ -71,7 +71,7 @@ abstract class AbstractLargeColorPickerView : AbstractColorPickerView {
   protected fun initThumb(thumb: ImageView? = null) {
     this.thumb = thumb ?: findViewById(R.id.color_picker_library_large_thumb)
 
-    colorPicker.setOnTouchListener { _, event ->
+    window.setOnTouchListener { _, event ->
       when (event.action) {
         MotionEvent.ACTION_DOWN, MotionEvent.ACTION_MOVE -> {
           moveThumb(event.x, event.y)
@@ -89,16 +89,18 @@ abstract class AbstractLargeColorPickerView : AbstractColorPickerView {
 
   protected fun updateNewPreviewColor(color: Int) {
     if (isPreviewEnabled) {
+      newColorPreview.setTag(R.id.color_picker_library_color_tag, color)
       newColorPreview.setColorFilter(color)
-      newColorPreview.setTag(R.id.color_picker_library_color_tag, color) // tagged for testing purposes
+    } else {
+      Log.d(TAG, "updateNewPreviewColor: preview not enabled")
     }
   }
 
   fun setOldPreviewColor(color: Int) {
     if (isPreviewEnabled) {
       oldColor = color
+      oldColorPreview.setTag(R.id.color_picker_library_color_tag, color)
       oldColorPreview.setColorFilter(color)
-      oldColorPreview.setTag(R.id.color_picker_library_color_tag, color) // tagged for testing purposes
     } else {
       Log.d(TAG, "setOldPreviewColor: preview not enabled")
     }
