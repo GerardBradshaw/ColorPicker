@@ -36,7 +36,8 @@ abstract class AbstractColorPickerView : FrameLayout {
     set(value) {
       internalColorRatio = getSafeRatio(value)
       field = internalColorRatio
-      updateThumbOnColorRatioChange()
+      onColorChanged()
+      updateUIOnColorRatioChange()
     }
 
   var shadeRatio = 0.0
@@ -44,7 +45,8 @@ abstract class AbstractColorPickerView : FrameLayout {
     set(value) {
       internalShadeRatio = getSafeRatio(value)
       field = internalShadeRatio
-      updateThumbOnShadeRatioChange()
+      onColorChanged()
+      updateUIOnShadeRatioChange()
     }
 
   var tintRatio = 0.0
@@ -52,7 +54,8 @@ abstract class AbstractColorPickerView : FrameLayout {
     set(value) {
       internalTintRatio = getSafeRatio(value)
       field = internalTintRatio
-      updateThumbOnTintRatioChange()
+      onColorChanged()
+      updateUIOnTintRatioChange()
     }
 
   protected var isPreviewEnabled = true
@@ -166,11 +169,11 @@ abstract class AbstractColorPickerView : FrameLayout {
 
   protected abstract fun onColorChanged()
 
-  protected abstract fun updateThumbOnColorRatioChange()
+  protected abstract fun updateUIOnColorRatioChange()
 
-  protected abstract fun updateThumbOnShadeRatioChange()
+  protected abstract fun updateUIOnShadeRatioChange()
 
-  protected abstract fun updateThumbOnTintRatioChange()
+  protected abstract fun updateUIOnTintRatioChange()
 
   private fun getSafeRatio(ratio: Double): Double {
     return when {

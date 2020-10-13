@@ -5,6 +5,7 @@ import com.gerardbradshaw.colorpickerlibrary.util.ColorSliderView.SliderType
 import com.gerardbradshaw.exampleapp.CompactViewActivity
 import com.gerardbradshaw.exampleapp.R
 import com.gerardbradshaw.exampleapp.compactview.CompactViewAndroidTestUtil.changeSliderTypeTo
+import com.gerardbradshaw.exampleapp.compactview.CompactViewAndroidTestUtil.setPickerRatios
 import com.gerardbradshaw.exampleapp.testutil.GlobalTestUtil.getParameterizedTestIO
 import com.gerardbradshaw.exampleapp.testutil.ParamTestInput
 import com.gerardbradshaw.exampleapp.testutil.ParamTestOutput
@@ -20,58 +21,56 @@ import org.junit.runners.Parameterized
 @RunWith(Enclosed::class)
 internal class CompactViewAndroidTest {
 
-  // ---------------- PARAMETERIZED TESTS ----------------
-
   @RunWith(Parameterized::class)
-  class ParameterizedTests(
-    private val inputs: ParamTestInput,
-    private val expected: ParamTestOutput
-  ) {
+  class ListenerTests(private val input: ParamTestInput, private val expected: ParamTestOutput) {
 
     @Rule
     @JvmField
     val asr = ActivityScenarioRule<CompactViewActivity>(CompactViewActivity::class.java)
 
-
-    // ---------------- LISTENER ----------------
-
     @Test
-    fun should_notifyListener_when_allSliderProgressChanged() {
-      moveSeekBarTo(inputs.colorProgress)
-
-      changeSliderTypeTo(SliderType.SHADE)
-      moveSeekBarTo(inputs.shadeProgress)
-
-      changeSliderTypeTo(SliderType.TINT)
-      moveSeekBarTo(inputs.tintProgress)
-
-      checkViewColorTagIsApprox(expected.shadedAndTintedColor, R.id.example_listener)
-    }
-
-    @Test
-    fun should_notifyListener_when_onlyColorSliderPositionChanged() {
-      moveSeekBarTo(inputs.colorProgress)
+    fun should_notifyListener_when_colorSliderProgressChanged() {
+      moveSeekBarTo(input.colorProgress)
       checkViewColorTagIsApprox(expected.pureColor, R.id.example_listener)
     }
 
     @Test
     fun should_notifyListener_when_colorAndShadeSliderProgressChanged() {
-      moveSeekBarTo(inputs.colorProgress)
+      moveSeekBarTo(input.colorProgress)
 
       changeSliderTypeTo(SliderType.SHADE)
-      moveSeekBarTo(inputs.shadeProgress)
+      moveSeekBarTo(input.shadeProgress)
 
       checkViewColorTagIsApprox(expected.shadedColor, R.id.example_listener)
     }
 
     @Test
     fun should_notifyListener_when_colorAndTintSliderProgressChanged() {
-      moveSeekBarTo(inputs.colorProgress)
+      moveSeekBarTo(input.colorProgress)
 
       changeSliderTypeTo(SliderType.TINT)
-      moveSeekBarTo(inputs.tintProgress)
+      moveSeekBarTo(input.tintProgress)
 
       checkViewColorTagIsApprox(expected.tintedColor, R.id.example_listener)
+    }
+
+    @Test
+    fun should_notifyListener_when_colorAndShadeAndTintSliderProgressChanged() {
+      moveSeekBarTo(input.colorProgress)
+
+      changeSliderTypeTo(SliderType.SHADE)
+      moveSeekBarTo(input.shadeProgress)
+
+      changeSliderTypeTo(SliderType.TINT)
+      moveSeekBarTo(input.tintProgress)
+
+      checkViewColorTagIsApprox(expected.shadedAndTintedColor, R.id.example_listener)
+    }
+
+    @Test
+    fun should_notifyListener_when_colorRatioChangedProgrammatically() {
+      setPickerRatios(input.colorRatio, input.shadeRatio, input.tintRatio)
+      checkViewColorTagIsApprox(expected.shadedAndTintedColor, R.id.example_listener)
     }
 
 

@@ -2,11 +2,14 @@ package com.gerardbradshaw.exampleapp.compactview
 
 import android.widget.FrameLayout
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.SeekBar
 import com.gerardbradshaw.colorpickerlibrary.R
 import com.gerardbradshaw.colorpickerlibrary.util.ColorSliderView
 import com.gerardbradshaw.colorpickerlibrary.util.ColorSliderView.SliderType
+import com.gerardbradshaw.colorpickerlibrary.views.CompactColorPickerView
 import com.gerardbradshaw.exampleapp.compactview.CompactViewUnitTestUtil.changeSliderTypeTo
+import com.gerardbradshaw.exampleapp.compactview.CompactViewUnitTestUtil.checkPickerHasRatios
 import com.gerardbradshaw.exampleapp.compactview.CompactViewUnitTestUtil.getLayout
 import com.gerardbradshaw.exampleapp.testutil.GlobalTestUtil.getParameterizedTestIO
 import com.gerardbradshaw.exampleapp.testutil.ParamTestInput
@@ -30,87 +33,115 @@ internal class CompactViewUnitTests {
   @RunWith(RobolectricTestRunner::class)
   @Config(sdk = [28])
   class InitializationTests {
+    private lateinit var layout: LinearLayout
     private lateinit var seekBar: SeekBar
-    private lateinit var slider: ColorSliderView
     private lateinit var menu: FrameLayout
 
     @Before
     fun setUp() {
-      val layout = getLayout()
+      layout = getLayout()
 
       seekBar = layout.findViewById(R.id.color_picker_library_slider_seek_bar)
-      slider = layout.findViewById(R.id.color_picker_library_compact_color_slider)
       menu = layout.findViewById(R.id.color_picker_library_compact_menu_frame)
     }
 
     @Test
-    fun should_startColorSliderAtZero_when_firstEntering() {
-      checkSeekBarIsAtProgress(0, seekBar)
-    }
+    fun should_openColorSlider_when_initialized() {
+      val slider:ColorSliderView =
+        layout.findViewById(R.id.color_picker_library_compact_color_slider)
 
-    @Test
-    fun should_startShadeSliderAtZero_when_firstEntering() {
-      moveSeekBarTo(seekBar.max / 2, seekBar)
-
-      changeSliderTypeTo(SliderType.TINT, menu)
-      moveSeekBarTo(seekBar.max / 2, seekBar)
-
-      changeSliderTypeTo(SliderType.SHADE, menu)
-      checkSeekBarIsAtProgress(0, seekBar)
-    }
-
-    @Test
-    fun should_startTintSliderAtZero_when_firstEntering() {
-      moveSeekBarTo(seekBar.max / 2, seekBar)
-
-      changeSliderTypeTo(SliderType.SHADE, menu)
-      moveSeekBarTo(seekBar.max / 2, seekBar)
-
-      changeSliderTypeTo(SliderType.TINT, menu)
-      checkSeekBarIsAtProgress(0, seekBar)
-    }
-
-    @Test
-    fun should_openColorSlider_when_firstEntering() {
       checkSeekBarTypeIs(SliderType.COLOR, slider)
     }
 
+    @Test
+    fun should_startSliderAtZero_when_initialized() {
+      checkSeekBarIsAtProgress(0, seekBar)
+    }
+
+    @Test
+    fun should_startShadeSliderAtZero_when_initialized() {
+      moveSeekBarTo(seekBar.max / 2, seekBar)
+
+      changeSliderTypeTo(SliderType.TINT, menu)
+      moveSeekBarTo(seekBar.max / 2, seekBar)
+
+      changeSliderTypeTo(SliderType.SHADE, menu)
+      checkSeekBarIsAtProgress(0, seekBar)
+    }
+
+    @Test
+    fun should_startTintSliderAtZero_when_initialized() {
+      moveSeekBarTo(seekBar.max / 2, seekBar)
+
+      changeSliderTypeTo(SliderType.SHADE, menu)
+      moveSeekBarTo(seekBar.max / 2, seekBar)
+
+      changeSliderTypeTo(SliderType.TINT, menu)
+      checkSeekBarIsAtProgress(0, seekBar)
+    }
+
+    @Test
+    fun should_haveRedPreviewColor_when_initialized() {
+      val preview: ImageView = layout.findViewById(R.id.color_picker_library_compact_preview)
+
+      checkViewColorTagIsExactly(-65536, preview) // -65536 is RED
+    }
   }
 
 
   @RunWith(RobolectricTestRunner::class)
   @Config(sdk = [28])
   class BasicSliderTests {
-
     private lateinit var seekBar: SeekBar
     private lateinit var slider: ColorSliderView
     private lateinit var menu: FrameLayout
+    private lateinit var picker: CompactColorPickerView
 
     @Before
     fun setUp() {
       val layout = getLayout()
-
       seekBar = layout.findViewById(R.id.color_picker_library_slider_seek_bar)
       slider = layout.findViewById(R.id.color_picker_library_compact_color_slider)
       menu = layout.findViewById(R.id.color_picker_library_compact_menu_frame)
+      picker = layout.findViewById(com.gerardbradshaw.exampleapp.R.id.example_compact_picker)
     }
 
     @Test
-    fun should_openShadeSlider_when_shadeSliderSelected() {
+    fun should_updateSliderType_when_colorSliderSelected() {
+      changeSliderTypeTo(SliderType.COLOR, menu)
+      checkSeekBarTypeIs(SliderType.COLOR, slider)
+    }
+
+    @Test
+    fun should_updateSliderType_when_shadeSliderSelected() {
       changeSliderTypeTo(SliderType.SHADE, menu)
       checkSeekBarTypeIs(SliderType.SHADE, slider)
     }
 
     @Test
-    fun should_openTintSlider_when_tintSliderSelected() {
+    fun should_updateSliderType_when_tintSliderSelected() {
       changeSliderTypeTo(SliderType.TINT, menu)
       checkSeekBarTypeIs(SliderType.TINT, slider)
     }
 
     @Test
-    fun should_openColorSlider_when_colorSliderSelected() {
-      changeSliderTypeTo(SliderType.COLOR, menu)
-      checkSeekBarTypeIs(SliderType.COLOR, slider)
+    fun should_updateColorRatio_when_colorSliderProgressChanged() {
+      moveSeekBarTo(sliderMax / 2, seekBar)
+      checkPickerHasRatios(0.5, 0.0, 0.0, picker)
+    }
+
+    @Test
+    fun should_updateColorRatio_when_shadeSliderProgressChanged() {
+      changeSliderTypeTo(SliderType.SHADE, menu)
+      moveSeekBarTo(sliderMax / 2, seekBar)
+      checkPickerHasRatios(0.0, 0.5, 0.0, picker)
+    }
+
+    @Test
+    fun should_updateColorRatio_when_tintSliderProgressChanged() {
+      changeSliderTypeTo(SliderType.TINT, menu)
+      moveSeekBarTo(sliderMax / 2, seekBar)
+      checkPickerHasRatios(0.0, 0.0, 0.5, picker)
     }
 
     @Test
@@ -182,20 +213,40 @@ internal class CompactViewUnitTests {
       changeSliderTypeTo(SliderType.TINT, menu)
       checkSeekBarIsAtProgress(sliderMax / 2, seekBar)
     }
+
+    @Test
+    fun should_updateSliderPosition_when_colorChangedProgrammatically() {
+      picker.colorRatio = 0.5
+      checkSeekBarIsAtProgress(sliderMax / 2, seekBar)
+    }
+
+    @Test
+    fun should_updateSliderPosition_when_shadeChangedProgrammatically() {
+      changeSliderTypeTo(SliderType.SHADE, menu)
+      picker.shadeRatio = 0.5
+      checkSeekBarIsAtProgress(sliderMax / 2, seekBar)
+    }
+
+    @Test
+    fun should_updateSliderPosition_when_tintChangedProgrammatically() {
+      changeSliderTypeTo(SliderType.TINT, menu)
+      picker.tintRatio = 0.5
+      checkSeekBarIsAtProgress(sliderMax / 2, seekBar)
+    }
   }
 
 
   @RunWith(ParameterizedRobolectricTestRunner::class)
   @Config(sdk = [28])
   class PreviewTests(private val input: ParamTestInput, private val expected: ParamTestOutput) {
+    private lateinit var layout: LinearLayout
     private lateinit var seekBar: SeekBar
     private lateinit var menu: FrameLayout
     private lateinit var preview: ImageView
 
     @Before
     fun setUp() {
-      val layout = getLayout()
-
+      layout = getLayout()
       seekBar = layout.findViewById(R.id.color_picker_library_slider_seek_bar)
       menu = layout.findViewById(R.id.color_picker_library_compact_menu_frame)
       preview = layout.findViewById(R.id.color_picker_library_compact_preview)
@@ -240,6 +291,18 @@ internal class CompactViewUnitTests {
       checkViewColorTagIsExactly(expected.shadedAndTintedColor, preview)
     }
 
+    @Test
+    fun should_updatePreview_when_ratiosChangedProgrammatically() {
+      val view: CompactColorPickerView =
+        layout.findViewById(com.gerardbradshaw.exampleapp.R.id.example_compact_picker)
+
+      view.colorRatio = input.colorRatio
+      view.shadeRatio = input.shadeRatio
+      view.tintRatio = input.tintRatio
+
+      checkViewColorTagIsExactly(expected.shadedAndTintedColor, preview)
+    }
+
     companion object {
       @JvmStatic
       @ParameterizedRobolectricTestRunner.Parameters(name = "progress: {0}")
@@ -269,7 +332,7 @@ internal class CompactViewUnitTests {
     }
 
     @Test
-    fun should_updateColorTagOnShadeSlider_when_colorChanged() {
+    fun should_updateColorTagOnShadeSlider_when_colorSliderProgress() {
       moveSeekBarTo(input.colorProgress, seekBar)
 
       changeSliderTypeTo(SliderType.SHADE, menu)
@@ -277,7 +340,7 @@ internal class CompactViewUnitTests {
     }
 
     @Test
-    fun should_updateColorTagOnShadeSlider_when_colorAndTintChanged() {
+    fun should_updateColorTagOnShadeSlider_when_colorAndTintSliderProgressChanged() {
       moveSeekBarTo(input.colorProgress, seekBar)
 
       changeSliderTypeTo(SliderType.TINT, menu)
@@ -288,7 +351,7 @@ internal class CompactViewUnitTests {
     }
 
     @Test
-    fun should_updateColorTagOnTintSlider_when_colorChanged() {
+    fun should_updateColorTagOnTintSlider_when_colorSliderProgressChanged() {
       moveSeekBarTo(input.colorProgress, seekBar)
 
       changeSliderTypeTo(SliderType.TINT, menu)
@@ -296,7 +359,7 @@ internal class CompactViewUnitTests {
     }
 
     @Test
-    fun should_updateColorTagOnTintSlider_when_colorAndShadeChanged() {
+    fun should_updateColorTagOnTintSlider_when_colorAndShadeSliderProgressChanged() {
       moveSeekBarTo(input.colorProgress, seekBar)
 
       changeSliderTypeTo(SliderType.SHADE, menu)
@@ -314,4 +377,7 @@ internal class CompactViewUnitTests {
       }
     }
   }
+
+
+
 }

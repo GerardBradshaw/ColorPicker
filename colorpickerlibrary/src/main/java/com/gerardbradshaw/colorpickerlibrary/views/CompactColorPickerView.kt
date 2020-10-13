@@ -186,16 +186,16 @@ class CompactColorPickerView : AbstractColorPickerView {
     this.setTag(R.id.color_picker_library_color_tag, color)
   }
 
-  override fun updateThumbOnColorRatioChange() {
-    setSeekBarPosition()
+  override fun updateUIOnColorRatioChange() {
+    syncGradientBarWithSliderType()
   }
 
-  override fun updateThumbOnShadeRatioChange() {
-    setSeekBarPosition()
+  override fun updateUIOnShadeRatioChange() {
+    syncGradientBarWithSliderType()
   }
 
-  override fun updateThumbOnTintRatioChange() {
-    setSeekBarPosition()
+  override fun updateUIOnTintRatioChange() {
+    syncGradientBarWithSliderType()
   }
 
   // ------------------------ PUBLIC FUNCTIONS ------------------------

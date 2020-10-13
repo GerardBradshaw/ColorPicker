@@ -7,7 +7,10 @@ import android.view.Menu
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import com.gerardbradshaw.colorpickerlibrary.util.ColorSliderView.SliderType
+import com.gerardbradshaw.colorpickerlibrary.views.CompactColorPickerView
 import com.gerardbradshaw.exampleapp.R
+import org.hamcrest.Matchers.equalTo
+import org.junit.Assert.assertThat
 import org.robolectric.Robolectric
 import org.robolectric.shadows.ShadowPopupMenu
 
@@ -37,4 +40,16 @@ internal object CompactViewUnitTestUtil {
     ShadowPopupMenu.getLatestPopupMenu().menu
       .performIdentifierAction(menuItem, Menu.FLAG_ALWAYS_PERFORM_CLOSE)
   }
+
+  fun checkPickerHasRatios(
+    colorRatio: Double,
+    shadeRatio: Double,
+    tintRatio: Double,
+    picker: CompactColorPickerView
+  ) {
+    assertThat(picker.colorRatio, equalTo(colorRatio))
+    assertThat(picker.shadeRatio, equalTo(shadeRatio))
+    assertThat(picker.tintRatio, equalTo(tintRatio))
+  }
+
 }

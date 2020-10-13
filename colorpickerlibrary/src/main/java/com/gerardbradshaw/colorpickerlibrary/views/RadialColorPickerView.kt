@@ -226,7 +226,7 @@ class RadialColorPickerView :
     onColorChanged()
   }
 
-  override fun updateThumbOnColorRatioChange() {
+  override fun updateUIOnColorRatioChange() {
     val acuteAngle = getAcuteAngleUsingColorRatio()
 
     val thumbX = getXPositionUsingRatios(acuteAngle)
@@ -236,13 +236,13 @@ class RadialColorPickerView :
     if (thumb.y != thumbY) thumb.y = thumbY
   }
 
-  override fun updateThumbOnShadeRatioChange() {
+  override fun updateUIOnShadeRatioChange() {
     if (slider.getProgressRatio() != internalShadeRatio) {
       slider.setProgressRatio(internalShadeRatio)
     }
   }
 
-  override fun updateThumbOnTintRatioChange() {
+  override fun updateUIOnTintRatioChange() {
     val acuteAngle = getAcuteAngleUsingColorRatio()
 
     val thumbX = getXPositionUsingRatios(acuteAngle)

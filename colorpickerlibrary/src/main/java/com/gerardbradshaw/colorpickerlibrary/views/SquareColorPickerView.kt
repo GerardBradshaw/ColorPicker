@@ -135,7 +135,7 @@ class SquareColorPickerView :
     onColorChanged()
   }
 
-  override fun updateThumbOnColorRatioChange() {
+  override fun updateUIOnColorRatioChange() {
     when {
       internalColorRatio > 1.0 -> internalColorRatio = 1.0
       internalColorRatio < 0.0 -> internalColorRatio = 0.0
@@ -144,7 +144,7 @@ class SquareColorPickerView :
     slider.setProgressRatio(internalColorRatio)
   }
 
-  override fun updateThumbOnShadeRatioChange() {
+  override fun updateUIOnShadeRatioChange() {
     when {
       internalShadeRatio > 1.0 -> internalShadeRatio = 1.0
       internalShadeRatio < 0.0 -> internalShadeRatio = 0.0
@@ -153,7 +153,7 @@ class SquareColorPickerView :
     moveThumb(thumb.x, (internalShadeRatio * window.height).toFloat())
   }
 
-  override fun updateThumbOnTintRatioChange() {
+  override fun updateUIOnTintRatioChange() {
     when {
       internalTintRatio > 1.0 -> internalTintRatio = 1.0
       internalTintRatio < 0.0 -> internalTintRatio = 0.0
