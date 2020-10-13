@@ -5,7 +5,7 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.gerardbradshaw.exampleapp.R
 import com.gerardbradshaw.exampleapp.SquareViewActivity
 import com.gerardbradshaw.exampleapp.squareview.SquareViewAndroidTestUtil.checkThumbIsAtRatioPosition
-import com.gerardbradshaw.exampleapp.util.AndroidTestUtil.checkPreviewColorIs
+import com.gerardbradshaw.exampleapp.util.AndroidTestUtil.checkViewColorTagIsExactly
 import com.gerardbradshaw.exampleapp.util.AndroidTestUtil.moveSeekBarTo
 import com.gerardbradshaw.exampleapp.squareview.SquareViewAndroidTestUtil.moveThumbTo
 import com.gerardbradshaw.exampleapp.util.AndroidTestUtil.getParameterizedTestParams
@@ -49,28 +49,34 @@ internal class SquareViewAndroidTest {
     @Test
     fun should_updatePreview_when_colorChanged() {
       moveSeekBarTo(input.colorProgress)
-      checkPreviewColorIs(expected.pureColor, R.id.color_picker_library_large_preview_new)
+      checkViewColorTagIsExactly(expected.pureColor, R.id.color_picker_library_large_preview_new)
+    }
+
+    @Test
+    fun should_updateSquareColor_when_colorChanged() {
+      moveSeekBarTo(input.colorProgress)
+      checkViewColorTagIsExactly(expected.pureColor, R.id.color_picker_library_large_window)
     }
 
     @Test
     fun should_updatePreview_when_colorAndShadeChanged() {
       moveSeekBarTo(input.colorProgress)
       moveThumbTo(0.0, input.shadeRatio)
-      checkPreviewColorIs(expected.shadedColor, R.id.color_picker_library_large_preview_new)
+      checkViewColorTagIsExactly(expected.shadedColor, R.id.color_picker_library_large_preview_new)
     }
 
     @Test
     fun should_updatePreview_when_colorAndTintChanged() {
       moveSeekBarTo(input.colorProgress)
       moveThumbTo(input.tintRatio, 0.0)
-      checkPreviewColorIs(expected.tintedColor, R.id.color_picker_library_large_preview_new)
+      checkViewColorTagIsExactly(expected.tintedColor, R.id.color_picker_library_large_preview_new)
     }
 
     @Test
     fun should_updatePreview_when_colorAndShadeAndTintChanged() {
       moveSeekBarTo(input.colorProgress)
       moveThumbTo(input.tintRatio, input.shadeRatio)
-      checkPreviewColorIs(expected.shadedAndTintedColor, R.id.color_picker_library_large_preview_new)
+      checkViewColorTagIsExactly(expected.shadedAndTintedColor, R.id.color_picker_library_large_preview_new)
     }
 
     @Test

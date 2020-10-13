@@ -9,8 +9,9 @@ import com.gerardbradshaw.exampleapp.compactview.CompactViewUnitTestUtil.getLayo
 import com.gerardbradshaw.exampleapp.compactview.CompactViewUnitTestUtil.SliderType
 import com.gerardbradshaw.exampleapp.util.ParamTestInput
 import com.gerardbradshaw.exampleapp.util.ParamTestOutput
-import com.gerardbradshaw.exampleapp.util.UnitTestUtil.checkPreviewColorIs
+import com.gerardbradshaw.exampleapp.util.UnitTestUtil.checkViewColorTagIsExactly
 import com.gerardbradshaw.exampleapp.util.UnitTestUtil.checkSeekBarIsAtProgress
+import com.gerardbradshaw.exampleapp.util.UnitTestUtil.getParameterizedTestParams
 import com.gerardbradshaw.exampleapp.util.UnitTestUtil.moveSeekBarTo
 import com.gerardbradshaw.exampleapp.util.UnitTestUtil.sliderMax
 import org.junit.Before
@@ -43,12 +44,12 @@ internal class CompactViewUnitTests {
     }
 
     @Test
-    fun should_startColorSliderAtZeroProgress_when_firstEntering() {
+    fun should_startColorSliderAtZero_when_firstEntering() {
       checkSeekBarIsAtProgress(0, seekBar)
     }
 
     @Test
-    fun should_startShadeSliderAtZeroProgress_when_firstEntering() {
+    fun should_startShadeSliderAtZero_when_firstEntering() {
       moveSeekBarTo(seekBar.max / 2, seekBar)
 
       changeSliderTypeTo(SliderType.TINT, menu)
@@ -59,7 +60,7 @@ internal class CompactViewUnitTests {
     }
 
     @Test
-    fun should_startTintSliderAtZeroProgress_when_firstEntering() {
+    fun should_startTintSliderAtZero_when_firstEntering() {
       moveSeekBarTo(seekBar.max / 2, seekBar)
 
       changeSliderTypeTo(SliderType.SHADE, menu)
@@ -67,6 +68,76 @@ internal class CompactViewUnitTests {
 
       changeSliderTypeTo(SliderType.TINT, menu)
       checkSeekBarIsAtProgress(0, seekBar)
+    }
+
+    @Test
+    fun should_startColorSliderAtPreviousProgress_when_returningFromShadeSlider() {
+      moveSeekBarTo(sliderMax / 2, seekBar)
+
+      changeSliderTypeTo(SliderType.SHADE, menu)
+      moveSeekBarTo(sliderMax, seekBar)
+
+      changeSliderTypeTo(SliderType.COLOR, menu)
+      checkSeekBarIsAtProgress(sliderMax / 2, seekBar)
+    }
+
+    @Test
+    fun should_startColorSliderAtPreviousProgress_when_returningFromTintSlider() {
+      moveSeekBarTo(sliderMax / 2, seekBar)
+
+      changeSliderTypeTo(SliderType.TINT, menu)
+      moveSeekBarTo(sliderMax, seekBar)
+
+      changeSliderTypeTo(SliderType.COLOR, menu)
+      checkSeekBarIsAtProgress(sliderMax / 2, seekBar)
+    }
+
+    @Test
+    fun should_startShadeSliderAtPreviousProgress_when_returningFromColorSlider() {
+      changeSliderTypeTo(SliderType.SHADE, menu)
+      moveSeekBarTo(sliderMax / 2, seekBar)
+
+      changeSliderTypeTo(SliderType.COLOR, menu)
+      moveSeekBarTo(sliderMax, seekBar)
+
+      changeSliderTypeTo(SliderType.SHADE, menu)
+      checkSeekBarIsAtProgress(sliderMax / 2, seekBar)
+    }
+
+    @Test
+    fun should_startShadeSliderAtPreviousProgress_when_returningFromTintSlider() {
+      changeSliderTypeTo(SliderType.SHADE, menu)
+      moveSeekBarTo(sliderMax / 2, seekBar)
+
+      changeSliderTypeTo(SliderType.TINT, menu)
+      moveSeekBarTo(sliderMax, seekBar)
+
+      changeSliderTypeTo(SliderType.SHADE, menu)
+      checkSeekBarIsAtProgress(sliderMax / 2, seekBar)
+    }
+
+    @Test
+    fun should_startTintSliderAtPreviousProgress_when_returningFromColorSlider() {
+      changeSliderTypeTo(SliderType.TINT, menu)
+      moveSeekBarTo(sliderMax / 2, seekBar)
+
+      changeSliderTypeTo(SliderType.COLOR, menu)
+      moveSeekBarTo(sliderMax, seekBar)
+
+      changeSliderTypeTo(SliderType.TINT, menu)
+      checkSeekBarIsAtProgress(sliderMax / 2, seekBar)
+    }
+
+    @Test
+    fun should_startTintSliderAtPreviousProgress_when_returningFromShadeSlider() {
+      changeSliderTypeTo(SliderType.TINT, menu)
+      moveSeekBarTo(sliderMax / 2, seekBar)
+
+      changeSliderTypeTo(SliderType.SHADE, menu)
+      moveSeekBarTo(sliderMax, seekBar)
+
+      changeSliderTypeTo(SliderType.TINT, menu)
+      checkSeekBarIsAtProgress(sliderMax / 2, seekBar)
     }
   }
 
@@ -86,7 +157,7 @@ internal class CompactViewUnitTests {
 
     @Before
     fun setUp() {
-      val layout = CompactViewUnitTestUtil.getLayout()
+      val layout = getLayout()
 
       seekBar = layout.findViewById(R.id.color_picker_library_slider_seek_bar)
       menu = layout.findViewById(R.id.color_picker_library_compact_menu_frame)
@@ -94,12 +165,12 @@ internal class CompactViewUnitTests {
     }
 
 
-    // ---------------- PREVIEW ----------------
+    // ---------------- COLOR PREVIEW ----------------
 
     @Test
-    fun should_updatePreview_when_onlyColorSliderProgressChanged() {
+    fun should_updatePreview_when_colorSliderProgressChanged() {
       moveSeekBarTo(inputParams.colorProgress, seekBar)
-      checkPreviewColorIs(expected.pureColor, preview)
+      checkViewColorTagIsExactly(expected.pureColor, preview)
     }
 
     @Test
@@ -109,21 +180,21 @@ internal class CompactViewUnitTests {
       changeSliderTypeTo(SliderType.SHADE, menu)
       moveSeekBarTo(inputParams.shadeProgress, seekBar)
 
-      checkPreviewColorIs(expected.shadedColor, preview)
+      checkViewColorTagIsExactly(expected.shadedColor, preview)
     }
 
     @Test
     fun should_updatePreview_when_colorAndTintSliderProgressChanged() {
       moveSeekBarTo(inputParams.colorProgress, seekBar)
 
-      CompactViewUnitTestUtil.changeSliderTypeTo(CompactViewUnitTestUtil.SliderType.TINT, menu)
+      changeSliderTypeTo(SliderType.TINT, menu)
       moveSeekBarTo(inputParams.tintProgress, seekBar)
 
-      checkPreviewColorIs(expected.tintedColor, preview)
+      checkViewColorTagIsExactly(expected.tintedColor, preview)
     }
 
     @Test
-    fun should_updatePreview_when_allSliderProgressChanged() {
+    fun should_updatePreview_when_colorAndShadeAndTintSliderProgressChanged() {
       moveSeekBarTo(inputParams.colorProgress, seekBar)
 
       changeSliderTypeTo(SliderType.SHADE, menu)
@@ -132,33 +203,7 @@ internal class CompactViewUnitTests {
       changeSliderTypeTo(SliderType.TINT, menu)
       moveSeekBarTo(inputParams.tintProgress, seekBar)
 
-      checkPreviewColorIs(expected.shadedAndTintedColor, preview)
-    }
-
-
-
-    // ---------------- SEEK BAR ----------------
-
-    @Test
-    fun should_startColorSliderAtPreviousProgress_when_returningFromShadeSlider() {
-      moveSeekBarTo(inputParams.colorProgress, seekBar)
-
-      changeSliderTypeTo(SliderType.SHADE, menu)
-      moveSeekBarTo(inputParams.shadeProgress, seekBar)
-
-      changeSliderTypeTo(SliderType.COLOR, menu)
-      checkSeekBarIsAtProgress(inputParams.colorProgress, seekBar)
-    }
-
-    @Test
-    fun should_startColorSliderAtPreviousProgress_when_returningFromTintSlider() {
-      moveSeekBarTo(inputParams.colorProgress, seekBar)
-
-      changeSliderTypeTo(SliderType.TINT, menu)
-      moveSeekBarTo(inputParams.tintProgress, seekBar)
-
-      changeSliderTypeTo(SliderType.COLOR, menu)
-      checkSeekBarIsAtProgress(inputParams.colorProgress, seekBar)
+      checkViewColorTagIsExactly(expected.shadedAndTintedColor, preview)
     }
 
 
@@ -166,41 +211,7 @@ internal class CompactViewUnitTests {
       @JvmStatic
       @ParameterizedRobolectricTestRunner.Parameters(name = "progress: {0}")
       fun params(): Collection<Array<Any>> {
-        val inputParams = Array<Any>(7) {
-          val colorProgress = (it * sliderMax.toDouble() / 6.0).roundToInt()
-
-          val shadeProgress = (sliderMax - colorProgress)
-
-          val tintProgress =
-            when (it) {
-              0 -> 0
-              6 -> ((sliderMax.toDouble() / 6.0)).roundToInt()
-              else -> ((sliderMax.toDouble() / 6.0) + shadeProgress).roundToInt()
-            }
-
-          ParamTestInput(colorProgress, shadeProgress, tintProgress)
-        }
-
-        val pureColors: Array<Int> = arrayOf(
-          -65536, -256, -16711936, -16711681, -16776961, -65281, -65535)
-
-        val shadedColors: Array<Int> = arrayOf(
-          -16777216, - 13948160, - 16755456, - 16744320, - 16777046, - 2883372, - 65535)
-
-        val tintedColors: Array<Int> = arrayOf(
-          -65536, - 1, - 2752555, - 5570561, - 8355585, - 43521, - 54485)
-
-        val shadedAndTintedColors: Array<Int> = arrayOf(
-          -16777216, - 13948117, - 12102329, - 11173760, - 11184726, - 2865196, - 54485)
-
-        val expectedOutputs = Array<Any>(7) {
-          ParamTestOutput(
-            pureColors[it], shadedColors[it], tintedColors[it], shadedAndTintedColors[it])
-        }
-
-        return Array(7) {
-          arrayOf(inputParams[it], expectedOutputs[it])
-        }.asList()
+        return getParameterizedTestParams()
       }
     }
   }

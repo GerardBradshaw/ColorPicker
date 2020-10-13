@@ -2,7 +2,8 @@ package com.gerardbradshaw.exampleapp.compactview
 
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import com.gerardbradshaw.exampleapp.CompactViewActivity
-import com.gerardbradshaw.exampleapp.util.AndroidTestUtil.checkListenerColorIs
+import com.gerardbradshaw.colorpickerlibrary.R
+import com.gerardbradshaw.exampleapp.util.AndroidTestUtil.checkViewColorTagIsApprox
 import com.gerardbradshaw.exampleapp.util.AndroidTestUtil.moveSeekBarTo
 import com.gerardbradshaw.exampleapp.compactview.CompactViewAndroidTestUtil.SliderType
 import com.gerardbradshaw.exampleapp.compactview.CompactViewAndroidTestUtil.changeSliderTypeTo
@@ -44,13 +45,17 @@ internal class CompactViewAndroidTest {
       changeSliderTypeTo(SliderType.TINT)
       moveSeekBarTo(inputs.tintProgress)
 
-      checkListenerColorIs(expected.shadedAndTintedColor)
+      checkViewColorTagIsApprox(
+        expected.shadedAndTintedColor,
+        R.id.color_picker_library_example_listener)
     }
 
     @Test
     fun should_notifyListener_when_onlyColorSliderPositionChanged() {
       moveSeekBarTo(inputs.colorProgress)
-      checkListenerColorIs(expected.pureColor)
+      checkViewColorTagIsApprox(
+        expected.pureColor,
+        R.id.color_picker_library_example_listener)
     }
 
     @Test
@@ -60,7 +65,9 @@ internal class CompactViewAndroidTest {
       changeSliderTypeTo(SliderType.SHADE)
       moveSeekBarTo(inputs.shadeProgress)
 
-      checkListenerColorIs(expected.shadedColor)
+      checkViewColorTagIsApprox(
+        expected.shadedColor,
+        R.id.color_picker_library_example_listener)
     }
 
     @Test
@@ -70,7 +77,9 @@ internal class CompactViewAndroidTest {
       changeSliderTypeTo(SliderType.TINT)
       moveSeekBarTo(inputs.tintProgress)
 
-      checkListenerColorIs(expected.tintedColor)
+      checkViewColorTagIsApprox(
+        expected.tintedColor,
+        R.id.color_picker_library_example_listener)
     }
 
 

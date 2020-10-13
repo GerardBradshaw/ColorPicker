@@ -15,7 +15,10 @@ import androidx.test.espresso.matcher.ViewMatchers.*
 import com.gerardbradshaw.colorpickerlibrary.R
 import org.hamcrest.Description
 import org.hamcrest.Matcher
+import org.hamcrest.MatcherAssert
+import org.hamcrest.Matchers
 import org.hamcrest.Matchers.allOf
+import org.hamcrest.Matchers.equalTo
 
 object SquareViewAndroidTestUtil {
   private const val TAG = "SquareViewAndroidTestUt"
