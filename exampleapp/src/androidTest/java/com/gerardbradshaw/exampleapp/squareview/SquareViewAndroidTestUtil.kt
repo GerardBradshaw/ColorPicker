@@ -1,17 +1,14 @@
 package com.gerardbradshaw.exampleapp.squareview
 
 import android.os.SystemClock
-import android.util.Log
 import android.view.MotionEvent
 import android.view.View
-import android.view.ViewGroup
 import android.widget.FrameLayout
 import android.widget.ImageView
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.UiController
 import androidx.test.espresso.ViewAction
 import androidx.test.espresso.ViewInteraction
-import androidx.test.espresso.action.MotionEvents
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.BoundedMatcher
 import androidx.test.espresso.matcher.ViewMatchers.*
@@ -64,7 +61,7 @@ object SquareViewAndroidTestUtil {
 
   fun checkThumbIsAtRatioPosition(tintRatio: Double, shadeRatio: Double) {
     onThumbAndWindowContainer()
-      .check(matches(thumbIsAtRatioPosition(tintRatio, shadeRatio)))
+      .check(matches(thumbIsApproximatelyAtRatioPosition(tintRatio, shadeRatio)))
   }
 
   private fun onThumbAndWindowContainer(): ViewInteraction {
@@ -73,16 +70,19 @@ object SquareViewAndroidTestUtil {
       isDisplayed()))
   }
 
-  private fun thumbIsAtRatioPosition(tintRatio: Double, shadeRatio: Double): Matcher<View?>? {
+  private fun thumbIsApproximatelyAtRatioPosition(tintRatio: Double, shadeRatio: Double): Matcher<View?>? {
     return object : BoundedMatcher<View?, FrameLayout>(FrameLayout::class.java) {
       override fun matchesSafely(view: FrameLayout): Boolean {
         val window: FrameLayout = view.findViewById(R.id.color_picker_library_large_window)
         val thumb: ImageView = view.findViewById(R.id.color_picker_library_large_thumb)
 
-        val xRatio = 1.0 - (thumb.x / window.width.toDouble())
-        val yRatio = thumb.y / window.height.toDouble()
+        val actualTintRatio = 1.0 - (thumb.x / window.width.toDouble())
+        val actualShadeRatio = thumb.y / window.height.toDouble()
 
-        return tintRatio == xRatio && shadeRatio == yRatio
+        val tintRatioRange = 0.99 * tintRatio .. 1.01 * tintRatio
+        val shadeRatioRange = 0.99 * shadeRatio .. 1.01 * shadeRatio
+
+        return actualTintRatio in tintRatioRange && actualShadeRatio in shadeRatioRange
       }
 
       override fun describeTo(description: Description) {

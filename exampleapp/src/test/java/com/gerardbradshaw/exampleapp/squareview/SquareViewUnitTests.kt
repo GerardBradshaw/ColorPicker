@@ -29,6 +29,7 @@ internal class SquareViewUnitTests {
 
   // ---------------- SINGLE RUN TESTS ----------------
 
+  // Done!!
   @RunWith(RobolectricTestRunner::class)
   @Config(sdk = [28])
   class SingleTests {
@@ -109,6 +110,7 @@ internal class SquareViewUnitTests {
       checkSquareGradientColorIs(expected.pureColor, square)
     }
 
+    @Deprecated("Moved to AndroidTest")
     @Test
     fun should_updatePreview_when_colorAndShadeChanged() {
       moveSeekBarTo(inputParams.colorProgress, colorSliderSeekBar)

@@ -46,17 +46,37 @@ internal class SquareViewAndroidTest {
     @JvmField
     val asr = ActivityScenarioRule<SquareViewActivity>(SquareViewActivity::class.java)
 
-//    @Test
-//    fun should_updatePreview_when_colorChanged() {
-//      moveSeekBarTo(input.colorProgress)
-//      checkPreviewColorIs(expected.pureColor, R.id.color_picker_library_large_preview_new)
-//    }
+    @Test
+    fun should_updatePreview_when_colorChanged() {
+      moveSeekBarTo(input.colorProgress)
+      checkPreviewColorIs(expected.pureColor, R.id.color_picker_library_large_preview_new)
+    }
 
     @Test
-    fun should_updatePreview_when_colorAndShadeProgressChanged() {
+    fun should_updatePreview_when_colorAndShadeChanged() {
       moveSeekBarTo(input.colorProgress)
       moveThumbTo(0.0, input.shadeRatio)
       checkPreviewColorIs(expected.shadedColor, R.id.color_picker_library_large_preview_new)
+    }
+
+    @Test
+    fun should_updatePreview_when_colorAndTintChanged() {
+      moveSeekBarTo(input.colorProgress)
+      moveThumbTo(input.tintRatio, 0.0)
+      checkPreviewColorIs(expected.tintedColor, R.id.color_picker_library_large_preview_new)
+    }
+
+    @Test
+    fun should_updatePreview_when_colorAndShadeAndTintChanged() {
+      moveSeekBarTo(input.colorProgress)
+      moveThumbTo(input.tintRatio, input.shadeRatio)
+      checkPreviewColorIs(expected.shadedAndTintedColor, R.id.color_picker_library_large_preview_new)
+    }
+
+    @Test
+    fun should_moveThumbToTappedPosition_when_squareTapped() {
+      moveThumbTo(input.tintRatio, input.shadeRatio)
+      checkThumbIsAtRatioPosition(input.tintRatio, input.shadeRatio)
     }
 
 
