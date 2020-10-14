@@ -1,18 +1,18 @@
-package com.gerardbradshaw.exampleapp.squareview
+package com.gerardbradshaw.exampleapp.radialview
 
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.gerardbradshaw.exampleapp.R
-import com.gerardbradshaw.exampleapp.SquareViewActivity
-import com.gerardbradshaw.exampleapp.squareview.SquareViewAndroidTestUtil.checkThumbIsAtRatioPosition
-import com.gerardbradshaw.exampleapp.util.EspressoTestUtil.checkViewColorTagIsApprox
-import com.gerardbradshaw.exampleapp.util.EspressoTestUtil.moveSeekBarTo
-import com.gerardbradshaw.exampleapp.squareview.SquareViewAndroidTestUtil.moveThumbTo
-import com.gerardbradshaw.exampleapp.testutil.GlobalTestUtil.getParameterizedTestIO
+import com.gerardbradshaw.exampleapp.RadialViewActivity
+import com.gerardbradshaw.exampleapp.radialview.RadialViewAndroidTestUtil.checkThumbIsAtRatioPosition
+import com.gerardbradshaw.exampleapp.radialview.RadialViewAndroidTestUtil.moveThumbTo
+import com.gerardbradshaw.exampleapp.testutil.GlobalTestUtil
 import com.gerardbradshaw.exampleapp.testutil.ParamTestInput
 import com.gerardbradshaw.exampleapp.testutil.ParamTestOutput
 import com.gerardbradshaw.exampleapp.util.EspressoTestUtil.checkPickerRatiosAre
 import com.gerardbradshaw.exampleapp.util.EspressoTestUtil.checkSeekBarIsAtProgress
+import com.gerardbradshaw.exampleapp.util.EspressoTestUtil.checkViewColorTagIsApprox
+import com.gerardbradshaw.exampleapp.util.EspressoTestUtil.moveSeekBarTo
 import com.gerardbradshaw.exampleapp.util.EspressoTestUtil.setPickerRatios
 import org.junit.Rule
 import org.junit.Test
@@ -21,17 +21,17 @@ import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 
 @RunWith(Enclosed::class)
-internal class SquareViewAndroidTest {
+internal class RadialViewAndroidTest {
 
   @RunWith(AndroidJUnit4::class)
   class LaunchTests {
 
     @Rule
     @JvmField
-    val asr = ActivityScenarioRule<SquareViewActivity>(SquareViewActivity::class.java)
+    val asr = ActivityScenarioRule<RadialViewActivity>(RadialViewActivity::class.java)
 
     @Test
-    fun should_startThumbInTopRightCornerOfSquare_when_launched() {
+    fun should_startThumbAtRightmostEdge_when_launched() {
       checkThumbIsAtRatioPosition(0.0, 0.0)
     }
   }
@@ -42,33 +42,34 @@ internal class SquareViewAndroidTest {
 
     @Rule
     @JvmField
-    val asr = ActivityScenarioRule<SquareViewActivity>(SquareViewActivity::class.java)
+    val asr = ActivityScenarioRule<RadialViewActivity>(RadialViewActivity::class.java)
 
     @Test
     fun should_updatePreview_when_colorChangedInUI() {
-      moveSeekBarTo(input.colorProgress)
+      moveThumbTo(0.0, input.colorRatio)
       checkViewColorTagIsApprox(expected.pureColor, R.id.color_picker_library_large_preview_new)
     }
 
     @Test
     fun should_updatePreview_when_colorAndShadeChangedInUI() {
-      moveSeekBarTo(input.colorProgress)
-      moveThumbTo(0.0, input.shadeRatio)
+      moveSeekBarTo(input.shadeProgress)
+      moveThumbTo(0.0, input.colorRatio)
       checkViewColorTagIsApprox(expected.shadedColor, R.id.color_picker_library_large_preview_new)
     }
 
     @Test
     fun should_updatePreview_when_colorAndTintChangedInUI() {
-      moveSeekBarTo(input.colorProgress)
-      moveThumbTo(input.tintRatio, 0.0)
+      moveThumbTo(input.tintRatio, input.colorRatio)
       checkViewColorTagIsApprox(expected.tintedColor, R.id.color_picker_library_large_preview_new)
     }
 
     @Test
     fun should_updatePreview_when_colorAndShadeAndTintChangedInUI() {
-      moveSeekBarTo(input.colorProgress)
-      moveThumbTo(input.tintRatio, input.shadeRatio)
-      checkViewColorTagIsApprox(expected.shadedAndTintedColor, R.id.color_picker_library_large_preview_new)
+      moveSeekBarTo(input.shadeProgress)
+      moveThumbTo(input.tintRatio, input.colorRatio)
+      checkViewColorTagIsApprox(
+        expected.shadedAndTintedColor,
+        R.id.color_picker_library_large_preview_new)
     }
 
     @Test
@@ -77,7 +78,7 @@ internal class SquareViewAndroidTest {
         input.colorRatio,
         input.shadeRatio,
         input.tintRatio,
-        R.id.example_square_picker)
+        R.id.example_radial_picker)
 
       checkViewColorTagIsApprox(
         expected.shadedAndTintedColor,
@@ -88,7 +89,7 @@ internal class SquareViewAndroidTest {
       @Parameterized.Parameters(name = "{0}")
       @JvmStatic
       fun data(): Collection<Array<Any>> {
-        return getParameterizedTestIO()
+        return GlobalTestUtil.getParameterizedTestIO()
       }
     }
   }
@@ -99,32 +100,31 @@ internal class SquareViewAndroidTest {
 
     @Rule
     @JvmField
-    val asr = ActivityScenarioRule<SquareViewActivity>(SquareViewActivity::class.java)
+    val asr = ActivityScenarioRule<RadialViewActivity>(RadialViewActivity::class.java)
 
     @Test
     fun should_updateListener_when_colorChangedInUI() {
-      moveSeekBarTo(input.colorProgress)
+      moveThumbTo(0.0, input.colorRatio)
       checkViewColorTagIsApprox(expected.pureColor, R.id.example_listener)
     }
 
     @Test
     fun should_updateListener_when_colorAndShadeChangedInUI() {
-      moveSeekBarTo(input.colorProgress)
-      moveThumbTo(0.0, input.shadeRatio)
+      moveSeekBarTo(input.shadeProgress)
+      moveThumbTo(0.0, input.colorRatio)
       checkViewColorTagIsApprox(expected.shadedColor, R.id.example_listener)
     }
 
     @Test
     fun should_updateListener_when_colorAndTintChangedInUI() {
-      moveSeekBarTo(input.colorProgress)
-      moveThumbTo(input.tintRatio, 0.0)
+      moveThumbTo(input.tintRatio, input.colorRatio)
       checkViewColorTagIsApprox(expected.tintedColor, R.id.example_listener)
     }
 
     @Test
     fun should_updateListener_when_colorAndShadeAndTintChangedInUI() {
-      moveSeekBarTo(input.colorProgress)
-      moveThumbTo(input.tintRatio, input.shadeRatio)
+      moveSeekBarTo(input.shadeProgress)
+      moveThumbTo(input.tintRatio, input.colorRatio)
       checkViewColorTagIsApprox(expected.shadedAndTintedColor, R.id.example_listener)
     }
 
@@ -134,7 +134,8 @@ internal class SquareViewAndroidTest {
         input.colorRatio,
         input.shadeRatio,
         input.tintRatio,
-        R.id.example_square_picker)
+        R.id.example_radial_picker
+      )
 
       checkViewColorTagIsApprox(expected.shadedAndTintedColor, R.id.example_listener)
     }
@@ -143,41 +144,41 @@ internal class SquareViewAndroidTest {
       @Parameterized.Parameters(name = "{0}")
       @JvmStatic
       fun data(): Collection<Array<Any>> {
-        return getParameterizedTestIO()
+        return GlobalTestUtil.getParameterizedTestIO()
       }
     }
   }
 
 
   @RunWith(Parameterized::class)
-  class ThumbAndWindowTests(private val input: ParamTestInput, private val expected: ParamTestOutput) {
+  class ThumbAndSliderTests(private val input: ParamTestInput, private val expected: ParamTestOutput) {
 
     @Rule
     @JvmField
-    val asr = ActivityScenarioRule<SquareViewActivity>(SquareViewActivity::class.java)
+    val asr = ActivityScenarioRule<RadialViewActivity>(RadialViewActivity::class.java)
 
     @Test
-    fun should_updateWindowColor_when_colorChangedInUI() {
-      moveSeekBarTo(input.colorProgress)
-      checkViewColorTagIsApprox(expected.pureColor, R.id.color_picker_library_large_window)
+    fun should_updateSliderColor_when_colorChangedInUI() {
+      moveThumbTo(0.0, input.colorRatio)
+      checkViewColorTagIsApprox(expected.pureColor, R.id.color_picker_library_large_color_slider)
     }
 
     @Test
     fun should_moveThumbToTappedPosition_when_windowTapped() {
-      moveThumbTo(input.tintRatio, input.shadeRatio)
-      checkThumbIsAtRatioPosition(input.tintRatio, input.shadeRatio)
+      moveThumbTo(input.tintRatio, input.colorRatio)
+      checkThumbIsAtRatioPosition(input.tintRatio, input.colorRatio)
     }
 
     @Test
     fun should_updateRatios_when_windowTapped() {
-      moveSeekBarTo(input.colorProgress)
-      moveThumbTo(input.tintRatio, input.shadeRatio)
+      moveSeekBarTo(input.shadeProgress)
+      moveThumbTo(input.tintRatio, input.colorRatio)
 
       checkPickerRatiosAre(
         input.colorRatio,
         input.shadeRatio,
         input.tintRatio,
-        R.id.example_square_picker)
+        R.id.example_radial_picker)
     }
 
     @Test
@@ -186,9 +187,9 @@ internal class SquareViewAndroidTest {
         input.colorRatio,
         input.shadeRatio,
         input.tintRatio,
-        R.id.example_square_picker)
+        R.id.example_radial_picker)
 
-      checkThumbIsAtRatioPosition(input.tintRatio, input.shadeRatio)
+      checkThumbIsAtRatioPosition(input.tintRatio, input.colorRatio)
     }
 
     @Test
@@ -197,16 +198,16 @@ internal class SquareViewAndroidTest {
         input.colorRatio,
         input.shadeRatio,
         input.tintRatio,
-        R.id.example_square_picker)
+        R.id.example_radial_picker)
 
-      checkSeekBarIsAtProgress(input.colorProgress)
+      checkSeekBarIsAtProgress(input.shadeProgress)
     }
 
     companion object {
       @Parameterized.Parameters(name = "{0}")
       @JvmStatic
       fun data(): Collection<Array<Any>> {
-        return getParameterizedTestIO()
+        return GlobalTestUtil.getParameterizedTestIO()
       }
     }
   }

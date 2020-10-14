@@ -8,7 +8,7 @@ import com.gerardbradshaw.exampleapp.compactview.CompactViewAndroidTestUtil.chan
 import com.gerardbradshaw.exampleapp.testutil.GlobalTestUtil.getParameterizedTestIO
 import com.gerardbradshaw.exampleapp.testutil.ParamTestInput
 import com.gerardbradshaw.exampleapp.testutil.ParamTestOutput
-import com.gerardbradshaw.exampleapp.util.EspressoTestUtil.checkViewColorTagIsApprox
+import com.gerardbradshaw.exampleapp.util.EspressoTestUtil.checkViewColorTagIsExactly
 import com.gerardbradshaw.exampleapp.util.EspressoTestUtil.moveSeekBarTo
 import com.gerardbradshaw.exampleapp.util.EspressoTestUtil.setPickerRatios
 import org.junit.Rule
@@ -31,7 +31,7 @@ internal class CompactViewAndroidTest {
     @Test
     fun should_notifyListener_when_colorChangedInUI() {
       moveSeekBarTo(input.colorProgress)
-      checkViewColorTagIsApprox(expected.pureColor, R.id.example_listener)
+      checkViewColorTagIsExactly(expected.pureColor, R.id.example_listener)
     }
 
     @Test
@@ -41,7 +41,7 @@ internal class CompactViewAndroidTest {
       changeSliderTypeTo(SliderType.SHADE)
       moveSeekBarTo(input.shadeProgress)
 
-      checkViewColorTagIsApprox(expected.shadedColor, R.id.example_listener)
+      checkViewColorTagIsExactly(expected.shadedColor, R.id.example_listener)
     }
 
     @Test
@@ -51,7 +51,7 @@ internal class CompactViewAndroidTest {
       changeSliderTypeTo(SliderType.TINT)
       moveSeekBarTo(input.tintProgress)
 
-      checkViewColorTagIsApprox(expected.tintedColor, R.id.example_listener)
+      checkViewColorTagIsExactly(expected.tintedColor, R.id.example_listener)
     }
 
     @Test
@@ -64,7 +64,7 @@ internal class CompactViewAndroidTest {
       changeSliderTypeTo(SliderType.TINT)
       moveSeekBarTo(input.tintProgress)
 
-      checkViewColorTagIsApprox(expected.shadedAndTintedColor, R.id.example_listener)
+      checkViewColorTagIsExactly(expected.shadedAndTintedColor, R.id.example_listener)
     }
 
     @Test
@@ -75,7 +75,7 @@ internal class CompactViewAndroidTest {
         input.tintRatio,
         R.id.example_compact_picker)
 
-      checkViewColorTagIsApprox(
+      checkViewColorTagIsExactly(
         expected.shadedAndTintedColor,
         R.id.example_listener)
     }

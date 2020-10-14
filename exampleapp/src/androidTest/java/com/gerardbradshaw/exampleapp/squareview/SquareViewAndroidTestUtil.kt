@@ -8,7 +8,6 @@ import android.widget.ImageView
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.UiController
 import androidx.test.espresso.ViewAction
-import androidx.test.espresso.ViewInteraction
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.matcher.BoundedMatcher
 import androidx.test.espresso.matcher.ViewMatchers.*
@@ -21,16 +20,14 @@ import org.hamcrest.Matchers.allOf
 object SquareViewAndroidTestUtil {
   private const val TAG = "SquareViewAndroidTestUt"
 
+  // -------------------- MOVE THUMB --------------------
+
   fun moveThumbTo(xRatio: Double, yRatio: Double) {
-    onWindow()
-      .perform(touchViewUpAndDown(xRatio, yRatio))
+    onView(allOf(withId(R.id.color_picker_library_large_window), isDisplayed()))
+      .perform(touchEventDownAndUpAction(xRatio, yRatio))
   }
 
-  private fun onWindow(): ViewInteraction {
-    return onView(allOf(withId(R.id.color_picker_library_large_window), isDisplayed()))
-  }
-
-  fun touchViewUpAndDown(xRatio: Double, yRatio: Double): ViewAction? {
+  private fun touchEventDownAndUpAction(xRatio: Double, yRatio: Double): ViewAction? {
     return object : ViewAction {
       override fun getConstraints(): Matcher<View> {
         return isDisplayed()
@@ -60,15 +57,11 @@ object SquareViewAndroidTestUtil {
     }
   }
 
-  fun checkThumbIsAtRatioPosition(tintRatio: Double, shadeRatio: Double) {
-    onThumbAndWindowContainer()
-      .check(matches(thumbIsApproximatelyAtRatioPosition(tintRatio, shadeRatio)))
-  }
+  // -------------------- CHECK THUMB POSITION --------------------
 
-  private fun onThumbAndWindowContainer(): ViewInteraction {
-    return onView(allOf(
-      withId(R.id.color_picker_library_large_window_and_thumb_container),
-      isDisplayed()))
+  fun checkThumbIsAtRatioPosition(tintRatio: Double, shadeRatio: Double) {
+    onView(allOf(withId(R.id.color_picker_library_large_window_and_thumb_container), isDisplayed()))
+      .check(matches(thumbIsApproximatelyAtRatioPosition(tintRatio, shadeRatio)))
   }
 
   private fun thumbIsApproximatelyAtRatioPosition(tintRatio: Double, shadeRatio: Double): Matcher<View?>? {

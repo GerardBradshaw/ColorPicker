@@ -25,24 +25,16 @@ import kotlin.math.min
 object EspressoTestUtil {
   private const val TAG = "EspressoTestUtil"
 
-
-  // ---------------- SEEK BAR ----------------
+  // -------------------- MOVE SEEK BAR --------------------
 
   fun moveSeekBarTo(progress: Int) {
     onView(allOf(withId(R.id.color_picker_library_slider_seek_bar), isDisplayed()))
       .perform(setSeekBarProgressAction(progress))
   }
 
-  fun checkSeekBarIsAtProgress(progress: Int) {
-    onView(allOf(withId(R.id.color_picker_library_slider_seek_bar), isDisplayed()))
-      .check(matches(isSeekBarAtProgress(progress)))
-  }
-
   private fun setSeekBarProgressAction(progress: Int): ViewAction? {
     return object : ViewAction {
-      override fun getDescription(): String {
-        return "set a progress on a SeekBar"
-      }
+      override fun getDescription(): String = "set progress"
 
       override fun getConstraints(): Matcher<View> {
         return ViewMatchers.isAssignableFrom(SeekBar::class.java)
@@ -54,6 +46,13 @@ object EspressoTestUtil {
     }
   }
 
+  // -------------------- CHECK SEEK BAR --------------------
+
+  fun checkSeekBarIsAtProgress(progress: Int) {
+    onView(allOf(withId(R.id.color_picker_library_slider_seek_bar), isDisplayed()))
+      .check(matches(isSeekBarAtProgress(progress)))
+  }
+
   private fun isSeekBarAtProgress(progress: Int): Matcher<View?>? {
     return object : BoundedMatcher<View?, SeekBar>(SeekBar::class.java) {
       override fun matchesSafely(view: SeekBar): Boolean {
@@ -61,40 +60,16 @@ object EspressoTestUtil {
       }
 
       override fun describeTo(description: Description) {
-        description.appendText("matches expected position")
+        description.appendText("Matches to a SeekBar with progress as specified.")
       }
     }
   }
 
-
-
-  // ---------------- COLOR TAGS ----------------
-
-  fun checkViewColorTagIsExactly(color: Int, resId: Int) {
-    onView(allOf(withId(resId), isDisplayed()))
-      .check(matches(hasApproximateColorTag(color)))
-  }
+  // -------------------- CHECK APPROX COLOR TAG --------------------
 
   fun checkViewColorTagIsApprox(color: Int, resId: Int) {
     onView(allOf(withId(resId), isDisplayed()))
-      .check(matches(hasExactColorTag(color)))
-  }
-
-  private fun hasExactColorTag(expectedColor: Int): Matcher<View?>? {
-    Checks.checkNotNull(expectedColor)
-
-    return object : BoundedMatcher<View?, View>(View::class.java) {
-      override fun matchesSafely(view: View): Boolean {
-        return isExactlyMatchingExpectedColor(
-          expectedColor,
-          view.getTag(R.id.color_picker_library_color_tag) as Int
-        )
-      }
-
-      override fun describeTo(description: Description) {
-        description.appendText("has exact color tag")
-      }
-    }
+      .check(matches(hasApproximateColorTag(color)))
   }
 
   private fun hasApproximateColorTag(expectedTag: Int): Matcher<View?>? {
@@ -109,21 +84,9 @@ object EspressoTestUtil {
       }
 
       override fun describeTo(description: Description) {
-        description.appendText("has approximate color tag")
+        description.appendText("Matches to a view with a color tag as specified.")
       }
     }
-  }
-
-  private fun isExactlyMatchingExpectedColor(expectedColor: Int, actualColor: Int): Boolean {
-    val isMatch = actualColor == expectedColor
-
-    val matchText =
-      if (isMatch) "Exact match (both ${getHexString(actualColor)})"
-      else "Not a match. (Actual ${getHexString(actualColor)}, expected ${getHexString(expectedColor)})"
-
-    Log.d(TAG, "isExactMatch: $matchText")
-
-    return isMatch
   }
 
   private fun isApproximatelyMatchingExpectedColor(expectedColor: Int, actualColor: Int): Boolean {
@@ -150,15 +113,43 @@ object EspressoTestUtil {
     return isMatch
   }
 
+  // -------------------- CHECK EXACT COLOR TAG --------------------
 
-
-  // ---------------- OTHERS ----------------
-
-  fun Double.format(digits: Int) = "%.${digits}f".format(this)
-
-  fun getHexString(color: Int): String {
-    return String.format("#%06X", 0xFFFFFF and color)
+  fun checkViewColorTagIsExactly(color: Int, resId: Int) {
+    onView(allOf(withId(resId), isDisplayed()))
+      .check(matches(hasExactColorTag(color)))
   }
+
+  private fun hasExactColorTag(expectedColor: Int): Matcher<View?>? {
+    Checks.checkNotNull(expectedColor)
+
+    return object : BoundedMatcher<View?, View>(View::class.java) {
+      override fun matchesSafely(view: View): Boolean {
+        return isExactlyMatchingExpectedColor(
+          expectedColor,
+          view.getTag(R.id.color_picker_library_color_tag) as Int
+        )
+      }
+
+      override fun describeTo(description: Description) {
+        description.appendText("Matches to a view with the exact color tag as specified.")
+      }
+    }
+  }
+
+  private fun isExactlyMatchingExpectedColor(expectedColor: Int, actualColor: Int): Boolean {
+    val isMatch = actualColor == expectedColor
+
+    val matchText =
+      if (isMatch) "Exact match (both ${getHexString(actualColor)})"
+      else "Not a match. (Actual ${getHexString(actualColor)}, expected ${getHexString(expectedColor)})"
+
+    Log.d(TAG, "isExactMatch: $matchText")
+
+    return isMatch
+  }
+
+  // -------------------- SET PICKER RATIOS --------------------
 
   fun setPickerRatios(colorRatio: Double, shadeRatio: Double, tintRatio: Double, pickerResId: Int) {
     onView(withId(pickerResId))
@@ -172,7 +163,7 @@ object EspressoTestUtil {
       }
 
       override fun getDescription(): String {
-        return "update ratios"
+        return "ratio update"
       }
 
       override fun perform(uiController: UiController, view: View) {
@@ -185,6 +176,8 @@ object EspressoTestUtil {
     }
   }
 
+  // -------------------- CHECK PICKER RATIOS --------------------
+
   fun checkPickerRatiosAre(colorRatio: Double, shadeRatio: Double, tintRatio: Double, pickerResId: Int) {
     onView(withId(pickerResId))
       .check(matches(pickerRatiosAre(colorRatio, shadeRatio, tintRatio)))
@@ -193,15 +186,34 @@ object EspressoTestUtil {
   private fun pickerRatiosAre(colorRatio: Double, shadeRatio: Double, tintRatio: Double): Matcher<View?>? {
     return object : BoundedMatcher<View?, AbstractColorPickerView>(AbstractColorPickerView::class.java) {
       override fun matchesSafely(view: AbstractColorPickerView): Boolean {
-        return (
-            view.colorRatio.isWithinAPercentOf(colorRatio) &&
+        if (view.tintRatio.isWithinAPercentOf(1.0)
+          && tintRatio.isWithinAPercentOf(1.0)
+        ) {
+          return true
+        }
+
+        val isColorRatioOk = view.colorRatio.isWithinAPercentOf(colorRatio) ||
+            (view.colorRatio.isWithinAPercentOf(1.0) &&
+                colorRatio.isWithinAPercentOf(0.0)) ||
+            (view.colorRatio.isWithinAPercentOf(0.0) &&
+                colorRatio.isWithinAPercentOf(1.0))
+
+        return isColorRatioOk &&
             view.shadeRatio.isWithinAPercentOf(shadeRatio) &&
-            view.tintRatio.isWithinAPercentOf(tintRatio))
+            view.tintRatio.isWithinAPercentOf(tintRatio)
       }
 
       override fun describeTo(description: Description) {
-        description.appendText("picker ratios are")
+        description.appendText("Matches to an AbstractColorPicker with ratios as specified.")
       }
     }
+  }
+
+  // -------------------- MISC UTILS --------------------
+
+  fun Double.format(digits: Int) = "%.${digits}f".format(this)
+
+  fun getHexString(color: Int): String {
+    return String.format("#%06X", 0xFFFFFF and color)
   }
 }

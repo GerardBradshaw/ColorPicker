@@ -15,13 +15,19 @@ class RadialViewActivity : AppCompatActivity(), AbstractColorPickerView.ColorCha
     setContentView(R.layout.activity_example_radial_picker)
 
     picker = findViewById(R.id.example_radial_picker)
+    listener = findViewById(R.id.example_listener)
+
     picker.setOnColorSelectedListener(this)
 
-    listener = findViewById(R.id.example_listener)
+    updateListenerColor(picker.getCurrentColor())
   }
 
-
   override fun onColorChanged(color: Int) {
+    updateListenerColor(color)
+  }
+
+  private fun updateListenerColor(color: Int) {
+    listener.setTag(R.id.color_picker_library_color_tag, color)
     listener.setBackgroundColor(color)
   }
 }

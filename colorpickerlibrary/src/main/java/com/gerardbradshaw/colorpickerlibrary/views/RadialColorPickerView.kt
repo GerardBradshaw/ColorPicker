@@ -180,7 +180,7 @@ class RadialColorPickerView :
       else -> 2.0 * Math.PI
     }
 
-    return (angle) / (2.0 * Math.PI)
+    return 1.0 - (angle / (2.0 * Math.PI))
   }
 
   override fun onColorChanged() {
@@ -222,7 +222,7 @@ class RadialColorPickerView :
 
   override fun onThumbPositionChanged(x: Float, y: Float) {
     internalTintRatio = 1.0 - getRadialPositionRatio(x, y)
-    internalColorRatio = 1.0 - getCircumferentialPositionRatio(x, y)
+    internalColorRatio = getCircumferentialPositionRatio(x, y)
     onColorChanged()
   }
 
