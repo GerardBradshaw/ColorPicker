@@ -14,7 +14,7 @@ repositories {
 }
 
 dependencies {
-  implementation 'com.gerardbradshaw:colorpicker:2.0.1'
+  implementation 'com.gerardbradshaw:colorpicker:2.0.2'
 }
 ```
 
