@@ -25,9 +25,7 @@ class SquareColorPickerView :
     initView(attrs)
   }
 
-  constructor(context: Context, attrs: AttributeSet?, defStyle: Int) :
-      super(context, attrs, defStyle)
-  {
+  constructor(context: Context, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle) {
     initView(attrs)
   }
 
@@ -141,7 +139,7 @@ class SquareColorPickerView :
       internalColorRatio < 0.0 -> internalColorRatio = 0.0
     }
 
-    slider.setProgressRatio(internalColorRatio)
+    slider.progressRatio = internalColorRatio
   }
 
   override fun updateUIOnShadeRatioChange() {

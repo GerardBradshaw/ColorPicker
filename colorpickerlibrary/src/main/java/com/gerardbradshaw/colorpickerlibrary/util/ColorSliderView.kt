@@ -10,6 +10,11 @@ import android.widget.SeekBar
 import com.gerardbradshaw.colorpickerlibrary.R
 import kotlin.math.roundToInt
 
+/**
+ * ColorSliderView is designed to be used as simplified, customizable SeekBar for use with colors.
+ * The bar's background can be set as a drawable (such as a color gradient), and functions for
+ * getting/setting the progress ratio are provided for quick access.
+ */
 class ColorSliderView : FrameLayout {
 
   // ------------------------ CONSTRUCTORS ------------------------
@@ -23,11 +28,28 @@ class ColorSliderView : FrameLayout {
   // ------------------------ PROPERTIES ------------------------
 
   val max = context.resources.getInteger(R.integer.color_picker_library_spectrum_color_count).toDouble()
+  var sliderType: SliderType = SliderType.NOT_SET
   private lateinit var seekBar: SeekBar
   private lateinit var gradientBar: FrameLayout
   private var listener: OnProgressChangedListener? = null
-  var sliderType: SliderType = SliderType.NOT_SET
 
+  /**
+   * The progress ratio given by progress / maxProgress. Note that the ratio is rounded to 1.0 or
+   * 0.0 if it has been set greater than 1.0 or less than 0.0 respectively.
+   */
+  var progressRatio: Double = 0.0
+    get() = (seekBar.progress).toDouble() / (seekBar.max).toDouble()
+    set(value) {
+      if (value > 1 || value < 0) Log.d(TAG, "setProgressRatio: invalid ratio ($value)")
+
+      val safeValue = when {
+        value > 1.0 -> 1.0
+        value < 0.0 -> 0.0
+        else -> value
+      }
+      field = safeValue
+      seekBar.progress = (safeValue * max).roundToInt()
+    }
 
   // ------------------------ INITIALIZATION ------------------------
 
@@ -51,29 +73,16 @@ class ColorSliderView : FrameLayout {
   }
 
 
-  // ------------------------ PUBLIC METHODS ------------------------
+  // ------------------------ GRADIENT BAR ------------------------
 
-  fun getProgressRatio(): Double {
-    return (seekBar.progress).toDouble() / (seekBar.max).toDouble()
-  }
-
-  fun setProgressRatio(progressRatio: Double) {
-    if (progressRatio > 1 || progressRatio < 0) {
-      Log.d(TAG, "setProgressRatio: invalid progress ratio ($progressRatio)")
-    }
-    seekBar.progress = (progressRatio * max).roundToInt()
-  }
-
-  fun setUpGradientBar(
-    drawable: Drawable,
-    colorTag: Int,
-    sliderType: SliderType
-  ) {
+  /** Set the bar drawable, optional color tag, and slider type. */
+  fun setUpGradientBar(drawable: Drawable, colorTag: Int?, sliderType: SliderType) {
     gradientBar.background = drawable
     setTag(R.id.color_picker_library_color_tag, colorTag)
     this.sliderType = sliderType
   }
 
+  /** Update the bar drawable and optional color tag without changing the slider type. */
   fun updateGradientDrawable(drawable: Drawable, colorTag: Int) {
     gradientBar.background = drawable
     setTag(R.id.color_picker_library_color_tag, colorTag)

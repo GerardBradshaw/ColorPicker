@@ -25,9 +25,7 @@ class RadialColorPickerView :
     initView(attrs)
   }
 
-  constructor(context: Context, attrs: AttributeSet?, defStyle: Int) :
-      super(context, attrs, defStyle)
-  {
+  constructor(context: Context, attrs: AttributeSet?, defStyle: Int) : super(context, attrs, defStyle) {
     initView(attrs)
   }
 
@@ -237,8 +235,8 @@ class RadialColorPickerView :
   }
 
   override fun updateUIOnShadeRatioChange() {
-    if (slider.getProgressRatio() != internalShadeRatio) {
-      slider.setProgressRatio(internalShadeRatio)
+    if (slider.progressRatio != internalShadeRatio) {
+      slider.progressRatio = internalShadeRatio
     }
   }
 

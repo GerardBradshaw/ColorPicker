@@ -11,6 +11,11 @@ import com.gerardbradshaw.colorpickerlibrary.R
 import com.gerardbradshaw.colorpickerlibrary.util.ColorSliderView
 import com.gerardbradshaw.colorpickerlibrary.util.ColorSliderView.SliderType
 
+/**
+ * Displays a simple color picker consisting of a single [ColorSliderView] and a menu to choose the
+ * slider type (pure color, shade, and tint). The menu type and preview can be customized in XML
+ * or programmatically.
+ */
 class CompactColorPickerView : AbstractColorPickerView {
 
   // ------------------------ CONSTRUCTORS ------------------------
@@ -27,7 +32,7 @@ class CompactColorPickerView : AbstractColorPickerView {
     initView(attrs)
   }
 
-  private fun saveCompactAttrs(attrs: AttributeSet) {
+  private fun saveAttrs(attrs: AttributeSet) {
     context.theme.obtainStyledAttributes(
       attrs, R.styleable.CompactColorPickerView, 0, 0).apply {
       try {
@@ -56,7 +61,7 @@ class CompactColorPickerView : AbstractColorPickerView {
   }
 
   private fun initView(attrs: AttributeSet? = null) {
-    if (attrs != null) saveCompactAttrs(attrs)
+    if (attrs != null) saveAttrs(attrs)
     initMenu()
     initSlider()
     initPreview()
@@ -172,7 +177,7 @@ class CompactColorPickerView : AbstractColorPickerView {
         0.0
       }
     }
-    if (slider.getProgressRatio() != expectedRatio) slider.setProgressRatio(expectedRatio)
+    if (slider.progressRatio != expectedRatio) slider.progressRatio = expectedRatio
   }
 
   override fun onColorChanged() {
@@ -200,12 +205,18 @@ class CompactColorPickerView : AbstractColorPickerView {
 
   // ------------------------ PUBLIC FUNCTIONS ------------------------
 
+  /**
+   * Set the position of the slider between 0-1. Warning: Does not update the corresponding ratio!
+   */
   fun setSliderPositionRatio(ratio: Double) {
-    slider.setProgressRatio(ratio)
+    slider.progressRatio = ratio
   }
 
+  /**
+   * Returns the position of the slider between 0-1.
+   */
   fun getSliderPositionRatio(): Double {
-    return slider.getProgressRatio()
+    return slider.progressRatio
   }
 
 
