@@ -23,7 +23,7 @@ buildscript {
     }
 
     dependencies {
-        classpath "com.android.tools.build:gradle:4.0.1"
+        classpath "com.android.tools.build:gradle:4.0.2"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
     }
 }
@@ -43,8 +43,8 @@ ext.rootPackageName = 'com.gerardbradshaw.colorpicker'
 
 ext.sdkVersionInformation = [
     minSdkVersion: 21,
-    targetSdkVersion: 29,
-    compileSdkVersion: 29
+    targetSdkVersion: 30,
+    compileSdkVersion: 30
 ]
 
 ext.miscVersionInformation = [
